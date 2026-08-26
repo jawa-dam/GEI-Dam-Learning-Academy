@@ -228,7 +228,6 @@ a.stop:hover{transform:translateY(-3px) rotate(-.4deg)}
 
 <footer class="footer">YallToo × Genesis Engineered Interpretations · Dam Learning Academy</footer></div>
 
-<script src="/gei-academy-ui.js"></script><script src="/gei-academy-sound-engine.js"></script>
 <script>
 (function(){'use strict';
 /* ---------- Fallback bridge (only used if /gei-academy-ui.js is unavailable) ---------- */
@@ -243,10 +242,11 @@ var SHIM={KEY:'gei-academy-state-v1',
   if(sel)sel.addEventListener('change',function(){s.skin=sel.value;go()})},
  name:function(s){return (s&&s.name)||''},
  completedCount:function(s){return Math.max(0,((s&&s.completed)||[]).length)}};
-var A=window.GEIAcademy||SHIM,state=A.read();
+var A=SHIM,state=A.read();
 if(!Array.isArray(state.completed))state.completed=[];
 if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];
 state.xp=Number(state.xp||0);
+function syncFromStorage(){var fresh=A.read();Object.keys(fresh).forEach(function(k){state[k]=fresh[k]});if(!Array.isArray(state.completed))state.completed=[];if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];state.xp=Number(state.xp||0);if(!state.avatar)state.avatar=AVATARS[0]}
 
 /* ---------- Sound (real engine first, cute WebAudio fallback second) ---------- */
 var SFX=(function(){var ctx=null;
@@ -290,6 +290,7 @@ buildAvatarRow();
 /* ---------- Render ---------- */
 var lastXp=null;
 function render(){
+ syncFromStorage();
  A.visual(state);
  var hasName=!!A.name(state);
  if(els.name)els.name.value=A.name(state);
@@ -317,13 +318,14 @@ function render(){
  els.road1Tag.textContent=done1?'✓ DONE':'▶ PLAY';
  els.road1Text.textContent=(done1?'✓ COMPLETE · ':'Day 1 · ')+'Language, light, darkness, word connections';
  var l2=done1;
- setState(els.road2,l2?'current':'locked');
- els.road2Tag.textContent=l2?'🔓 READY':'🔒';
- els.road2Text.textContent='Day 2 · The first dam / boundary concept'+(l2?' · ready when you are!':'');
- els.road2.classList.toggle('ready',l2);
- els.road2.setAttribute('role',l2?'link':'status');
- els.road2.setAttribute('tabindex',l2?'0':'-1');
- els.road2.onclick=function(e){if(!l2){e.preventDefault();sound('wrong');els.status.textContent='🔒 Finish all six Level 1 missions to unlock Day 2.'}else{sound('level')}};
+ var l2complete=state.completed.indexOf(2)!==-1;
+ setState(els.road2,l2complete?'complete':(l2?'current':'locked'));
+ els.road2Tag.textContent=l2complete?'✓ DONE':(l2?'🔓 READY':'🔒');
+ els.road2Text.textContent=l2complete?'✓ COMPLETE · Day 2 · Dam / firmament':('Day 2 · The first dam / boundary concept'+(l2?' · ready when you are!':''));
+ els.road2.classList.toggle('ready',l2&&!l2complete);
+ els.road2.setAttribute('role',(l2||l2complete)?'link':'status');
+ els.road2.setAttribute('tabindex',(l2||l2complete)?'0':'-1');
+ els.road2.onclick=function(e){syncFromStorage();var unlocked=state.completed.indexOf(1)!==-1;if(!unlocked){e.preventDefault();sound('wrong');els.status.textContent='🔒 Finish all six Level 1 missions to unlock Day 2.';return}sound('level');if(e.defaultPrevented)return;location.href=new URL('level2.html',document.baseURI).href};
  els.road2.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();els.road2.click()}};
  var dark=document.documentElement.getAttribute('data-theme')==='dark';
  els.theme.textContent=dark?'☀️ Light Mode':'🌙 Dark Mode';
@@ -335,7 +337,9 @@ els.save.addEventListener('click',function(){var n=els.name.value.trim();
  state.name=n;A.write(state);sound('save');confetti({n:110});render()});
 els.name.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();els.save.click()}});
 els.open.addEventListener('click',function(e){if(!A.name(state)){e.preventDefault();sound('wrong');els.hello.textContent='🔐 Please save your username before starting Level 1.';els.name.focus();return} sound('level')});
-window.addEventListener('storage',function(e){if(e.key===A.KEY){state=A.read();if(!Array.isArray(state.completed))state.completed=[];if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!state.avatar)state.avatar=AVATARS[0];buildAvatarRow();lastXp=null;render()}});
+window.addEventListener('storage',function(e){if(e.key===A.KEY){buildAvatarRow();lastXp=null;render()}});
+window.addEventListener('pageshow',function(){buildAvatarRow();lastXp=null;render()});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){buildAvatarRow();render()}});
 A.bindVisual(state,els.theme,els.skin,render);
 render();
 })();
