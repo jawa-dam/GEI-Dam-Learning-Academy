@@ -227,7 +227,7 @@ a.stop:hover{transform:translateY(-3px) rotate(-.4deg)}
       <span class="stopBody"><b>Operations</b><small id="roadmap4Text">Day 4 · Gates, release, movement</small></span>
       <span class="stopTag" id="roadmap4Tag">🔒</span>
     </a>
-    <div class="stop locked"><span class="dot">5</span><span class="stopBody"><b>The Mill</b><small>Day 5 · Water power and the mill</small></span><span class="stopTag">🔒</span></div>
+    <a class="stop locked" id="roadmap5" href="level5.html" aria-label="Level 5 locked until Level 4 is complete"><span class="dot">5</span><span class="stopBody"><b>The Mill</b><small id="roadmap5Text">Day 5 · Water power and the mill</small></span><span class="stopTag" id="roadmap5Tag">🔒</span></a>
     <div class="stop locked"><span class="dot">6</span><span class="stopBody"><b>The System</b><small>Day 6 · Connecting the complete system</small></span><span class="stopTag">🔒</span></div>
   </div>
   <div class="advanced"><strong>07–38 · Advanced Missions</strong><br>These stay behind the foundation until Days 1–6 are built.</div>
@@ -241,7 +241,7 @@ a.stop:hover{transform:translateY(-3px) rotate(-.4deg)}
 /* ---------- Fallback bridge (only used if /gei-academy-ui.js is unavailable) ---------- */
 var store=null;try{store=window.localStorage}catch(e){}
 var SHIM={KEY:'gei-academy-state-v1',
- read:function(){var d={name:'',xp:0,completed:[],level1Tasks:[],level2Tasks:[],level3Tasks:[],level4Tasks:[],theme:'light',skin:'academic'};
+ read:function(){var d={name:'',xp:0,completed:[],level1Tasks:[],level2Tasks:[],level3Tasks:[],level4Tasks:[],level5Tasks:[],theme:'light',skin:'academic'};
   try{var raw=store&&store.getItem(SHIM.KEY);if(raw){var o=JSON.parse(raw);for(var k in d){if(o&&typeof o[k]!=='undefined')d[k]=o[k]}}}catch(e){}return d},
  write:function(s){try{store&&store.setItem(SHIM.KEY,JSON.stringify(s))}catch(e){}},
  visual:function(s){var h=document.documentElement;h.setAttribute('data-theme',s.theme==='dark'?'dark':'light');h.setAttribute('data-skin',s.skin||'academic')},
@@ -252,9 +252,9 @@ var SHIM={KEY:'gei-academy-state-v1',
  completedCount:function(s){return Math.max(0,((s&&s.completed)||[]).length)}};
 var A=SHIM,state=A.read();
 if(!Array.isArray(state.completed))state.completed=[];
-if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!Array.isArray(state.level3Tasks))state.level3Tasks=[];if(!Array.isArray(state.level4Tasks))state.level4Tasks=[];
+if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!Array.isArray(state.level3Tasks))state.level3Tasks=[];if(!Array.isArray(state.level4Tasks))state.level4Tasks=[];if(!Array.isArray(state.level5Tasks))state.level5Tasks=[];
 state.xp=Number(state.xp||0);
-function syncFromStorage(){var fresh=A.read();Object.keys(fresh).forEach(function(k){state[k]=fresh[k]});if(!Array.isArray(state.completed))state.completed=[];if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!Array.isArray(state.level3Tasks))state.level3Tasks=[];if(!Array.isArray(state.level4Tasks))state.level4Tasks=[];state.xp=Number(state.xp||0);if(!state.avatar)state.avatar=AVATARS[0]}
+function syncFromStorage(){var fresh=A.read();Object.keys(fresh).forEach(function(k){state[k]=fresh[k]});if(!Array.isArray(state.completed))state.completed=[];if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!Array.isArray(state.level3Tasks))state.level3Tasks=[];if(!Array.isArray(state.level4Tasks))state.level4Tasks=[];if(!Array.isArray(state.level5Tasks))state.level5Tasks=[];state.xp=Number(state.xp||0);if(!state.avatar)state.avatar=AVATARS[0]}
 
 /* ---------- Sound (real engine first, cute WebAudio fallback second) ---------- */
 var SFX=(function(){var ctx=null;
@@ -286,7 +286,7 @@ function setState(el,cls){if(!el)return;el.classList.remove('complete','current'
 function animCount(el,from,to,done){if(from===to){el.textContent=String(to);if(done)done();return}
  var t0=null;(function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/550);el.textContent=String(Math.round(from+(to-from)*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(step);else if(done)done()})(performance.now())}
 
-var els={name:$('name'),save:$('saveName'),welcome:$('welcomeTitle'),hello:$('hello'),xp:$('xp'),level:$('level'),done:$('done'),cert:$('cert'),bar:$('bar'),status:$('status'),open:$('openLevel1'),road1:$('roadmap1'),road1Text:$('roadmap1Text'),road1Tag:$('roadmap1Tag'),road2:$('roadmap2'),road2Text:$('roadmap2Text'),road2Tag:$('roadmap2Tag'),road3:$('roadmap3'),road3Text:$('roadmap3Text'),road3Tag:$('roadmap3Tag'),road4:$('roadmap4'),road4Text:$('roadmap4Text'),road4Tag:$('roadmap4Tag'),nextTitle:$('nextTitle'),nextDesc:$('nextDesc'),theme:$('themeBtn'),skin:$('skinSelect'),say:$('mascotSay'),avatarRow:$('avatarRow')};
+var els={name:$('name'),save:$('saveName'),welcome:$('welcomeTitle'),hello:$('hello'),xp:$('xp'),level:$('level'),done:$('done'),cert:$('cert'),bar:$('bar'),status:$('status'),open:$('openLevel1'),road1:$('roadmap1'),road1Text:$('roadmap1Text'),road1Tag:$('roadmap1Tag'),road2:$('roadmap2'),road2Text:$('roadmap2Text'),road2Tag:$('roadmap2Tag'),road3:$('roadmap3'),road3Text:$('roadmap3Text'),road3Tag:$('roadmap3Tag'),road4:$('roadmap4'),road4Text:$('roadmap4Text'),road4Tag:$('roadmap4Tag'),road5:$('roadmap5'),road5Text:$('roadmap5Text'),road5Tag:$('roadmap5Tag'),nextTitle:$('nextTitle'),nextDesc:$('nextDesc'),theme:$('themeBtn'),skin:$('skinSelect'),say:$('mascotSay'),avatarRow:$('avatarRow')};
 
 /* ---------- Avatar picker (extra field, ignored by older tooling) ---------- */
 var AVATARS=['🦊','🐼','🐸','🦄','🚀','🐢','⚡','🌟'];
@@ -322,14 +322,16 @@ function render(){
  var done2=state.completed.indexOf(2)!==-1;
  var done3=state.completed.indexOf(3)!==-1;
  var done4=state.completed.indexOf(4)!==-1;
+ var done5=state.completed.indexOf(5)!==-1;
  var nextLevel=0,nextHref='',nextLabel='',nextTitle='',nextDesc='';
  if(!hasName){nextLevel=1;nextHref='level1.html';nextLabel='🔒 Create Username to Start';nextTitle='Level 1 — Genesis / Light';nextDesc='Save a username first, then begin six short Day 1 missions about language, light, darkness, word connections, and the GEI learning model.'}
  else if(!done1){nextLevel=1;nextHref='level1.html';nextLabel='🚀 Start Level 1';nextTitle='Level 1 — Genesis / Light';nextDesc='Build the foundation with six short Day 1 missions. +25 XP per mission.'}
  else if(!done2){nextLevel=2;nextHref='level2.html';nextLabel='🚀 Continue to Level 2';nextTitle='Level 2 — Dam / Firmament';nextDesc='Build the first dam/boundary concept and learn how the firmament becomes an engineering idea in the Academy model.'}
  else if(!done3){nextLevel=3;nextHref='level3.html';nextLabel='🚀 Continue to Level 3';nextTitle='Level 3 — Reservoir';nextDesc='Learn how water is collected and contained. Fill the reservoir and connect Day 2 to Day 3.'}
  else if(!done4){nextLevel=4;nextHref='level4.html';nextLabel='🚀 Continue to Level 4';nextTitle='Level 4 — Operations';nextDesc='Learn gates, controlled release, movement, and how a stored-water system can be operated.'}
- else {nextLevel=5;nextHref='level5.html';nextLabel='🔒 Day 5 Coming Next';nextTitle='Level 5 — The Mill';nextDesc='The next core Genesis day will introduce water power and the mill. It is not shipped yet.'}
- var nextLocked=!hasName||done4;els.nextTitle.textContent=nextTitle;els.nextDesc.innerHTML=nextDesc+' <strong>+25 XP per mission!</strong>';els.open.href=nextLocked?'#':nextHref;els.open.textContent=nextLabel;els.open.classList.toggle('disabled',nextLocked);els.open.setAttribute('aria-disabled',String(nextLocked));
+ else if(!done5){nextLevel=5;nextHref='level5.html';nextLabel='🚀 Continue to Level 5';nextTitle='Level 5 — The Mill';nextDesc='Use moving water to turn a mill wheel and discover how water power becomes useful work.'}
+ else {nextLevel=6;nextHref='#';nextLabel='🔒 Day 6 Coming Next';nextTitle='Level 6 — The System';nextDesc='The final core Genesis day will connect the complete system. It is the next foundation milestone.'}
+ var nextLocked=!hasName||done5;els.nextTitle.textContent=nextTitle;els.nextDesc.innerHTML=nextDesc+' <strong>+25 XP per mission!</strong>';els.open.href=nextLocked?'#':nextHref;els.open.textContent=nextLabel;els.open.classList.toggle('disabled',nextLocked);els.open.setAttribute('aria-disabled',String(nextLocked));
 
  setState(els.road1,done1?'complete':'current');
  els.road1Tag.textContent=done1?'✓ DONE':'▶ PLAY';
@@ -364,6 +366,15 @@ function render(){
  els.road4.setAttribute('tabindex',(l4||l4complete)?'0':'-1');
  els.road4.onclick=function(e){syncFromStorage();var unlocked=state.completed.indexOf(3)!==-1;if(!unlocked){e.preventDefault();sound('wrong');els.status.textContent='🔒 Finish all six Level 3 missions to unlock Day 4.';return}sound('level');if(e.defaultPrevented)return;location.href=new URL('level4.html',document.baseURI).href};
  els.road4.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();els.road4.click()}};
+ var l5=l4complete; var l5complete=done5;
+ setState(els.road5,l5complete?'complete':(l5?'current':'locked'));
+ els.road5Tag.textContent=l5complete?'✓ DONE':(l5?'🔓 READY':'🔒');
+ els.road5Text.textContent=l5complete?'✓ COMPLETE · Day 5 · The Mill':('Day 5 · Water power and the mill'+(l5?' · ready when you are!':''));
+ els.road5.classList.toggle('ready',l5&&!l5complete);
+ els.road5.setAttribute('role',(l5||l5complete)?'link':'status');
+ els.road5.setAttribute('tabindex',(l5||l5complete)?'0':'-1');
+ els.road5.onclick=function(e){syncFromStorage();var unlocked=state.completed.indexOf(4)!==-1;if(!unlocked){e.preventDefault();sound('wrong');els.status.textContent='🔒 Finish all six Level 4 missions to unlock Day 5.';return}sound('level');if(e.defaultPrevented)return;location.href=new URL('level5.html',document.baseURI).href};
+ els.road5.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();els.road5.click()}};
  var dark=document.documentElement.getAttribute('data-theme')==='dark';
  els.theme.textContent=dark?'☀️ Light Mode':'🌙 Dark Mode';
 }
@@ -373,7 +384,7 @@ els.save.addEventListener('click',function(){var n=els.name.value.trim();
  if(!n){els.hello.textContent='Please choose a username first.';els.name.focus();return}
  state.name=n;A.write(state);sound('save');confetti({n:110});render()});
 els.name.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();els.save.click()}});
-els.open.addEventListener('click',function(e){syncFromStorage();if(!A.name(state)){e.preventDefault();sound('wrong');els.hello.textContent='🔐 Please save your username before starting the Academy.';els.name.focus();return}if(state.completed.indexOf(4)!==-1){e.preventDefault();sound('save');els.status.textContent='🏆 Day 4 is complete. Day 5 · The Mill will be added next.';return}sound('level')});
+els.open.addEventListener('click',function(e){syncFromStorage();if(!A.name(state)){e.preventDefault();sound('wrong');els.hello.textContent='🔐 Please save your username before starting the Academy.';els.name.focus();return}if(state.completed.indexOf(5)!==-1){e.preventDefault();sound('save');els.status.textContent='🏆 Day 5 is complete. Day 6 · The System is next.';return}sound('level')});
 window.addEventListener('storage',function(e){if(e.key===A.KEY){buildAvatarRow();lastXp=null;render()}});
 window.addEventListener('pageshow',function(){buildAvatarRow();lastXp=null;render()});
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){buildAvatarRow();render()}});
