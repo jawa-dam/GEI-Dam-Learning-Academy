@@ -1,28 +1,37 @@
-# GEI Dam Learning Academy — Foundation Milestone 2
+# GEI Dam Learning Academy — Foundation Milestone 3
 
 ## Included
 - `index.html` — Academy home and six-day roadmap.
 - `level1.html` — Day 1 · Genesis / Light.
 - `level2.html` — Day 2 · Dam / Firmament.
+- `level3.html` — Day 3 · Reservoir.
+- `GEI-ACADEMY-RELEASE-CHECKLIST.md` — release checklist and validation record.
 
-## Level 2 design
-Six short missions introduce boundary, source/elevation, water pressure, dam building, the Day 1 → Day 2 connection, and a final mastery check.
+## Day 3 · Reservoir
+Six short, fifth-grade-friendly missions introduce:
+1. What a reservoir does
+2. Higher source → moving water
+3. Interactive reservoir filling
+4. Upstream / downstream
+5. Water and dry land
+6. Day 2 → Day 3 mastery chain
 
 - 25 XP per mission
-- 150 XP for Level 2
-- Level 2 is locked until Level 1 is completed
-- Level 3 is not created yet; completion records that it is unlocked for the next milestone
-- Username, XP, completion records, theme, and skin use the same `localStorage` key as Level 1: `gei-academy-state-v1`
-- Light/dark mode and skins persist across pages
-- No PayPal code is included or modified in this learning milestone
+- 150 XP for Level 3
+- Level 3 is locked until Level 2 is complete
+- Username, XP, completion records, theme, skin, and task progress use `localStorage` key `gei-academy-state-v1`
+- Level 2 dam-builder completion and Level 3 reservoir-fill completion restore correctly after refresh
 
-## Test order
-1. Open `index.html`.
-2. Save a username.
-3. Enter Level 1 and complete all six missions.
-4. Return home and open Day 2.
-5. Complete all six Level 2 missions.
-6. Confirm the Level 2 completion state persists after refresh and the home roadmap shows Level 2 complete.
+## Academy roadmap
+01 · Genesis / Light  
+02 · Dam / Firmament  
+03 · Reservoir  
+04 · Operations  
+05 · The Mill  
+06 · The System  
+07–38 · Advanced Missions
+
+Only Levels 1–3 are included in this milestone. No placeholder Level 4 button is shipped.
 
 ## PayPal
-The Academy front end is intentionally separate from the existing PayPal backend/checkout. Do not replace the working PayPal deployment with these static learning files.
+The Academy learning front end is intentionally separate from the existing PayPal backend/checkout. This milestone does not replace, rewrite, or expose PayPal credentials. Keep the existing PayPal deployment intact.

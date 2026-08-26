@@ -217,7 +217,11 @@ a.stop:hover{transform:translateY(-3px) rotate(-.4deg)}
       <span class="stopBody"><b>Dam / Firmament</b><small id="roadmap2Text">Day 2 · The first dam / boundary concept</small></span>
       <span class="stopTag" id="roadmap2Tag">🔒</span>
     </a>
-    <div class="stop locked"><span class="dot">3</span><span class="stopBody"><b>Reservoir</b><small>Day 3 · Water, dry land, containment</small></span><span class="stopTag">🔒</span></div>
+    <a class="stop locked" id="roadmap3" href="level3.html" aria-label="Level 3 locked until Level 2 is complete">
+      <span class="dot">3</span>
+      <span class="stopBody"><b>Reservoir</b><small id="roadmap3Text">Day 3 · Water, dry land, containment</small></span>
+      <span class="stopTag" id="roadmap3Tag">🔒</span>
+    </a>
     <div class="stop locked"><span class="dot">4</span><span class="stopBody"><b>Operations</b><small>Day 4 · Gates, release, movement</small></span><span class="stopTag">🔒</span></div>
     <div class="stop locked"><span class="dot">5</span><span class="stopBody"><b>The Mill</b><small>Day 5 · Water power and the mill</small></span><span class="stopTag">🔒</span></div>
     <div class="stop locked"><span class="dot">6</span><span class="stopBody"><b>The System</b><small>Day 6 · Connecting the complete system</small></span><span class="stopTag">🔒</span></div>
@@ -233,7 +237,7 @@ a.stop:hover{transform:translateY(-3px) rotate(-.4deg)}
 /* ---------- Fallback bridge (only used if /gei-academy-ui.js is unavailable) ---------- */
 var store=null;try{store=window.localStorage}catch(e){}
 var SHIM={KEY:'gei-academy-state-v1',
- read:function(){var d={name:'',xp:0,completed:[],level1Tasks:[],level2Tasks:[],theme:'light',skin:'academic'};
+ read:function(){var d={name:'',xp:0,completed:[],level1Tasks:[],level2Tasks:[],level3Tasks:[],theme:'light',skin:'academic'};
   try{var raw=store&&store.getItem(SHIM.KEY);if(raw){var o=JSON.parse(raw);for(var k in d){if(o&&typeof o[k]!=='undefined')d[k]=o[k]}}}catch(e){}return d},
  write:function(s){try{store&&store.setItem(SHIM.KEY,JSON.stringify(s))}catch(e){}},
  visual:function(s){var h=document.documentElement;h.setAttribute('data-theme',s.theme==='dark'?'dark':'light');h.setAttribute('data-skin',s.skin||'academic')},
@@ -244,9 +248,9 @@ var SHIM={KEY:'gei-academy-state-v1',
  completedCount:function(s){return Math.max(0,((s&&s.completed)||[]).length)}};
 var A=SHIM,state=A.read();
 if(!Array.isArray(state.completed))state.completed=[];
-if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];
+if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!Array.isArray(state.level3Tasks))state.level3Tasks=[];
 state.xp=Number(state.xp||0);
-function syncFromStorage(){var fresh=A.read();Object.keys(fresh).forEach(function(k){state[k]=fresh[k]});if(!Array.isArray(state.completed))state.completed=[];if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];state.xp=Number(state.xp||0);if(!state.avatar)state.avatar=AVATARS[0]}
+function syncFromStorage(){var fresh=A.read();Object.keys(fresh).forEach(function(k){state[k]=fresh[k]});if(!Array.isArray(state.completed))state.completed=[];if(!Array.isArray(state.level1Tasks))state.level1Tasks=[];if(!Array.isArray(state.level2Tasks))state.level2Tasks=[];if(!Array.isArray(state.level3Tasks))state.level3Tasks=[];state.xp=Number(state.xp||0);if(!state.avatar)state.avatar=AVATARS[0]}
 
 /* ---------- Sound (real engine first, cute WebAudio fallback second) ---------- */
 var SFX=(function(){var ctx=null;
@@ -278,7 +282,7 @@ function setState(el,cls){if(!el)return;el.classList.remove('complete','current'
 function animCount(el,from,to,done){if(from===to){el.textContent=String(to);if(done)done();return}
  var t0=null;(function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/550);el.textContent=String(Math.round(from+(to-from)*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(step);else if(done)done()})(performance.now())}
 
-var els={name:$('name'),save:$('saveName'),welcome:$('welcomeTitle'),hello:$('hello'),xp:$('xp'),level:$('level'),done:$('done'),cert:$('cert'),bar:$('bar'),status:$('status'),open:$('openLevel1'),road1:$('roadmap1'),road1Text:$('roadmap1Text'),road1Tag:$('roadmap1Tag'),road2:$('roadmap2'),road2Text:$('roadmap2Text'),road2Tag:$('roadmap2Tag'),theme:$('themeBtn'),skin:$('skinSelect'),say:$('mascotSay'),avatarRow:$('avatarRow')};
+var els={name:$('name'),save:$('saveName'),welcome:$('welcomeTitle'),hello:$('hello'),xp:$('xp'),level:$('level'),done:$('done'),cert:$('cert'),bar:$('bar'),status:$('status'),open:$('openLevel1'),road1:$('roadmap1'),road1Text:$('roadmap1Text'),road1Tag:$('roadmap1Tag'),road2:$('roadmap2'),road2Text:$('roadmap2Text'),road2Tag:$('roadmap2Tag'),road3:$('roadmap3'),road3Text:$('roadmap3Text'),road3Tag:$('roadmap3Tag'),theme:$('themeBtn'),skin:$('skinSelect'),say:$('mascotSay'),avatarRow:$('avatarRow')};
 
 /* ---------- Avatar picker (extra field, ignored by older tooling) ---------- */
 var AVATARS=['🦊','🐼','🐸','🦄','🚀','🐢','⚡','🌟'];
@@ -327,6 +331,16 @@ function render(){
  els.road2.setAttribute('tabindex',(l2||l2complete)?'0':'-1');
  els.road2.onclick=function(e){syncFromStorage();var unlocked=state.completed.indexOf(1)!==-1;if(!unlocked){e.preventDefault();sound('wrong');els.status.textContent='🔒 Finish all six Level 1 missions to unlock Day 2.';return}sound('level');if(e.defaultPrevented)return;location.href=new URL('level2.html',document.baseURI).href};
  els.road2.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();els.road2.click()}};
+ var l3=l2complete;
+ var l3complete=state.completed.indexOf(3)!==-1;
+ setState(els.road3,l3complete?'complete':(l3?'current':'locked'));
+ els.road3Tag.textContent=l3complete?'✓ DONE':(l3?'🔓 READY':'🔒');
+ els.road3Text.textContent=l3complete?'✓ COMPLETE · Day 3 · Reservoir':('Day 3 · Water, dry land, containment'+(l3?' · ready when you are!':''));
+ els.road3.classList.toggle('ready',l3&&!l3complete);
+ els.road3.setAttribute('role',(l3||l3complete)?'link':'status');
+ els.road3.setAttribute('tabindex',(l3||l3complete)?'0':'-1');
+ els.road3.onclick=function(e){syncFromStorage();var unlocked=state.completed.indexOf(2)!==-1;if(!unlocked){e.preventDefault();sound('wrong');els.status.textContent='🔒 Finish all six Level 2 missions to unlock Day 3.';return}sound('level');if(e.defaultPrevented)return;location.href=new URL('level3.html',document.baseURI).href};
+ els.road3.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();els.road3.click()}};
  var dark=document.documentElement.getAttribute('data-theme')==='dark';
  els.theme.textContent=dark?'☀️ Light Mode':'🌙 Dark Mode';
 }
