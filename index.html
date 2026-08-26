@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#004d61">
+<title>GEI Dam Learning Academy</title>
+<link rel="stylesheet" href="css/academy.css">
+</head>
+<body data-page="home">
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">🌊</span><span>GEI <b>Dam Learning Academy</b></span></a>
+  <div class="top-actions"><button class="icon-btn" id="themeBtn" type="button">☀️</button><button class="icon-btn" id="skinBtn" type="button">🎨</button></div>
+</header>
+<main class="wrap">
+<section class="hero card"><p class="eyebrow">GENESIS ENGINEERED INTERPRETATIONS</p><h1>Build Your Foundation.</h1><p class="lead">Welcome to the GEI Dam Learning Academy. We begin with <strong>Genesis / Light</strong>. The dam is introduced on Day 2.</p></section>
+<section class="card identity">
+<p class="eyebrow">YOUR ACADEMY IDENTITY</p><div id="identityMessage"><h2>👋 Welcome, Explorer!</h2><p>Choose a username before you enter the Academy.</p></div>
+<label for="username">Academy username</label><input id="username" maxlength="24" autocomplete="nickname" placeholder="Enter your username">
+<button class="primary full" id="saveName" type="button">💾 Save Name</button>
+<p class="help">Your username and Academy progress stay on this device.</p><div class="notice hidden" id="nameNotice"></div>
+</section>
+<section class="card dashboard"><p class="eyebrow">YOUR DASHBOARD</p><h2>📊 Progress at a glance</h2>
+<div class="stats"><div><span>POINTS</span><strong id="points">0</strong></div><div><span>CURRENT LEVEL</span><strong id="level">1</strong></div><div><span>CORE DAYS</span><strong id="days">0 / 6</strong></div><div><span>CERTIFICATE</span><strong>🔒 Locked</strong></div></div>
+<div class="xpbar"><div id="xpFill"></div></div><p id="progressText">0 / 150 XP</p></section>
+<section class="card mission"><p class="eyebrow">NEXT MISSION</p><h2>🌊 Level 1 — Genesis: What Is Light?</h2>
+<p>Discover language and ideas from Genesis 1:1–5 through short, playful challenges. Find word connections, spot opposites, and connect “light” to the GEI lesson.</p>
+<button class="primary" id="enterLevel1" type="button">🚀 Enter Level 1</button><p class="locked-note hidden" id="lockedNote">🔒 Save your username first to enter the Academy.</p></section>
+<section class="card roadmap"><h2>🧭 Academy roadmap</h2><p>The Academy has six core Genesis days. Advanced missions come after the six-day foundation.</p>
+<div class="roadmap-list">
+<div class="road active" data-day="1"><b>01 · Genesis / Light</b><span>Day 1 · Language, light, darkness, word connections</span></div>
+<div class="road" data-day="2"><b>02 · Dam / Firmament</b><span>Day 2 · The boundary concept</span></div>
+<div class="road" data-day="3"><b>03 · Reservoir</b><span>Day 3 · Water, dry land, containment</span></div>
+<div class="road" data-day="4"><b>04 · Operations</b><span>Day 4 · Gates, release, movement</span></div>
+<div class="road" data-day="5"><b>05 · The Mill</b><span>Day 5 · Water power and the mill</span></div>
+<div class="road" data-day="6"><b>06 · The System</b><span>Day 6 · Connecting the complete system</span></div>
+<div class="road advanced"><b>07–38 · Advanced Missions</b><span>Research, engineering, language and systems</span></div>
+</div></section>
+</main><footer>GEI Dam Learning Academy · Foundation milestone</footer>
+<script src="js/academy-core.js"></script>
+</body></html>
