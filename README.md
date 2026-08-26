@@ -1,20 +1,20 @@
-# GEI Dam Learning Academy — Milestone 1
-Welcome → required username → dashboard → Level 1: Genesis / Light.
+# GEI Dam Learning Academy — Foundation Milestone
 
-This milestone uses only browser localStorage for learner progress. No payment credentials are stored in the front end. PayPal integration is intentionally left untouched and can be connected later through the existing backend.
+This release preserves the approved Academy home design and adds a working Level 1 foundation.
 
-## Run
-Open `index.html` on a static host such as Hostinger.
+## Files
+- `index.html` — Student Home / Academy dashboard
+- `level1.html` — Level 1: Genesis / Light
 
-## Milestone 1 checklist
-- Required username before Level 1
-- Returning name persists
-- XP persists
-- Theme toggle persists
-- Skin toggle persists
-- Level 1 six-question learning loop
-- Correct/wrong feedback
-- Button/correct/wrong/XP/complete audio cues
-- Animated +25 XP effect
-- Six-day roadmap
-- Level 1 completion unlocks Level 2 state
+## Progress
+- Username required before Level 1
+- Username, XP, theme, skin, avatar, and Level 1 task progress use `localStorage` key `gei-academy-state-v1`
+- Six Level 1 mini-missions
+- +25 XP per mission, 150 XP total
+- Correct/wrong sound effects
+- XP reward animation
+- Level-complete sound
+- Level 1 completion unlocks Day 2 on the home roadmap
+
+## PayPal
+No PayPal checkout code is modified by these two front-end files. Keep the existing GEI PayPal backend/checkout files outside this milestone and plug them into the purchase gate when the Academy enrollment flow is ready.
