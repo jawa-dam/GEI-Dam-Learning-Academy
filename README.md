@@ -1,37 +1,44 @@
-# GEI Dam Learning Academy — Foundation Milestone 3
+# GEI Dam Learning Academy — Level 4 Release
 
-## Included
-- `index.html` — Academy home and six-day roadmap.
-- `level1.html` — Day 1 · Genesis / Light.
-- `level2.html` — Day 2 · Dam / Firmament.
-- `level3.html` — Day 3 · Reservoir.
-- `GEI-ACADEMY-RELEASE-CHECKLIST.md` — release checklist and validation record.
+## Milestone
+**Day 4 · Operations** is now part of the six-day Genesis foundation.
 
-## Day 3 · Reservoir
-Six short, fifth-grade-friendly missions introduce:
-1. What a reservoir does
-2. Higher source → moving water
-3. Interactive reservoir filling
-4. Upstream / downstream
-5. Water and dry land
-6. Day 2 → Day 3 mastery chain
+### Core roadmap
+1. Genesis / Light
+2. Dam / Firmament
+3. Reservoir
+4. Operations
+5. The Mill — not shipped yet
+6. The System — not shipped yet
 
-- 25 XP per mission
-- 150 XP for Level 3
-- Level 3 is locked until Level 2 is complete
-- Username, XP, completion records, theme, skin, and task progress use `localStorage` key `gei-academy-state-v1`
-- Level 2 dam-builder completion and Level 3 reservoir-fill completion restore correctly after refresh
+Advanced missions 07–38 remain outside this foundation build.
 
-## Academy roadmap
-01 · Genesis / Light  
-02 · Dam / Firmament  
-03 · Reservoir  
-04 · Operations  
-05 · The Mill  
-06 · The System  
-07–38 · Advanced Missions
+## Level 4 learning goals
+Students learn:
+- what a gate does
+- how opening a gate permits movement
+- why controlled release matters
+- a simple operation sequence
+- how source → reservoir → gate → moving water connects the system
 
-Only Levels 1–3 are included in this milestone. No placeholder Level 4 button is shipped.
+The lesson is designed to stay approachable for a fifth-grade learner while preserving the GEI engineering-learning framework.
 
-## PayPal
-The Academy learning front end is intentionally separate from the existing PayPal backend/checkout. This milestone does not replace, rewrite, or expose PayPal credentials. Keep the existing PayPal deployment intact.
+## Files
+- `index.html` — Academy home, identity, dashboard, roadmap, unlock logic
+- `level1.html` — Day 1 Genesis / Light
+- `level2.html` — Day 2 Dam / Firmament
+- `level3.html` — Day 3 Reservoir
+- `level4.html` — Day 4 Operations
+- `GEI-ACADEMY-RELEASE-CHECKLIST.md` — release verification checklist
+
+## Persistence
+The academy uses the existing localStorage key:
+`gei-academy-state-v1`
+
+Level 4 adds `level4Tasks` without changing the existing PayPal system.
+
+## PayPal safety
+No PayPal credentials, checkout code, or backend configuration is included in or modified by this learning milestone. Keep the existing PayPal integration separate.
+
+## Deployment
+For a static GitHub/Hostinger deployment, upload the extracted files so `index.html` and the level files are in the same directory. Do not upload a ZIP as the site's root unless the host specifically extracts it for you.
