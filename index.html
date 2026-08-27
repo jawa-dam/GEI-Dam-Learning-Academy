@@ -153,6 +153,8 @@ html.gei-compact .foot{font-size:.68rem!important;line-height:1.25!important;mar
 .geiDashboardAccordion .body{padding:0 13px 11px}.geiDashboardAccordion.closed .body{display:none}
 .geiDashboardAccordion.closed .chev{transform:rotate(-90deg)}.chev{transition:transform .2s}
 @media(max-width:700px){html.gei-compact .dashGrid{grid-template-columns:1fr!important}}
+</style><style id="gei-certificate-style">
+.gei-certificate{margin-top:12px;text-align:center}.certificateInner{padding:24px 16px;border:2px solid var(--accent2);border-radius:20px;background:linear-gradient(135deg,rgba(0,180,216,.08),rgba(255,183,3,.08));box-shadow:0 12px 40px rgba(0,0,0,.12)}.certSeal{font-size:3rem}.gei-certificate h1{font-size:clamp(1.5rem,5vw,2.2rem);margin:8px 0}.certSignature{margin-top:18px;font-weight:900}.certDate{font-size:.85rem;opacity:.75}
 </style></head>
 <body>
 <div class="wrap">
@@ -336,10 +338,11 @@ function render(){
 
   var next=LEVELS[Math.min(5,c)];
   var locked=!hasName;
-  els.nextTitle.textContent='Level '+next.n+' — '+next.title;
-  els.nextDesc.innerHTML=next.desc+' <strong>+25 XP per mission!</strong>';
-  els.openLevel.href=locked?'#':('level'+next.n+'.html');
-  els.openLevel.textContent=locked?'🔒 Create Username to Start':(c===0?'🚀 Start Level 1':'🚀 Continue to Level '+next.n);
+  var academyComplete=c>=6;
+  els.nextTitle.textContent=academyComplete?'🏆 GEI Academy Mastery Complete!':'Level '+next.n+' — '+next.title;
+  els.nextDesc.innerHTML=academyComplete?'🎓 Your Six-Day Foundation is complete. Your official certificate is unlocked!':' '+next.desc+' <strong>+25 XP per mission!</strong>';
+  els.openLevel.href=locked?'#':(academyComplete?'#certificate':('level'+next.n+'.html'));
+  els.openLevel.textContent=locked?'🔒 Create Username to Start':(academyComplete?'🎓 View Official Certificate':(c===0?'🚀 Start Level 1':'🚀 Continue to Level '+next.n));
   els.openLevel.classList.toggle('disabled',locked);
   els.openLevel.setAttribute('aria-disabled',String(locked));
 
@@ -411,6 +414,20 @@ function setup(){
  /* Keep the introductory greeting visually small; the detailed roadmap is the accordion above. */
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+</script><script id="gei-certificate-script">
+(function(){
+function showCert(){
+ var c=document.getElementById('certificate');if(!c)return;
+ var s=readState();if(s.completed.length<6)return;
+ c.style.display='block';
+ var n=document.getElementById('certName'),d=document.getElementById('certDate');
+ if(n)n.textContent=s.name||'Explorer';
+ if(d)d.textContent='Awarded '+new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+ c.scrollIntoView({behavior:'smooth',block:'center'});
+}
+window.addEventListener('hashchange',function(){if(location.hash==='#certificate')showCert()});
+document.addEventListener('DOMContentLoaded',function(){if(location.hash==='#certificate')showCert()});
 })();
 </script></body>
 </html>
