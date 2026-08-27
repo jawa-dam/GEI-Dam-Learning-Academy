@@ -1,91 +1,39 @@
 <!doctype html>
-<html lang="en" data-theme="light" data-skin="academic">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#e9f2ff">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GEI Dam Learning Academy — Level 1</title>
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}:root{--r:26px}
-html[data-skin="academic"]{--bg:#e9f2ff;--panel:#fff;--ink:#212a42;--muted:#5e6c88;--line:#dfe7f6;--accent:#e94f9d;--accent2:#4f7df9;--good:#1f9d61;--bad:#e5484d;--soft:#f2f6ff;--edge:rgba(33,42,66,.1)}
-html[data-skin="journal"]{--bg:#f7efdf;--panel:#fffaf0;--ink:#33291c;--muted:#6f6350;--line:#e4d7bd;--accent:#c25e2e;--accent2:#2f7d6d;--good:#27754b;--bad:#bb3a2e;--soft:#f6eeda;--edge:rgba(51,41,28,.1)}
-html[data-skin="museum"]{--bg:#edf1f6;--panel:#fff;--ink:#1c2733;--muted:#5a6a78;--line:#d8e0ea;--accent:#0e7490;--accent2:#4f46e5;--good:#2c704f;--bad:#b3372e;--soft:#eef3f8;--edge:rgba(28,39,51,.1)}
-html[data-skin="blueprint"]{--bg:#e3edfd;--panel:#fbfdff;--ink:#122c4e;--muted:#4c647f;--line:#bfd4f2;--accent:#1d4ed8;--accent2:#0891b2;--good:#176a4c;--bad:#b23a30;--soft:#e9f1fe;--edge:rgba(18,44,78,.1)}
-html[data-skin="obsidian"]{--bg:#0b1020;--panel:#141b31;--ink:#eef2ff;--muted:#aab6d4;--line:#2c3a5e;--accent:#f05cb0;--accent2:#6ea8ff;--good:#4ade80;--bad:#ff8076;--soft:#1a2340;--edge:rgba(0,0,0,.35)}
-html[data-theme="dark"]{color-scheme:dark}
-html[data-theme="dark"][data-skin="academic"]{--bg:#101624;--panel:#1a2236;--ink:#f2f5ff;--muted:#b6c1da;--line:#31405f;--accent:#ff7abf;--accent2:#7fa4ff;--good:#4ade80;--bad:#ff8d83;--soft:#212c47;--edge:rgba(0,0,0,.35)}
-html[data-theme="dark"][data-skin="journal"]{--bg:#191510;--panel:#241e16;--ink:#f7f1e5;--muted:#c9bfae;--line:#4a3f2f;--accent:#e79a5f;--accent2:#6db9a8;--good:#82d0a4;--bad:#ff9589;--soft:#2c251b;--edge:rgba(0,0,0,.35)}
-html[data-theme="dark"][data-skin="museum"]{--bg:#111820;--panel:#1a242e;--ink:#f2f6f9;--muted:#b4c2cc;--line:#344653;--accent:#5fd0e8;--accent2:#8f9cff;--good:#6ed4a3;--bad:#ff9589;--soft:#20303c;--edge:rgba(0,0,0,.35)}
-html[data-theme="dark"][data-skin="blueprint"]{--bg:#081226;--panel:#0f1e3c;--ink:#eef5ff;--muted:#adc4e8;--line:#28436e;--accent:#5b8cff;--accent2:#37c4d8;--good:#76dfb0;--bad:#ff9a90;--soft:#13294d;--edge:rgba(0,0,0,.4)}
-html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink:#f5f8ff;--muted:#b0bcd8;--line:#2a3856;--accent:#ff85c8;--accent2:#8fb5ff;--good:#6ee7a0;--bad:#ff9b91;--soft:#18213a;--edge:rgba(0,0,0,.4)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 ui-rounded,"Nunito","Segoe UI",system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.13;background:var(--accent2);animation:float 16s ease-in-out infinite}body:before{width:44vw;height:44vw;left:-12vw;top:-12vh}body:after{background:var(--accent);width:38vw;height:38vw;right:-10vw;bottom:-16vh;animation-delay:-8s}@keyframes float{50%{transform:translateY(28px)}}
-.wrap{width:min(980px,94vw);margin:auto}.top{padding:14px 0 8px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:var(--accent);padding:6px 0}.controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.control,.skin{border:2px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:9px 13px;font:inherit;font-weight:800;cursor:pointer}.skin{max-width:190px}.card{background:var(--panel);border:2px solid var(--line);border-radius:var(--r);padding:22px;margin:16px 0;box-shadow:0 6px 0 var(--edge),0 18px 38px rgba(10,20,50,.07)}.hero{background:linear-gradient(145deg,var(--panel),var(--soft));border-color:color-mix(in srgb,var(--accent2),var(--line) 45%)}h1,h2,h3{line-height:1.12;margin:7px 0}.hero h1{font-size:clamp(2rem,7vw,3.4rem)}.eyebrow{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:900;color:var(--accent2)}.muted{color:var(--muted)}.player{font-weight:900;color:var(--accent)}
-.progressWrap{background:var(--soft);border:2px solid var(--line);border-radius:22px;padding:15px;margin-top:15px}.progressTop{display:flex;justify-content:space-between;font-weight:900}.bar{height:18px;border-radius:99px;background:var(--panel);border:2px solid var(--line);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent2));background-size:200% 100%;animation:sheen 2.2s linear infinite;transition:width .55s}@keyframes sheen{to{background-position:200% 0}}
-.mission{position:relative;overflow:hidden}.mission.locked{opacity:.65}.missionHead{display:flex;gap:12px;align-items:flex-start}.num{width:44px;height:44px;flex:none;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-weight:1000}.mission h2{font-size:1.45rem}.mission p{margin:.45rem 0;color:var(--muted)}.choices{display:grid;gap:10px;margin-top:15px}.choice{border:2px solid var(--line);background:var(--soft);color:var(--ink);border-radius:16px;padding:13px 15px;font:inherit;font-weight:850;text-align:left;cursor:pointer;transition:.16s}.choice:hover{transform:translateY(-2px);border-color:var(--accent2)}.choice.correct{border-color:var(--good);background:color-mix(in srgb,var(--good),var(--panel) 88%)}.choice.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad),var(--panel) 90%)}.choice:disabled{cursor:default}.feedback{min-height:28px;margin-top:10px;font-weight:900}.feedback.good{color:var(--good)}.feedback.bad{color:var(--bad)}
-.btn{border:2px solid var(--accent2);background:var(--panel);color:var(--ink);padding:13px 18px;border-radius:15px;font:inherit;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 0 var(--edge);transition:.15s}.btn:hover{transform:translateY(-2px)}.btn.primary{background:linear-gradient(90deg,var(--accent2),var(--accent));color:#fff;border-color:transparent}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.reward{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);z-index:50;pointer-events:none;opacity:0;font-size:clamp(2rem,9vw,4.6rem);font-weight:1000;color:var(--accent);text-shadow:0 4px 0 var(--panel),0 0 25px color-mix(in srgb,var(--accent),transparent 35%)}.reward.show{animation:rewardPop 1.05s ease-out forwards}@keyframes rewardPop{0%{opacity:0;transform:translate(-50%,-30%) scale(.45) rotate(-8deg)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.12) rotate(2deg)}70%{opacity:1;transform:translate(-50%,-58%) scale(1) rotate(-1deg)}100%{opacity:0;transform:translate(-50%,-88%) scale(.9)}}
-.celebrate{animation:celebrate .65s ease both}@keyframes celebrate{0%{transform:scale(1)}35%{transform:scale(1.035) rotate(-.5deg)}70%{transform:scale(1.02) rotate(.5deg)}100%{transform:scale(1)}}.footer{text-align:center;color:var(--muted);padding:25px 0 50px;font-size:.84rem}
-@media(max-width:720px){.card{padding:18px}.controls{max-width:250px}.skin{max-width:none;width:100%}.topbar{align-items:flex-start}.missionHead{align-items:center}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#edf5f8;color:#172533}
+main{max-width:760px;margin:auto;padding:24px}
+.card{background:#fff;border:1px solid #bfd5df;border-radius:24px;padding:28px;margin-top:20px;box-shadow:0 12px 30px rgba(25,55,70,.1)}
+h1{font-size:clamp(2rem,7vw,3.5rem);line-height:1;margin:8px 0}
+p{font-size:1.08rem;line-height:1.65;color:#52697b}
+button,a{display:inline-flex;padding:14px 18px;border-radius:15px;border:0;background:linear-gradient(100deg,#3554e8,#087d91);color:#fff;font-weight:900;text-decoration:none;cursor:pointer}
+.xp{font-size:2rem;font-weight:1000;color:#ff9f1c;min-height:45px}
 </style>
 </head>
-<body>
-<div class="wrap">
-<header class="top">
-  <div class="topbar"><strong>🌊 GEI Dam Learning Academy</strong><div class="controls"><button class="control" id="theme" type="button">🌙 Dark Mode</button><select class="skin" id="skin" aria-label="Academy skin"><option value="academic">🌈 Splash Academy</option><option value="journal">🗺️ Adventure Journal</option><option value="museum">🏛️ Discovery Museum</option><option value="blueprint">📐 Blueprint Builder</option><option value="obsidian">🌌 Space Lab</option></select></div></div>
-  <div class="brand">Genesis Engineered Interpretations · Day 1</div>
-</header>
-<main>
-<section class="card hero"><div class="eyebrow">🚀 LEVEL 1 · GENESIS / LIGHT</div><h1>What is <span style="color:var(--accent2)">light</span>?</h1><p>Hey, <span class="player" id="player">Explorer</span>! Today we build your first foundation. You will play six quick missions about words, opposites, language, and the big idea of <strong>light and darkness</strong>.</p><div class="progressWrap"><div class="progressTop"><span>🌟 XP</span><span><b id="xp">0</b> / 150</span></div><div class="bar"><i id="xpbar"></i></div><div class="muted" id="progressText">6 missions · +25 XP each</div></div></section>
-
-<section class="card mission" id="m1"><div class="missionHead"><div class="num">1</div><div><div class="eyebrow">🔤 Homophones</div><h2>Light or lite?</h2><p>Which sentence uses <strong>light</strong> to mean something that helps you see?</p></div></div><div class="choices"><button class="choice" data-answer="0">A. Turn on the light so we can see.</button><button class="choice" data-answer="1">B. I bought a lite snack.</button></div><div class="feedback" id="f1"></div></section>
-
-<section class="card mission" id="m2"><div class="missionHead"><div class="num">2</div><div><div class="eyebrow">🧩 Homonyms</div><h2>One word, two ideas</h2><p>In “The light was bright” and “This bag is light,” which word is the same but has different meanings?</p></div></div><div class="choices"><button class="choice" data-answer="light">A. light</button><button class="choice" data-answer="bag">B. bag</button></div><div class="feedback" id="f2"></div></section>
-
-<section class="card mission" id="m3"><div class="missionHead"><div class="num">3</div><div><div class="eyebrow">🔗 Synonyms</div><h2>Find a word friend</h2><p>Which word is closest in meaning to <strong>bright</strong>?</p></div></div><div class="choices"><button class="choice" data-answer="dark">A. dark</button><button class="choice" data-answer="shining">B. shining</button><button class="choice" data-answer="quiet">C. quiet</button></div><div class="feedback" id="f3"></div></section>
-
-<section class="card mission" id="m4"><div class="missionHead"><div class="num">4</div><div><div class="eyebrow">↔️ Antonyms</div><h2>Spot the opposite</h2><p>Genesis places <strong>light</strong> and <strong>darkness</strong> together. What is the opposite of light?</p></div></div><div class="choices"><button class="choice" data-answer="night">A. darkness</button><button class="choice" data-answer="water">B. water</button><button class="choice" data-answer="mountain">C. mountain</button></div><div class="feedback" id="f4"></div></section>
-
-<section class="card mission" id="m5"><div class="missionHead"><div class="num">5</div><div><div class="eyebrow">🗣️ Figurative language + “-ite”</div><h2>Words can build pictures</h2><p>Which sentence is a <strong>simile</strong>?</p></div></div><div class="choices"><button class="choice" data-answer="a">A. The mountain stood like a giant wall.</button><button class="choice" data-answer="b">B. The mountain is high.</button></div><div class="feedback" id="f5"></div><p class="muted">Bonus word clue: <strong>light</strong> and <strong>lite</strong> sound alike, while <strong>-ite</strong> can appear as a word ending or suffix in words such as “favorite” or “opposite.”</p></section>
-
-<section class="card mission" id="m6"><div class="missionHead"><div class="num">6</div><div><div class="eyebrow">💧 Language → system</div><h2>Connect the big idea</h2><p>Which choice best connects today's language lesson to the GEI foundation?</p></div></div><div class="choices"><button class="choice" data-answer="a">A. Light and darkness help us notice a separation; water can move from a higher place toward a lower place.</button><button class="choice" data-answer="b">B. Every word means exactly the same thing.</button><button class="choice" data-answer="c">C. Mountains, springs, and tributaries have nothing to do with water movement.</button></div><div class="feedback" id="f6"></div><p class="muted">Think: the “Most High” mountain is an elevation idea; springs can feed streams and tributaries; a water system moves from higher ground toward lower ground. Day 2 is where the dam/firmament enters the Academy.</p></section>
-
-<section class="card" id="finish" hidden><div class="eyebrow">🏆 FOUNDATION BUILT</div><h2>Level 1 complete, <span class="player" id="finishName"></span>!</h2><p>You earned <strong>150 XP</strong> and built the Genesis / Light foundation. Day 2 · Dam / Firmament is now unlocked.</p><a class="btn primary" href="index.html">🏠 Return to Academy Home</a></section>
-</main>
-<footer class="footer">YallToo × Genesis Engineered Interpretations · Dam Learning Academy</footer>
+<body><main>
+<div class="card">
+<div>🎓 GEI Dam Learning Academy</div>
+<h1>Level 1 — Genesis / Light</h1>
+<p>Integration shell for the v13 progression test. Replace this shell with the existing working Level 1 lesson after link validation.</p>
+<div>Player: <strong id="player">Explorer</strong></div>
+<div>XP: <strong id="xp">0</strong></div>
+<p class="xp" id="burst"></p>
+<button id="complete">🏆 Complete Level 1 (+150 XP)</button>
+<p><a href="index.html">🏠 Return to Academy Home</a></p>
 </div>
-<div class="reward" id="reward">+25 XP ⭐</div>
+</main>
 <script>
-(function(){'use strict';
-var KEY='gei-academy-state-v1';
-var defaults={name:'',xp:0,completed:[],level1Tasks:[],theme:'light',skin:'academic',avatar:'🌟'};
-function read(){var s={};try{s=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}Object.keys(defaults).forEach(function(k){if(typeof s[k]==='undefined')s[k]=defaults[k]});if(!Array.isArray(s.completed))s.completed=[];if(!Array.isArray(s.level1Tasks))s.level1Tasks=[];s.xp=Number(s.xp||0);return s}
-function write(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
-var state=read();
-if(!state.name){location.replace('index.html');return}
-var player=document.getElementById('player');player.textContent=state.name;document.getElementById('finishName').textContent=state.name;
-function visual(){document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'light');document.documentElement.setAttribute('data-skin',state.skin||'academic');document.getElementById('theme').textContent=state.theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';document.getElementById('skin').value=state.skin||'academic'}
-visual();
-document.getElementById('theme').onclick=function(){state.theme=state.theme==='dark'?'light':'dark';write();visual();sound('save')};document.getElementById('skin').onchange=function(){state.skin=this.value;write();visual();sound('save')};
-var ctx=null;function audio(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}catch(e){return null}}
-function tone(f,d,t,v,delay){var c=audio();if(!c)return;var n=c.currentTime+(delay||0),o=c.createOscillator(),g=c.createGain();o.type=t||'triangle';o.frequency.setValueAtTime(f,n);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(v||.08,n+.02);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g).connect(c.destination);o.start(n);o.stop(n+d+.03)}
-function sound(k){if(k==='correct'){tone(660,.1,'square',.1);tone(880,.16,'square',.1,.08)}else if(k==='wrong'){tone(230,.18,'sawtooth',.06);tone(170,.2,'sawtooth',.05,.08)}else if(k==='xp'){tone(1320,.08,'triangle',.09);tone(1760,.13,'triangle',.08,.07)}else if(k==='level'){[523,659,784,1047,1319].forEach(function(f,i){tone(f,.15,'square',.09,i*.1)})}else tone(520,.1,'triangle',.07)}
-function reward(){var r=document.getElementById('reward');r.classList.remove('show');void r.offsetWidth;r.classList.add('show');sound('xp')}
-var questions=[
- {id:1,correct:'0',msg:'Correct! “Light” helps you see.'},
- {id:2,correct:'light',msg:'Yes! “Light” can mean brightness or not heavy.'},
- {id:3,correct:'shining',msg:'Great! “Shining” is close to “bright.”'},
- {id:4,correct:'night',msg:'You got it! Darkness is the opposite idea.'},
- {id:5,correct:'a',msg:'Excellent! “Like a giant wall” is a simile.'},
- {id:6,correct:'a',msg:'Fantastic connection! You linked language to water movement.'}
-];
-var earned=state.level1Tasks.slice();
-function sync(){var total=state.xp;document.getElementById('xp').textContent=total;document.getElementById('xpbar').style.width=Math.min(100,(Math.min(150,total)/150)*100)+'%';document.getElementById('progressText').textContent=earned.length>=6?'All six missions complete!':'Mission '+Math.min(earned.length+1,6)+' of 6 · +25 XP each'}
-sync();
-if(state.completed.indexOf(1)!==-1){document.getElementById('finish').hidden=false;document.getElementById('finish').querySelector('h2').innerHTML='🏆 Level 1 already complete, <span class="player" id="finishName2"></span>!';document.getElementById('finishName2').textContent=state.name;document.getElementById('progressText').textContent='Level 1 complete · replay any mission to review it.'}
-questions.forEach(function(q){var card=document.getElementById('m'+q.id),buttons=card.querySelectorAll('.choice'),fb=document.getElementById('f'+q.id);if(earned.indexOf(q.id)!==-1){buttons.forEach(function(b){b.disabled=true;if(b.getAttribute('data-answer')===q.correct)b.classList.add('correct')});fb.textContent=q.msg;fb.className='feedback good';return}buttons.forEach(function(b){b.onclick=function(){var val=b.getAttribute('data-answer');if(val===q.correct){buttons.forEach(function(x){x.disabled=true});b.classList.add('correct');fb.textContent=q.msg;fb.className='feedback good';earned.push(q.id);state.level1Tasks=earned.slice();state.xp=Math.min(150,Number(state.xp||0)+25);write();card.classList.add('celebrate');reward();sync();if(earned.length===6)setTimeout(complete,800)}else{b.classList.add('wrong');fb.textContent='Not quite — try again! Read the clue one more time.';fb.className='feedback bad';sound('wrong');setTimeout(function(){b.classList.remove('wrong')},500)}}})});
-function complete(){if(state.completed.indexOf(1)===-1)state.completed.push(1);state.xp=Math.max(150,state.xp);state.level1Tasks=questions.map(function(q){return q.id});write();sound('level');document.getElementById('finish').hidden=false;document.getElementById('finish').scrollIntoView({behavior:'smooth',block:'center'});sync()}
-})();
+const KEY="gei-academy-v13-state";
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
+const s=read(); document.getElementById("player").textContent=s.name||"Explorer"; document.getElementById("xp").textContent=Number(s.xp)||0;
+document.getElementById("complete").addEventListener("click",()=>{
+ const x=read(); x.completed=Array.isArray(x.completed)?x.completed:[]; x.xp=Number(x.xp)||0;
+ if(!x.completed.includes(1))x.completed.push(1); x.xp+=150; localStorage.setItem(KEY,JSON.stringify(x));
+ document.getElementById("xp").textContent=x.xp; document.getElementById("burst").textContent="+150 XP 🎉";
+ setTimeout(()=>{location.href="index.html"},650);
+});
 </script>
 </body></html>
