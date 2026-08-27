@@ -163,7 +163,31 @@ body{
 @media(prefers-reduced-motion:reduce){
   .card,.mission,.hero,.railCard,.btn{transition:none!important}
 }
-</style></head>
+</style><style id="gei-finish-navigation-polish">
+#finish{position:relative!important;z-index:20!important;pointer-events:auto!important}
+#finish .btn,#finish a.btn{position:relative!important;z-index:30!important;pointer-events:auto!important;touch-action:manipulation!important}
+#finish .nav{position:relative!important;z-index:30!important}
+</style>
+<script id="gei-finish-navigation-polish-js">
+(function(){
+function bind(){
+ var f=document.getElementById('finish');if(!f)return;
+ var links=f.querySelectorAll('a.btn');
+ for(var i=0;i<links.length;i++){
+  var a=links[i];
+  if(a.dataset.geiBound)return;
+  a.dataset.geiBound='1';
+  a.addEventListener('touchend',function(e){
+   if(!this.href)return;
+   e.preventDefault();e.stopPropagation();
+   window.location.href=this.href;
+  },{passive:false});
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+window.addEventListener('pageshow',bind);
+})();
+</script></head>
 <body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
 <div class="wrap">
@@ -198,7 +222,30 @@ var state=read();
 function visual(){document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'light');document.documentElement.setAttribute('data-skin',state.skin||'academic');document.getElementById('theme').textContent=state.theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';document.getElementById('skin').value=state.skin||'academic'}
 var ctx=null;function audio(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}catch(e){return null}}
 function tone(f,dur,type,vol,when){var c=audio();if(!c)return;try{var t=c.currentTime+(when||0),o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.09,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(c.destination);o.start(t);o.stop(t+dur+.03)}catch(e){}}
-function sound(k){try{if(window.GEISound&&window.GEISound.play){window.GEISound.play(k);return}}catch(e){}if(k==='correct'){tone(587,.11,'sine',.09);tone(784,.15,'sine',.09,.08);tone(988,.18,'sine',.08,.16)}else if(k==='wrong'){tone(260,.12,'triangle',.05);tone(190,.18,'triangle',.045,.1)}else if(k==='block'){tone(190,.08,'square',.07);tone(125,.12,'square',.05,.06)}else if(k==='xp'){tone(1175,.08,'sine',.09);tone(1568,.12,'sine',.08,.07);tone(2093,.16,'sine',.07,.14)}else if(k==='level'){[392,523,659,784,1047,1319].forEach(function(f,i){tone(f,.16,'sine',.09,i*.09)})}else{tone(520,.1,'triangle',.07)}}
+function sound(k){
+ try{
+  var C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  var a=window.__geiGameAudio||(window.__geiGameAudio=new C());
+  if(a.state==="suspended")a.resume();
+  function hit(freq,dur,type,vol,delay,slide){
+   var t=a.currentTime+(delay||0),o=a.createOscillator(),g=a.createGain();
+   o.type=type||"sine";o.frequency.setValueAtTime(freq,t);
+   if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+   g.gain.setValueAtTime(.0001,t);
+   g.gain.exponentialRampToValueAtTime(vol||.07,t+.012);
+   g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+   o.connect(g).connect(a.destination);o.start(t);o.stop(t+dur+.025);
+  }
+  if(k==="correct"){hit(440,.07,"triangle",.06,0);hit(660,.09,"sine",.07,.055);hit(880,.16,"sine",.075,.12)}
+  else if(k==="wrong"){hit(240,.08,"sawtooth",.045,0);hit(170,.16,"triangle",.04,.055)}
+  else if(k==="next"){hit(520,.06,"square",.045,0);hit(780,.10,"triangle",.06,.055);hit(1040,.12,"sine",.055,.11)}
+  else if(k==="xp"){hit(660,.07,"triangle",.055,0);hit(990,.08,"sine",.065,.055);hit(1320,.13,"sine",.07,.11);hit(1760,.18,"sine",.055,.17)}
+  else if(k==="gate"){hit(120,.09,"square",.045,0,220);hit(330,.12,"triangle",.055,.07);hit(495,.13,"sine",.05,.14)}
+  else if(k==="save"){hit(392,.07,"triangle",.04,0);hit(523,.10,"sine",.05,.06)}
+  else if(k==="level"){[330,440,554,659,784,988,1319].forEach(function(f,i){hit(f,.13,"triangle",.065,i*.07)});hit(1760,.28,"sine",.075,.52)}
+  else {hit(520,.09,"triangle",.045)}
+ }catch(e){}
+}
 function confetti(){var n=90,cv=document.createElement('canvas');cv.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:999';cv.width=innerWidth;cv.height=innerHeight;document.body.appendChild(cv);var x=cv.getContext('2d'),cols=['#4f7df9','#e94f9d','#22c1dc','#ffc247','#7ce3a1','#b28dff'],ps=[];for(var i=0;i<n;i++)ps.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.2,vx:(Math.random()-.5)*7,vy:2+Math.random()*3,s:5+Math.random()*7,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,c:cols[Math.floor(Math.random()*cols.length)]});(function loop(){x.clearRect(0,0,cv.width,cv.height);ps.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/2,p.s,.62*p.s);x.restore()});ps=ps.filter(function(p){return p.y<cv.height+30});if(ps.length)requestAnimationFrame(loop);else cv.remove()})()}
 function reward(){var r=document.getElementById('reward');r.classList.remove('show');void r.offsetWidth;r.classList.add('show');sound('xp')}
 var questions=[
@@ -482,5 +529,26 @@ function bind(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
+})();
+</script><script id="gei-top-gaming-audio">
+(function(){
+'use strict';
+window.GEIGameAudio=window.GEIGameAudio||{};
+window.GEIGameAudio.play=function(k){
+ try{
+  var C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  var a=window.__geiTopAudio||(window.__geiTopAudio=new C());if(a.state==='suspended')a.resume();
+  function n(f,d,t,v,w){var q=a.currentTime+(w||0),o=a.createOscillator(),g=a.createGain();o.type=t;o.frequency.setValueAtTime(f,q);g.gain.setValueAtTime(.0001,q);g.gain.exponentialRampToValueAtTime(v,q+.01);g.gain.exponentialRampToValueAtTime(.0001,q+d);o.connect(g).connect(a.destination);o.start(q);o.stop(q+d+.02)}
+  if(k==='next'){n(523,.06,'square',.045,0);n(784,.09,'triangle',.055,.05);n(1047,.12,'sine',.06,.10)}
+  else if(k==='correct'){n(392,.07,'triangle',.045,0);n(587,.08,'sine',.055,.05);n(784,.14,'sine',.065,.11)}
+  else if(k==='wrong'){n(247,.09,'sawtooth',.04,0);n(165,.14,'triangle',.035,.06)}
+  else if(k==='level'){[392,523,659,784,988,1319,1568].forEach(function(f,i){n(f,.14,'sine',.065,i*.075)})}
+  else n(520,.08,'triangle',.04,0);
+ }catch(e){}
+};
+document.addEventListener('click',function(e){
+ var a=e.target.closest&&e.target.closest('#finish a.btn,.gei-next');
+ if(a)window.GEIGameAudio.play('next');
+},true);
 })();
 </script></body></html>
