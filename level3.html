@@ -177,7 +177,9 @@ function sync(){document.getElementById('player').textContent=state.name||'Explo
 function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned=Array.from(new Set(earned));state.level3Tasks=earned.slice();state.xp=Math.min(450,Number(state.xp||0)+25);write();document.getElementById('m'+id).classList.add('celebrate');reward();sync();if(earned.length===6)setTimeout(complete,700)}
 questions.forEach(function(q){var card=document.getElementById('m'+q.id),buttons=card.querySelectorAll('.choice'),fb=document.getElementById('f'+q.id);if(earned.indexOf(q.id)!==-1){buttons.forEach(function(b){b.disabled=true;if(b.getAttribute('data-answer')===q.correct)b.classList.add('correct')});fb.textContent=q.msg;fb.className='feedback good';return}buttons.forEach(function(b){b.onclick=function(){var val=b.getAttribute('data-answer');if(val===q.correct){buttons.forEach(function(x){x.disabled=true});b.classList.add('correct');fb.textContent=q.msg;fb.className='feedback good';sound('correct');addMission(q.id)}else{b.classList.add('wrong');fb.textContent='Not quite — look at the clue and try again!';fb.className='feedback bad';sound('wrong');setTimeout(function(){b.classList.remove('wrong')},450)}}})});
 var fillButtons=document.querySelectorAll('.fillBtn'),fill=earned.indexOf(3)!==-1?75:0;function renderFill(){document.getElementById('waterLevel').style.height=fill+'%';document.getElementById('waterMeter').style.width=fill+'%';document.getElementById('f3').textContent=fill>=75?'🌊 Reservoir target reached! Great job!':'💧 Keep filling — you need 75% or more.';document.getElementById('f3').className='feedback '+(fill>=75?'good':'');if(fill>=75)fillButtons.forEach(function(x){x.disabled=true;x.classList.add('used')})}renderFill();fillButtons.forEach(function(b){b.onclick=function(){if(b.classList.contains('used'))return;b.classList.add('used');fill=Math.min(100,fill+25);sound('block');renderFill();if(fill>=75){fillButtons.forEach(function(x){x.disabled=true});addMission(3)}}});
-function complete(){if(state.completed.indexOf(3)!==-1)return;if(earned.length<6)return;state.completed.push(3);state.level3Tasks=[1,2,3,4,5,6];state.xp=Math.max(450,state.xp);write();sound('level');confetti();document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer';document.getElementById('finish').scrollIntoView({behavior:'smooth',block:'center'});sync()}
+function complete(){
+ document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});
+ if(window.GEIMascot)window.GEIMascot.hide();if(state.completed.indexOf(3)!==-1)return;if(earned.length<6)return;state.completed.push(3);state.level3Tasks=[1,2,3,4,5,6];state.xp=Math.max(450,state.xp);write();sound('level');confetti();document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer';document.getElementById('finish').scrollIntoView({behavior:'smooth',block:'center'});sync()}
 document.getElementById('theme').onclick=function(){state.theme=state.theme==='dark'?'light':'dark';write();visual();sound('save')};document.getElementById('skin').onchange=function(){state.skin=this.value;write();visual();sound('save')};
 visual();sync();
 })();
@@ -231,9 +233,9 @@ function start(){
  if(!window.matchMedia || !window.matchMedia('(max-width:700px)').matches)return;
  var finish=document.getElementById('finish');
  function active(){
-   return document.querySelector('.mission.current') ||
-          document.querySelector('.missionCard') ||
-          (finish && !finish.hidden ? finish : null);
+   return (finish && !finish.hidden ? finish : null) ||
+          document.querySelector('.mission.current') ||
+          document.querySelector('.missionCard') || null;
  }
  function fit(){
    var el=active(); if(!el)return;
