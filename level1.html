@@ -491,119 +491,85 @@ function syncBar(){
 }
 
 function renderQuestion(){
+  var i=cur,q=Q[i];
+  if(!q)return;
+  answered=earned.indexOf(i+1)!==-1;
   els.nextRow.hidden=true;
   els.nextRow.style.setProperty('display','none','important');
-  if(window.GEIMascot)window.GEIMascot.hide();
-  var i=cur,q=Q[i];
-  answered=earned.indexOf(i+1)!==-1;
   els.nextBtn.disabled=true;
   els.mNum.textContent=String(i+1);
   els.mTag.textContent=q.tag;
   els.mTitle.textContent=q.title;
   els.mQ.innerHTML=q.q;
-  els.feedback.textContent='';els.feedback.className='feedback';
-  els.hint.hidden=true;els.hint.innerHTML=q.hint||'';
-  els.nextRow.hidden=true;
+  els.feedback.textContent='';
+  els.feedback.className='feedback';
+  els.hint.hidden=true;
+  els.hint.innerHTML=q.hint||'';
   els.missionCard.classList.remove('celebrate');
 
-  var done=earned.indexOf(i+1)!==-1;
-  els.choices.innerHTML=q.choices.map(function(c){
-    var isCorrect=done&&c[1]===q.correct;
-    return '<button class="choice'+(isCorrect?' correct':'')+'" data-v="'+c[1]+'"'+(done?' disabled':'')+'>'+c[0]+'</button>';
+  els.choices.innerHTML=q.choices.map(function(choice){
+    var letter=choice[1];
+    var done=earned.indexOf(i+1)!==-1;
+    return '<button class="choice'+(done&&letter===q.correct?' correct':'')+'" data-v="'+letter+'"'+(done?' disabled':'')+'>'+choice[0]+'</button>';
   }).join('');
 
-  if(done){
-    answered=true;
-    els.feedback.textContent=q.msg;els.feedback.className='feedback good';
+  if(answered){
+    els.feedback.textContent=q.msg;
+    els.feedback.className='feedback good';
     if(q.hint)els.hint.hidden=false;
-    els.nextRow.hidden=true;els.nextRow.style.setProperty('display','none','important')
-  }else{
-    els.choices.querySelectorAll('.choice').forEach(function(b){
-      b.onclick=function(){
-        var val=b.getAttribute('data-v');
-        if(val===q.correct){
-          /* LEVEL 1 — progression is authoritative.
-             Cosmetic systems never decide whether the learner advances. */
-          if(answered)return;
-          answered=true;
-
-          els.choices.querySelectorAll('.choice').forEach(function(x){x.disabled=true});
-          b.classList.add('correct');
-          els.feedback.textContent=q.msg;
-          els.feedback.className='feedback good';
-          if(q.hint)els.hint.hidden=false;
-
-          // Record this mission immediately.
-          if(earned.indexOf(i+1)===-1) earned.push(i+1);
-          state.level1Tasks=earned.slice();
-          state.xp=Math.min(150,Number(state.xp||0)+25);
-          try{writeState(state)}catch(e){}
-
-          try{syncBar();buildDots()}catch(e){}
-          try{reward()}catch(e){}
-          try{say('🎉 YES! That’s correct!','success')}catch(e){}
-
-          // Mission 6 is terminal — no NEXT button and no delay dependency.
-          if(i===Q.length-1){
-            complete();
-            return;
-          }
-
-          // Advance from the question that was just answered.
-          var advanceTo=i+1;
-          setTimeout(function(){
-            if(cur!==i)return;
-            cur=advanceTo;
-            answered=false;
-            try{
-              renderQuestion();
-              buildDots();
-              syncBar();
-            }catch(e){
-              // Last-resort direct retry; progression remains committed.
-              cur=advanceTo;
-              answered=false;
-              setTimeout(function(){
-                try{renderQuestion();buildDots();syncBar()}catch(_e){}
-              },50);
-            }
-            try{if(window.GEIMascot&&typeof window.GEIMascot.hide==='function')window.GEIMascot.hide()}catch(e){}
-            try{sound('next')}catch(e){}
-          },180);
-        }        }else{
-            // Sequential app flow: every correct answer advances exactly once.
-            els.nextRow.hidden=true;
-            els.nextBtn.disabled=true;
-            answered=true;
-            var nextIndex=cur+1;
-            setTimeout(function(){
-              try{ if(window.GEIMascot && typeof window.GEIMascot.hide==='function') window.GEIMascot.hide(); }catch(e){}
-              try{ sound('next'); }catch(e){}
-              cur=nextIndex;
-              answered=false;
-              try{
-                renderQuestion();
-                buildDots();
-                syncBar();
-              }catch(e){
-                // A rendering effect must never leave the learner stranded.
-                setTimeout(function(){
-                  try{ renderQuestion(); buildDots(); syncBar(); }catch(_e){}
-                },100);
-              }
-            },350);
-          }
-        }else{
-          b.classList.add('wrong');
-          els.feedback.textContent='Not quite — read the clue again and try once more!';
-          els.feedback.className='feedback bad';
-          sound('wrong');
-          say('💡 Almost! Read it again and try once more.','wrong');
-          setTimeout(function(){b.classList.remove('wrong')},450);
-        }
-      };
-    });
+    return;
   }
+
+  els.choices.querySelectorAll('.choice').forEach(function(btn){
+    btn.onclick=function(){
+      if(answered)return;
+      var val=btn.getAttribute('data-v');
+
+      if(val!==q.correct){
+        btn.classList.add('wrong');
+        els.feedback.textContent='Not quite — read the clue again and try once more!';
+        els.feedback.className='feedback bad';
+        try{sound('wrong')}catch(e){}
+        try{say('💡 Almost! Read it again and try once more.','wrong')}catch(e){}
+        setTimeout(function(){btn.classList.remove('wrong')},450);
+        return;
+      }
+
+      /* AUTHORITATIVE SUCCESS PATH */
+      answered=true;
+      els.choices.querySelectorAll('.choice').forEach(function(x){x.disabled=true});
+      btn.classList.add('correct');
+      els.feedback.textContent=q.msg;
+      els.feedback.className='feedback good';
+      if(q.hint)els.hint.hidden=false;
+
+      if(earned.indexOf(i+1)===-1)earned.push(i+1);
+      state.level1Tasks=earned.slice();
+      state.xp=Math.min(150,Number(state.xp||0)+25);
+      try{writeState(state)}catch(e){}
+      try{syncBar();buildDots()}catch(e){}
+      try{reward()}catch(e){}
+      try{say('🎉 YES! That’s correct!','success')}catch(e){}
+
+      /* Question 6 is the only terminal question. */
+      if(i===Q.length-1){
+        setTimeout(function(){complete()},250);
+        return;
+      }
+
+      /* Questions 1–5 ALWAYS advance to exactly the next question. */
+      var nextIndex=i+1;
+      setTimeout(function(){
+        cur=nextIndex;
+        answered=false;
+        try{if(window.GEIMascot)window.GEIMascot.hide()}catch(e){}
+        try{sound('next')}catch(e){}
+        renderQuestion();
+        buildDots();
+        syncBar();
+      },300);
+    };
+  });
 }
 
 els.nextBtn.onclick=function(){
