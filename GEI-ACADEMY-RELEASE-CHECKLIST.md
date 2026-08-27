@@ -1,4 +1,4 @@
-# GEI Academy Release Checklist — Milestone: Level 4 Operations
+# GEI Academy Release Checklist — Milestone: Six-Day Foundation
 
 **Required release flow:** build → connect progression → persistence → effects/sounds → release checklist → syntax/link validation → package
 
@@ -11,6 +11,7 @@
 - [x] Level 3 tasks persist.
 - [x] Level 4 tasks persist.
 - [x] Level 5 tasks persist.
+- [x] Level 6 tasks persist.
 - [x] Mill power lab state persists.
 - [x] Theme choice persists.
 - [x] Skin choice persists.
@@ -20,11 +21,13 @@
 - [x] Level 3 unlocks only after Level 2 is complete.
 - [x] Level 4 unlocks only after Level 3 is complete.
 - [x] Level 5 unlocks only after Level 4 is complete.
+- [x] Level 6 unlocks only after Level 5 is complete.
 - [x] Roadmap Level 4 changes from LOCKED → READY → DONE.
 - [x] Level 4 has a direct Continue to Level 5 link after completion.
 - [x] Academy home Next Step changes automatically to the next unlocked core day.
 - [x] Level 5 is an active release milestone and has a real target.
-- [x] No Level 6 link is shipped before Level 6 exists.
+- [x] Level 5 completion provides a direct Continue to Level 6 link.
+- [x] Level 6 is an active release milestone and has a real target.
 - [x] No fake placeholder navigation buttons are included for Level 4.
 
 ## Gameplay
@@ -42,6 +45,7 @@
 - [x] Refreshing Level 4 after Level 3 completion does not send the learner backward.
 - [x] Level 3 completion remains visibly complete after refresh.
 - [x] Level 5 contains a real water-powered wheel interaction.
+- [x] Level 6 contains a complete-system interaction.
 
 ## Feedback / engagement
 - [x] Correct answers receive visual feedback.

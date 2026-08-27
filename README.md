@@ -1,15 +1,15 @@
-# GEI Dam Learning Academy — Level 4 Release
+# GEI Dam Learning Academy — Six-Day Foundation Release
 
 ## Milestone
-**Day 4 · Operations** is now part of the six-day Genesis foundation.
+**Day 6 · The System** completes the six-day Genesis foundation.
 
 ### Core roadmap
 1. Genesis / Light
 2. Dam / Firmament
 3. Reservoir
 4. Operations
-5. The Mill — not shipped yet
-6. The System — not shipped yet
+5. The Mill
+6. The System
 
 Advanced missions 07–38 remain outside this foundation build.
 
@@ -29,13 +29,15 @@ The lesson is designed to stay approachable for a fifth-grade learner while pres
 - `level2.html` — Day 2 Dam / Firmament
 - `level3.html` — Day 3 Reservoir
 - `level4.html` — Day 4 Operations
+- `level5.html` — Day 5 The Mill
+- `level6.html` — Day 6 The System
 - `GEI-ACADEMY-RELEASE-CHECKLIST.md` — release verification checklist
 
 ## Persistence
 The academy uses the existing localStorage key:
 `gei-academy-state-v1`
 
-Level 4 adds `level4Tasks` without changing the existing PayPal system.
+Level 5 and Level 6 add `level5Tasks` and `level6Tasks` without changing the existing PayPal system.
 
 ## PayPal safety
 No PayPal credentials, checkout code, or backend configuration is included in or modified by this learning milestone. Keep the existing PayPal integration separate.
