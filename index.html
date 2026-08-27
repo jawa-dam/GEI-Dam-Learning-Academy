@@ -265,7 +265,7 @@ function animXp(to){var el=els.xp;if(lastXp===null){lastXp=to;el.textContent=Str
 function render(){
   state=readState(); if(!state.avatar)state.avatar=AVATARS[0];
   document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'light');
-  els.theme.textContent=state.theme==='dark'?'☀️ Light':'🌙 Dark';
+  els.theme.textContent=state.theme==='dark'?'☀️ Lite':'🌙 Dark';
 
   var hasName=!!state.name;
   var done=state.completed;
