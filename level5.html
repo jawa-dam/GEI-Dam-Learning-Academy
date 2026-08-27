@@ -62,97 +62,22 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
 <section class="card finish" id="finish" hidden><div class="eyebrow">🏆 DAY 5 COMPLETE</div><h2>Level 5 complete, <span class="player" id="finishName"></span>!</h2><p>You earned <strong>150 XP</strong> and learned how moving water can power a mill. <strong>Day 6 · The System</strong> is the next core mission.</p><div class="nav" style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="level6.html">🚀 Continue to Level 6 · The System</a><a class="btn" href="index.html">🏠 Return to Academy Home</a></div></section>
 <div class="reward" id="reward">+25 XP ⭐</div><footer class="footer">GEI Dam Learning Academy · Day 5 · The Mill</footer></div>
 <script>
-(function(){'use strict';
-var KEY='gei-academy-state-v1';
-var defaults={name:'',xp:0,completed:[],level1Tasks:[],level2Tasks:[],level3Tasks:[],level4Tasks:[],level5Tasks:[],theme:'light',skin:'academic',avatar:'🌟'};
-function read(){var s={};try{s=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}Object.keys(defaults).forEach(function(k){if(typeof s[k]==='undefined')s[k]=defaults[k]});if(!Array.isArray(s.completed))s.completed=[];['level1Tasks','level2Tasks','level3Tasks','level4Tasks','level5Tasks'].forEach(function(k){if(!Array.isArray(s[k]))s[k]=[]});s.xp=Number(s.xp||0);return s}
-var state=read();function write(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
-function visual(){document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'light');document.documentElement.setAttribute('data-skin',state.skin||'academic');document.getElementById('theme').textContent=state.theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';document.getElementById('skin').value=state.skin||'academic'}
-var ctx=null;function audio(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}catch(e){return null}}
-function tone(f,dur,type,vol,when){var c=audio();if(!c)return;try{var t=c.currentTime+(when||0),o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.09,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(c.destination);o.start(t);o.stop(t+dur+.03)}catch(e){}}
-function sound(k){try{if(window.GEISound&&window.GEISound.play){window.GEISound.play(k);return}}catch(e){}if(k==='correct'){tone(587,.11,'sine',.09);tone(784,.15,'sine',.09,.08);tone(988,.18,'sine',.08,.16)}else if(k==='wrong'){tone(260,.12,'triangle',.05);tone(190,.18,'triangle',.045,.1)}else if(k==='mill'){tone(392,.08,'square',.06);tone(523,.1,'square',.07,.08);tone(659,.14,'square',.07,.17)}else if(k==='xp'){tone(1175,.08,'sine',.09);tone(1568,.12,'sine',.08,.07);tone(2093,.16,'sine',.07,.14)}else if(k==='level'){[392,523,659,784,1047,1319].forEach(function(f,i){tone(f,.16,'sine',.09,i*.09)})}else{tone(520,.1,'triangle',.07)}}
-function confetti(){var n=90,cv=document.createElement('canvas');cv.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:999';cv.width=innerWidth;cv.height=innerHeight;document.body.appendChild(cv);var x=cv.getContext('2d'),cols=['#4f7df9','#e94f9d','#22c1dc','#ffc247','#7ce3a1','#b28dff'],ps=[];for(var i=0;i<n;i++)ps.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.2,vx:(Math.random()-.5)*7,vy:2+Math.random()*3,s:5+Math.random()*7,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,c:cols[Math.floor(Math.random()*cols.length)]});(function loop(){x.clearRect(0,0,cv.width,cv.height);ps.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/2,p.s,.62*p.s);x.restore()});ps=ps.filter(function(p){return p.y<cv.height+30});if(ps.length)requestAnimationFrame(loop);else cv.remove()})()}
-function reward(){var r=document.getElementById('reward');r.classList.remove('show');void r.offsetWidth;r.classList.add('show');sound('xp')}
-var questions=[{id:1,correct:'wheel',msg:'Correct! Moving water can push or turn a wheel.'},{id:2,correct:'wheel',msg:'Yes! The wheel is the part we use to capture water movement.'},{id:4,correct:'motion',msg:'Exactly! Moving water can become wheel motion and useful power.'},{id:5,correct:'chain',msg:'Great chain! Reservoir → gate → moving water → wheel → power.'},{id:6,correct:'mill',msg:'You got it! Day 5 adds water-powered work through the mill.'}];
-var earned=state.level5Tasks.slice();
-if(state.completed.indexOf(4)===-1){document.body.innerHTML='<main class="wrap"><section class="card hero" style="margin-top:40px"><div class="eyebrow">🔒 LEVEL 5 LOCKED</div><h1>Finish Level 4 first.</h1><p>You need to complete the six Day 4 missions before entering Day 5 · The Mill.</p><a class="btn primary" href="level4.html">🚀 Go to Level 4</a></section></main>';return}
-if(state.completed.indexOf(5)!==-1){document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer'}
-function sync(){document.getElementById('player').textContent=state.name||'Explorer';document.getElementById('xp').textContent=String(state.xp);document.getElementById('xpbar').style.width=Math.min(100,(Math.min(150,Math.max(0,state.xp-600))/150)*100)+'%';document.getElementById('progressText').textContent=earned.length>=6?'All six missions complete!':'Mission '+Math.min(earned.length+1,6)+' of 6 · +25 XP each'}
-function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned=Array.from(new Set(earned));state.level5Tasks=earned.slice();state.xp=Math.min(750,Number(state.xp||0)+25);write();document.getElementById('m'+id).classList.add('celebrate');reward();sync();if(earned.length===6)setTimeout(complete,700)}
-questions.forEach(function(q){var card=document.getElementById('m'+q.id),buttons=card.querySelectorAll('.choice'),fb=document.getElementById('f'+q.id);if(earned.indexOf(q.id)!==-1){buttons.forEach(function(b){b.disabled=true;if(b.getAttribute('data-answer')===q.correct)b.classList.add('correct')});fb.textContent=q.msg;fb.className='feedback good';return}buttons.forEach(function(b){b.onclick=function(){var val=b.getAttribute('data-answer');if(val===q.correct){buttons.forEach(function(x){x.disabled=true});b.classList.add('correct');fb.textContent=q.msg;fb.className='feedback good';sound('correct');addMission(q.id)}else{b.classList.add('wrong');fb.textContent='Not quite — look at the clue and try again!';fb.className='feedback bad';sound('wrong');setTimeout(function(){b.classList.remove('wrong')},450)}}})});
-var power=Number(localStorage.getItem('gei-mill-power-v1')||0);power=Math.max(0,Math.min(75,power));var powerDone=earned.indexOf(3)!==-1;if(powerDone)power=75;
-function renderPower(){document.getElementById('powerValue').textContent=String(power);document.getElementById('powerBar').style.width=power+'%';var wheel=document.getElementById('millWheel'),flow=document.getElementById('millFlow');wheel.classList.toggle('spin',power>0);flow.style.opacity=power>0?'1':'.35';var fb=document.getElementById('f3');fb.textContent=power>=75?'⚙️ The wheel is spinning! Power Lab complete!':'💧 Send water '+Math.max(1,Math.ceil((75-power)/25))+' more time'+(Math.ceil((75-power)/25)===1?'':'s')+' to reach 75%.';fb.className='feedback '+(power>=75?'good':'');document.getElementById('sendWater').disabled=power>=75}
-renderPower();
-document.getElementById('sendWater').onclick=function(){if(power>=75)return;power=Math.min(75,power+25);try{localStorage.setItem('gei-mill-power-v1',String(power))}catch(e){}sound('mill');renderPower();if(power>=75){addMission(3)}};
-function complete(){if(state.completed.indexOf(5)!==-1)return;if(earned.length<6)return;state.completed.push(5);state.level5Tasks=[1,2,3,4,5,6];state.xp=Math.max(750,state.xp);write();sound('level');confetti();document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer';document.getElementById('finish').scrollIntoView({behavior:'smooth',block:'center'});sync()}
-document.getElementById('theme').onclick=function(){state.theme=state.theme==='dark'?'light':'dark';write();visual();sound('save')};document.getElementById('skin').onchange=function(){state.skin=this.value;write();visual();sound('save')};visual();sync();
-})();
-
-/* ---------- Living Mascot ---------- */
 (function(){
- var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');
- if(!dock||!bubble)return;
- window.GEIMascot={
-  say:function(msg,kind){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);void dock.offsetWidth;if(kind)dock.classList.add(kind);},
-  success:function(msg){this.say(msg||'🎉 Excellent work! You got it! ⭐','success')},
-  wrong:function(msg){this.say(msg||'💡 Almost! Think about the water flow and try again.','wrong')}
- };
- document.addEventListener('click',function(e){
-  var b=e.target.closest&&e.target.closest('.choice');
-  if(!b)return;
-  setTimeout(function(){var bad=b.classList.contains('wrong'),good=b.classList.contains('correct');if(good)window.GEIMascot.success('🎉 YES! That\'s correct! Ready for the next mission?');else if(bad)window.GEIMascot.wrong()},20);
- });
+ var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');if(!dock||!bubble)return;
+ window.GEIMascot={hide:function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},say:function(msg,kind,duration){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);dock.classList.add('show');dock.setAttribute('aria-hidden','false');clearTimeout(window.__geiMascotTimer);window.__geiMascotTimer=setTimeout(function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},duration||1400)},success:function(msg){this.say(msg||'🎉 Correct!','success',1400)},wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1400)}};GEIMascot.hide();
+ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.choice');if(!b)return;setTimeout(function(){if(b.classList.contains('correct'))GEIMascot.success();else if(b.classList.contains('wrong'))GEIMascot.wrong()},40)});
 })();
-</script><script id="gei-safe-mission-flow">
+</script><script id="gei-reliable-next-flow">
 (function(){
 'use strict';
-function init(){
- var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m\d+$/.test(c.id)});
- if(cards.length<2)return;
- var current=cards.findIndex(function(c){return !c.querySelector('.feedback.good')});
- if(current<0)current=cards.length-1;
- function show(i){
-   cards.forEach(function(c,n){
-     c.classList.toggle('gei-hidden',n!==i);
-     c.classList.toggle('current',n===i);
-   });
-   var target=cards[i];
-   if(target){setTimeout(function(){target.scrollIntoView({behavior:'smooth',block:'start'})},40)}
- }
- function nextSound(){
-   try{
-     var C=window.AudioContext||window.webkitAudioContext;if(!C)return;
-     var ac=window.__geiAudio||(window.__geiAudio=new C());
-     if(ac.state==='suspended')ac.resume();
-     var o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;
-     o.type='sine';o.frequency.setValueAtTime(660,t);o.frequency.exponentialRampToValueAtTime(990,t+.09);
-     g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.07,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.14);
-     o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.16);
-   }catch(e){}
- }
- function addNext(card,index){
-   if(index>=cards.length-1||card.querySelector('.gei-next-row'))return;
-   var row=document.createElement('div');row.className='gei-next-row';
-   var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';
-   b.addEventListener('click',function(){nextSound();show(index+1)});
-   row.appendChild(b);card.appendChild(row);
- }
- cards.forEach(function(card,index){
-   var choices=card.querySelectorAll('.choice');
-   choices.forEach(function(button){
-     button.addEventListener('click',function(){
-       setTimeout(function(){
-         if(button.classList.contains('correct')){
-           addNext(card,index);
-           card.classList.add('gei-success');
-         }
-       },30);
-     });
-   });
-   if(card.querySelector('.feedback.good'))addNext(card,index);
- });
- show(current);
+function boot(){
+ var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m\d+$/.test(c.id)});if(!cards.length)return;
+ function nextSound(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiNextAudio||(window.__geiNextAudio=new C());if(a.state==='suspended')a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
+ function show(i){cards.forEach(function(c,n){c.classList.toggle('gei-hidden',n!==i);c.classList.toggle('current',n===i)});if(cards[i])setTimeout(function(){cards[i].scrollIntoView({behavior:'smooth',block:'start'})},40)}
+ function add(card,index){if(index>=cards.length-1||card.querySelector('.gei-next-row'))return;var row=document.createElement('div');row.className='gei-next-row';var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';b.addEventListener('click',function(){nextSound();show(index+1);if(window.GEIMascot)window.GEIMascot.hide()});row.appendChild(b);card.appendChild(row)}
+ cards.forEach(function(card,index){if(card.querySelector('.feedback.good'))add(card,index);card.querySelectorAll('.choice').forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(btn.classList.contains('correct')){add(card,index);if(window.GEIMascot)window.GEIMascot.hide()}},70)})})});
+ var first=cards.findIndex(function(c){return !c.querySelector('.feedback.good')});show(first<0?cards.length-1:first);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 </script></body></html>
