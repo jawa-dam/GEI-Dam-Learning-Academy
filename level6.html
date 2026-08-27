@@ -196,7 +196,35 @@ html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink
   body.gei-mobile-app .day6Idea{display:none!important}
 }
 @media (min-width:701px){html.gei-mobile-app body{overflow-x:hidden}}
-</style></head>
+</style><style id="gei-level6-completion-fix">
+/* Level 6 is a terminal achievement screen: no previous navigation and no completed lesson card. */
+#finish[hidden]{display:none!important}
+html.gei-level6-complete .mission{display:none!important}
+html.gei-level6-complete #finish{display:block!important}
+html.gei-level6-complete .footer{display:block}
+</style>
+<script id="gei-level6-completion-fix-script">
+(function(){
+'use strict';
+var KEY='gei-academy-state-v1';
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+function completed(s){
+  return Array.isArray(s.completed)&&s.completed.indexOf(6)!==-1 &&
+         Array.isArray(s.level6Tasks)&&[1,2,3,4,5,6].every(function(n){return s.level6Tasks.indexOf(n)!==-1});
+}
+function apply(){
+  var s=read();
+  if(!completed(s))return;
+  document.documentElement.classList.add('gei-level6-complete');
+  document.querySelectorAll('.mission').forEach(function(m){m.hidden=true;m.classList.remove('current');m.style.setProperty('display','none','important')});
+  var f=document.getElementById('finish');
+  if(f){f.hidden=false;f.removeAttribute('hidden');f.style.removeProperty('display');}
+  var p=document.getElementById('finishName');if(p)p.textContent=s.name||'Explorer';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+window.addEventListener('pageshow',apply);
+})();
+</script></head>
 <body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
 <div class="wrap">
@@ -332,7 +360,6 @@ html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink
   <h2>Level 6 complete, <span class="player" id="finishName"></span>!</h2>
   <p>You earned <strong>150 XP</strong> on Day 6 and completed the six-day Genesis foundation. The system is now connected from source through useful power.</p>
   <div class="nav">
-    <a class="btn" href="level5.html?v=20260827-flow">⬅️ Previous · Level 5</a>
     <a class="btn primary" href="index.html">🏠 Next Step · Academy Home</a>
   </div>
 </section>
