@@ -1,35 +1,44 @@
-# GEI Dam Learning Academy — v13 Release Candidate
+# GEI Dam Learning Academy — Level 4 Release
 
-## Purpose
-This is the next-generation Academy base. It keeps Academy progression separate from the PayPal checkout system.
+## Milestone
+**Day 4 · Operations** is now part of the six-day Genesis foundation.
 
-## Included
-- `index.html` — Student Home / Academy base
-- `level1.html` … `level6.html` — simple integration shells for testing navigation
-- `PAYPAL-INTEGRATION-BOUNDARY.md` — instructions for keeping the existing checkout untouched
-- `RELEASE-CHECKLIST.md` — required release gate
+### Core roadmap
+1. Genesis / Light
+2. Dam / Firmament
+3. Reservoir
+4. Operations
+5. The Mill — not shipped yet
+6. The System — not shipped yet
 
-## Important
-The Academy base does not contain PayPal client secrets, client secrets, webhook secrets, or backend credentials.
+Advanced missions 07–38 remain outside this foundation build.
 
-Replace the six level shells with the existing working Level 1–6 pages only after validating their filenames and links.
+## Level 4 learning goals
+Students learn:
+- what a gate does
+- how opening a gate permits movement
+- why controlled release matters
+- a simple operation sequence
+- how source → reservoir → gate → moving water connects the system
 
-## Stable navigation contract
-All level files use these names:
-- level1.html
-- level2.html
-- level3.html
-- level4.html
-- level5.html
-- level6.html
+The lesson is designed to stay approachable for a fifth-grade learner while preserving the GEI engineering-learning framework.
 
-The base uses relative links so GitHub Pages/static hosting and Hostinger iframe deployments do not depend on server-side `/academy/level/N` routing.
+## Files
+- `index.html` — Academy home, identity, dashboard, roadmap, unlock logic
+- `level1.html` — Day 1 Genesis / Light
+- `level2.html` — Day 2 Dam / Firmament
+- `level3.html` — Day 3 Reservoir
+- `level4.html` — Day 4 Operations
+- `GEI-ACADEMY-RELEASE-CHECKLIST.md` — release verification checklist
 
-## State
-This RC uses a dedicated localStorage key:
-`gei-academy-v13-state`
+## Persistence
+The academy uses the existing localStorage key:
+`gei-academy-state-v1`
 
-The state contains username, XP, completed core days, theme, and skin.
+Level 4 adds `level4Tasks` without changing the existing PayPal system.
 
-## PayPal
-Do not replace or copy PayPal secrets into this project. Keep the existing verified PayPal backend and checkout page as a separate system.
+## PayPal safety
+No PayPal credentials, checkout code, or backend configuration is included in or modified by this learning milestone. Keep the existing PayPal integration separate.
+
+## Deployment
+For a static GitHub/Hostinger deployment, upload the extracted files so `index.html` and the level files are in the same directory. Do not upload a ZIP as the site's root unless the host specifically extracts it for you.
