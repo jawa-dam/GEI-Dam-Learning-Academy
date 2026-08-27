@@ -15,9 +15,22 @@ html[data-skin="obsidian"]{--bg:#0b1020;--panel:#141b31;--ink:#eef2ff;--muted:#a
 html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="academic"]{--bg:#101624;--panel:#1a2236;--ink:#f2f5ff;--muted:#b6c1da;--line:#31405f;--accent:#ff7abf;--accent2:#7fa4ff;--good:#4ade80;--bad:#ff8d83;--soft:#212c47;--edge:rgba(0,0,0,.35)}html[data-theme="dark"][data-skin="journal"]{--bg:#191510;--panel:#241e16;--ink:#f7f1e5;--muted:#c9bfae;--line:#4a3f2f;--accent:#e79a5f;--accent2:#6db9a8;--good:#82d0a4;--bad:#ff9589;--soft:#2c251b;--edge:rgba(0,0,0,.35)}html[data-theme="dark"][data-skin="museum"]{--bg:#111820;--panel:#1a242e;--ink:#f2f6f9;--muted:#b4c2cc;--line:#344653;--accent:#5fd0e8;--accent2:#8f9cff;--good:#6ed4a3;--bad:#ff9589;--soft:#20303c;--edge:rgba(0,0,0,.35)}html[data-theme="dark"][data-skin="blueprint"]{--bg:#081226;--panel:#0f1e3c;--ink:#eef5ff;--muted:#adc4e8;--line:#28436e;--accent:#5b8cff;--accent2:#37c4d8;--good:#76dfb0;--bad:#ff9a90;--soft:#13294d;--edge:rgba(0,0,0,.4)}html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink:#f5f8ff;--muted:#b0bcd8;--line:#2a3856;--accent:#ff85c8;--accent2:#8fb5ff;--good:#6ee7a0;--bad:#ff9b91;--soft:#18213a;--edge:rgba(0,0,0,.4)}
 
 .reservoir{position:relative;overflow:hidden;min-height:300px;border:2px solid var(--line);border-radius:20px;background:linear-gradient(#bfe9ff 0 44%,#82d1ad 44%);padding:20px}.mountainBig{font-size:4rem}.basin{position:absolute;left:10%;right:10%;bottom:20px;height:145px;border:6px solid #526b7a;border-top:0;border-radius:0 0 28px 28px;background:linear-gradient(to top,#299fd2 0%,#5bc9ee 58%,rgba(255,255,255,.35) 59%,rgba(255,255,255,.35) 62%,transparent 63%);overflow:hidden}.waterLevel{position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(#5ed4f2,#1599ce);transition:height .7s cubic-bezier(.2,.8,.2,1)}.waterShine{position:absolute;left:8%;right:8%;top:12px;height:9px;border-radius:999px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.8) 0 30px,transparent 30px 58px);animation:flow 1.4s linear infinite}.reservoirLabel{position:absolute;left:13%;bottom:165px;background:var(--panel);color:var(--ink);border:2px solid var(--line);padding:7px 10px;border-radius:12px;font-weight:900}.sourceLabel{position:absolute;left:7%;top:18%;background:var(--panel);color:var(--ink);border:2px solid var(--line);padding:7px 10px;border-radius:12px;font-weight:900}.levelButtons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.fillBtn{border:2px solid var(--line);background:var(--panel);color:var(--ink);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:900}.fillBtn.used{opacity:.45}.meter{height:14px;background:var(--line);border-radius:999px;overflow:hidden;margin:12px 0}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .6s ease}.chain{display:grid;gap:8px;margin-top:14px}.chainItem{padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:var(--soft);font-weight:900}.chainItem.correct{border-color:var(--good);background:color-mix(in srgb,var(--good),var(--panel) 86%)}
+
+/* GEI Living Mascot */
+.mascotDock{position:fixed;right:14px;bottom:14px;z-index:40;display:flex;align-items:flex-end;gap:8px;max-width:min(360px,calc(100vw - 28px));pointer-events:none}
+.mascotBubble{background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:18px 18px 5px 18px;padding:10px 13px;font-weight:850;box-shadow:0 10px 28px rgba(0,0,0,.15);pointer-events:auto;animation:mascotBubble .35s ease-out}
+.mascotAvatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,var(--accent2),var(--accent));color:#fff;font-size:1.8rem;border:3px solid var(--panel);box-shadow:0 8px 22px rgba(0,0,0,.18);animation:mascotFloat 2.8s ease-in-out infinite;flex:0 0 auto}
+.mascotDock.success .mascotAvatar{animation:mascotSuccess .65s ease-out}
+.mascotDock.wrong .mascotAvatar{animation:mascotWrong .4s ease-out}
+@keyframes mascotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes mascotSuccess{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.2) rotate(-8deg)}70%{transform:scale(1.08) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes mascotWrong{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}100%{transform:translateX(0)}}
+@keyframes mascotBubble{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:600px){.mascotDock{right:9px;bottom:9px}.mascotBubble{font-size:.82rem;padding:8px 10px;max-width:240px}.mascotAvatar{width:50px;height:50px;font-size:1.55rem}}
 </style>
 </head>
 <body>
+<div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
 <div class="wrap">
 <header class="top"><div class="topbar"><strong>🌊 GEI Dam Learning Academy</strong><div class="controls"><button class="control" id="theme" type="button">🌙 Dark Mode</button><select class="skin" id="skin" aria-label="Academy skin"><option value="academic">🌈 Splash Academy</option><option value="journal">🗺️ Adventure Journal</option><option value="museum">🏛️ Discovery Museum</option><option value="blueprint">📐 Blueprint Builder</option><option value="obsidian">🌌 Space Lab</option></select></div></div><div class="brand">Genesis Engineered Interpretations · Day 3</div></header>
 <section class="card hero"><div class="eyebrow">🌊 LEVEL 3 · RESERVOIR</div><h1>Store the <span style="color:var(--accent2)">water</span>.</h1><p>Welcome back, <span class="player" id="player">Explorer</span>! Day 3 is where the water has a place to collect. In today's simple Academy model, a <strong>reservoir</strong> stores water behind a boundary so we can observe its level and movement.</p><div class="progressWrap"><div class="progressTop"><span>🌟 XP</span><span><b id="xp">0</b> / 150</span></div><div class="bar"><i id="xpbar"></i></div><div class="muted" id="progressText">6 missions · +25 XP each</div></div></section>
@@ -72,4 +85,20 @@ document.getElementById('theme').onclick=function(){state.theme=state.theme==='d
 visual();sync();
 })();
 </script>
-</body></html>
+<script>
+/* ---------- Living Mascot ---------- */
+(function(){
+ var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');
+ if(!dock||!bubble)return;
+ window.GEIMascot={
+  say:function(msg,kind){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);void dock.offsetWidth;if(kind)dock.classList.add(kind);},
+  success:function(msg){this.say(msg||'🎉 Excellent work! You got it! ⭐','success')},
+  wrong:function(msg){this.say(msg||'💡 Almost! Think about the water flow and try again.','wrong')}
+ };
+ document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('.choice');
+  if(!b)return;
+  setTimeout(function(){var bad=b.classList.contains('wrong'),good=b.classList.contains('correct');if(good)window.GEIMascot.success('🎉 YES! That\'s correct! Ready for the next mission?');else if(bad)window.GEIMascot.wrong()},20);
+ });
+})();
+</script></body></html>

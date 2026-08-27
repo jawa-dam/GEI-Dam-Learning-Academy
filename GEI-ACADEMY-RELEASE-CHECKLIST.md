@@ -12,6 +12,7 @@
 - [x] Level 4 tasks persist.
 - [x] Level 5 tasks persist.
 - [x] Level 6 tasks persist.
+- [x] Level 6 tasks persist.
 - [x] Mill power lab state persists.
 - [x] Theme choice persists.
 - [x] Skin choice persists.
@@ -22,6 +23,7 @@
 - [x] Level 4 unlocks only after Level 3 is complete.
 - [x] Level 5 unlocks only after Level 4 is complete.
 - [x] Level 6 unlocks only after Level 5 is complete.
+- [x] Level 6 unlocks only after Level 5 is complete.
 - [x] Roadmap Level 4 changes from LOCKED → READY → DONE.
 - [x] Level 4 has a direct Continue to Level 5 link after completion.
 - [x] Academy home Next Step changes automatically to the next unlocked core day.
@@ -29,6 +31,7 @@
 - [x] Level 5 completion provides a direct Continue to Level 6 link.
 - [x] Level 6 is an active release milestone and has a real target.
 - [x] No fake placeholder navigation buttons are included for Level 4.
+- [x] Level 6 has a real completion target and no Level 7 navigation.
 
 ## Gameplay
 - [x] Level 4 contains six short missions.
@@ -38,6 +41,7 @@
 - [x] Level 5 awards 150 XP total.
 - [x] Level 4 starts from the Level 3 total of 450 XP and can reach 600 XP.
 - [x] Level 5 starts from 600 XP and can reach 750 XP.
+- [x] Level 6 starts from 750 XP and can reach 900 XP.
 - [x] Gate-operation mission requires both OPEN and CLOSE actions.
 - [x] Level 4 completion remains visibly complete after refresh.
 - [x] Level 5 completion remains visibly complete after refresh.
@@ -45,6 +49,11 @@
 - [x] Refreshing Level 4 after Level 3 completion does not send the learner backward.
 - [x] Level 3 completion remains visibly complete after refresh.
 - [x] Level 5 contains a real water-powered wheel interaction.
+- [x] Level 6 contains a real source → reservoir → gate → mill system interaction.
+- [x] Level 6 uses compact one-mission-at-a-time presentation to reduce scrolling.
+- [x] Level 6 has a sound effect on each NEXT → action.
+- [x] Level 6 has success-specific mascot/mission feedback and a sensational completion celebration.
+- [x] GEI mascot is present on Levels 1–6.
 - [x] Level 6 contains a complete-system interaction.
 
 ## Feedback / engagement
@@ -53,6 +62,7 @@
 - [x] +25 XP reward animation is present.
 - [x] Correct / wrong / gate / XP / level-complete sounds have a WebAudio fallback.
 - [x] Level completion launches celebration feedback.
+- [x] Level 6 completion launches full-screen visual celebration, confetti, fanfare, and mastery acknowledgement.
 - [x] Progress bars animate.
 
 ## Visual system
@@ -71,7 +81,8 @@
 - [x] Local relative links checked against files in the release package.
 - [x] No missing Level 5 target is referenced by an active navigation control.
 - [x] No missing Level 6 target is referenced by an active navigation control.
-- [x] Package contains the academy home plus Levels 1–5.
+- [x] Package contains the academy home plus Levels 1–6.
+- [x] All six level pages contain the GEI living mascot.
 
 ## Manual browser smoke test before publishing
 1. Open `index.html`.
@@ -85,6 +96,11 @@
 9. Return home; confirm The Mill is READY and its link opens Level 5.
 10. Complete the Mill Power Lab to 75%; refresh Level 5; confirm 75% remains.
 11. Complete all six Level 5 missions; confirm XP reaches 750 and Level 5 becomes DONE.
-12. Return home; confirm The Mill is marked DONE and Day 6 is not presented as a fake active link.
-13. Toggle light/dark mode and change skins; refresh and confirm both choices persist.
-14. Confirm PayPal checkout/backend remains untouched.
+12. Return home; confirm The Mill is marked DONE and Day 6 changes to READY; open Level 6.
+13. Complete all six Level 6 missions; confirm XP reaches 900 and the sensational completion acknowledgement appears.
+14. Return home; confirm Day 6 is marked DONE and Level 6 can be reviewed.
+15. Confirm the Level 5 completion screen exposes the Level 6 button only after Level 5 is actually complete.
+16. Toggle light/dark mode and change skins; refresh and confirm both choices persist.
+17. Confirm no Level 7 link exists.
+18. Confirm PayPal checkout/backend remains untouched.
+19. External PayPal release-version consistency check: verify the live PayPal health/status endpoint and service endpoint report the same current Academy release version. This cannot be proven from these static files alone.
