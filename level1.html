@@ -175,6 +175,19 @@ h1,h2,h3{font-family:"Baloo 2","Quicksand",ui-rounded,sans-serif;margin:0;line-h
 /* Hidden NEXT controls must stay hidden even in Mobile App Mode. */
 .nextRow[hidden], .gei-next-row[hidden]{display:none!important}
 .gei-mascot-fade{opacity:0!important;transform:translateY(10px) scale(.96)!important;pointer-events:none!important;transition:opacity .35s ease,transform .35s ease!important}
+</style><style id="gei-level1-final-flow-fix">
+/* FINAL FLOW LOCK: NEXT is only visible for missions 1–5 after a correct answer. */
+body.gei-mobile-app .nextRow[hidden],
+body.gei-mobile-app .nextRow[aria-hidden="true"]{
+  display:none!important;
+}
+/* Splash's speech bubble is temporary; keep the mascot available without blocking controls. */
+.mascotBubble.gei-bubble-hidden{
+  opacity:0!important;
+  transform:translateY(8px) scale(.96)!important;
+  pointer-events:none!important;
+  transition:opacity .4s ease,transform .4s ease!important;
+}
 </style></head>
 <body>
 <div class="wrap">
@@ -269,13 +282,19 @@ var dock=document.getElementById('mascotDock'),bubble=document.getElementById('m
 window.GEIMascot=window.GEIMascot||{};
 window.GEIMascot.hide=function(){
   if(!dock)return;
-  dock.classList.add('gei-mascot-fade');
-  setTimeout(function(){if(dock)dock.style.visibility='hidden'},360);
+  if(bubble){
+    bubble.classList.add('gei-bubble-hidden');
+    bubble.setAttribute('aria-hidden','true');
+  }
 };
 window.GEIMascot.show=function(){
   if(!dock)return;
   dock.style.visibility='visible';
   dock.classList.remove('gei-mascot-fade');
+  if(bubble){
+    bubble.classList.remove('gei-bubble-hidden');
+    bubble.removeAttribute('aria-hidden');
+  }
 };
 window.GEIMascot.wrong=function(msg){
   if(!dock||!bubble)return;
@@ -288,10 +307,14 @@ window.GEIMascot.wrong=function(msg){
 };
 function say(msg,kind){
   if(!dock||!bubble)return;
+  window.clearTimeout(window.__geiMascotTimer);
   bubble.textContent=msg;
   window.GEIMascot.show();
   dock.classList.remove('success','wrong');
   if(kind){void dock.offsetWidth;dock.classList.add(kind)}
+  window.__geiMascotTimer=window.setTimeout(function(){
+    if(window.GEIMascot)window.GEIMascot.hide();
+  }, kind==='wrong' ? 1400 : 1700);
 }
 
 /* ---- questions ---- */
@@ -388,11 +411,13 @@ function renderQuestion(){
           writeState(state);
           els.missionCard.classList.add('celebrate');
           reward();syncBar();buildDots();
-          say('🎉 YES! That\u2019s correct!','success');setTimeout(function(){if(window.GEIMascot)window.GEIMascot.hide()},900);
+          say('🎉 YES! That\u2019s correct!','success');
           answered=true;
           if(earned.length===6){
             els.nextRow.hidden=true;
+            els.nextRow.setAttribute('aria-hidden','true');
             els.nextRow.style.setProperty('display','none','important');
+            els.nextBtn.disabled=true;
             setTimeout(complete,700);
           }else{
             els.nextRow.hidden=false;
@@ -422,7 +447,9 @@ els.nextBtn.onclick=function(){
 function complete(){
   els.missionCard.classList.add('gei-hidden');
   els.nextRow.hidden=true;
+  els.nextRow.setAttribute('aria-hidden','true');
   els.nextRow.style.setProperty('display','none','important');
+  els.nextBtn.disabled=true;
   if(state.completed.indexOf(1)===-1)state.completed.push(1);
   state.xp=Math.max(150,state.xp);
   state.level1Tasks=[1,2,3,4,5,6];
