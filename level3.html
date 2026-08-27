@@ -30,7 +30,36 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
 </style>
 <style id="gei-presentation-upgrade">
 .mission{padding:18px!important;margin:12px 0!important;transition:opacity .28s ease,transform .28s ease,box-shadow .28s ease}.mission.current{animation:geiMissionIn .32s ease-out}.mission.gei-success{animation:geiSuccess .65s ease-out;box-shadow:0 0 0 5px color-mix(in srgb,var(--good),transparent 78%),0 14px 40px color-mix(in srgb,var(--good),transparent 85%)}.choices{gap:7px!important;margin-top:11px!important}.choice{padding:11px 13px!important}.feedback{min-height:22px!important;margin-top:8px!important}.gei-next-row{display:flex;justify-content:flex-end;margin-top:10px}.gei-next{border:0;border-radius:14px;padding:12px 20px;background:linear-gradient(100deg,var(--accent2),var(--accent));color:#fff;font:inherit;font-weight:950;cursor:pointer;box-shadow:0 4px 0 var(--edge);animation:geiPulse 1.8s infinite}.gei-next:active{transform:translateY(2px);box-shadow:0 2px 0 var(--edge)}.gei-hidden{display:none!important}@keyframes geiMissionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@keyframes geiSuccess{50%{transform:scale(1.012)}}@keyframes geiPulse{50%{filter:brightness(1.12);transform:translateY(-1px)}}@media(max-width:700px){.mission{padding:16px!important}.card{margin:11px 0!important}}
-</style><style id="gei-mascot-visibility">.mascotDock{opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}.mascotDock.show{opacity:1;transform:none;pointer-events:auto}</style></head>
+</style><style id="gei-mascot-visibility">.mascotDock{opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}.mascotDock.show{opacity:1;transform:none;pointer-events:auto}</style><style id="gei-compact-shared">
+/* GEI Compact Academy — presentation layer */
+.wrap{width:min(760px,94vw)!important;padding-bottom:24px!important}
+.top{padding:8px 0 4px!important}
+.topbar{gap:8px!important}
+.card{padding:14px 16px!important;margin:9px 0!important;border-radius:18px!important;box-shadow:0 4px 0 var(--edge),0 10px 24px rgba(10,20,50,.06)!important}
+.hero{padding:13px 15px!important}
+.hero h1{font-size:clamp(1.55rem,5.5vw,2.25rem)!important;margin:.2rem 0 .45rem!important}
+.hero p{font-size:.9rem!important;margin:.25rem 0!important}
+.progressWrap{margin-top:9px!important;padding:9px 11px!important;border-radius:15px!important}
+.progressTop{font-size:.84rem!important}.bar{height:11px!important;margin:6px 0!important}
+.controls{gap:5px!important}.control,.skin{padding:7px 10px!important;font-size:.84rem!important}
+.eyebrow{font-size:.7rem!important}
+.mission,.missionCard{padding:13px!important;margin:8px 0!important}
+.missionHead{gap:10px!important}.num{flex-basis:36px!important;width:36px!important;height:36px!important;border-radius:11px!important;font-size:1rem!important}
+.mission h2,.missionCard h2{font-size:1.12rem!important}.mission p,.missionCard p{font-size:.9rem!important}
+.choices{gap:6px!important;margin-top:8px!important}.choice{padding:9px 11px!important;border-radius:13px!important;font-size:.9rem!important}
+.feedback{min-height:1.35em!important;margin-top:6px!important;font-size:.88rem!important}
+.gei-next-row{margin-top:8px!important}.gei-next{padding:10px 17px!important;border-radius:12px!important;font-size:.9rem!important}
+.builder,.reservoir,.systemLab{min-height:240px!important}
+.builder,.reservoir,.systemLab{padding:12px!important}
+.mountain,.mountainBig{font-size:3rem!important}
+.footer{padding:12px 0 20px!important}
+@media(max-width:720px){
+ .wrap{width:min(96vw,760px)!important}.card{padding:12px 13px!important;margin:7px 0!important}
+ .controls{width:100%;justify-content:flex-end}.skin{max-width:none}
+ .builder,.reservoir,.systemLab{min-height:220px!important}
+ .mission h2,.missionCard h2{font-size:1.04rem!important}.choice{font-size:.86rem!important;padding:8px 10px!important}
+}
+</style></head>
 <body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
 <div class="wrap">
@@ -103,6 +132,27 @@ function boot(){
  function add(card,index){if(index>=cards.length-1||card.querySelector('.gei-next-row'))return;var row=document.createElement('div');row.className='gei-next-row';var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';b.addEventListener('click',function(){nextSound();show(index+1);if(window.GEIMascot)window.GEIMascot.hide()});row.appendChild(b);card.appendChild(row)}
  cards.forEach(function(card,index){if(card.querySelector('.feedback.good'))add(card,index);card.querySelectorAll('.choice').forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(btn.classList.contains('correct')){add(card,index);if(window.GEIMascot)window.GEIMascot.hide()}},70)})})});
  var first=cards.findIndex(function(c){return !c.querySelector('.feedback.good')});show(first<0?cards.length-1:first);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script><script id="gei-shared-controls">
+(function(){
+'use strict';
+function boot(){
+ var theme=document.getElementById('theme'),skin=document.getElementById('skin'),root=document.documentElement;
+ if(!theme&&!skin)return;
+ var KEY='gei-academy-state-v1';
+ function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+ function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+ function apply(){
+  var s=read(),t=s.theme==='dark'?'dark':'light',k=s.skin||'academic';
+  root.setAttribute('data-theme',t);root.setAttribute('data-skin',k);
+  if(theme)theme.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+  if(skin)skin.value=k;
+ }
+ if(theme)theme.onclick=function(){var s=read();s.theme=s.theme==='dark'?'light':'dark';save(s);apply()};
+ if(skin)skin.onchange=function(){var s=read();s.skin=this.value||'academic';save(s);apply()};
+ apply();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
