@@ -88,7 +88,7 @@ html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink
 @keyframes finale{0%{opacity:0}10%{opacity:1}78%{opacity:1}100%{opacity:0}}@keyframes finaleCard{0%{transform:scale(.75);opacity:0}35%{transform:scale(1.05);opacity:1}65%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:1}}
 @media(max-width:720px){.systemLab{min-height:300px}.nextMission{width:100%;font-size:1rem}.nextRow{justify-content:stretch}.card{padding:15px}.hero{padding:16px}}
 </style>
-</head>
+<style id="gei-mascot-visibility">.mascotDock{opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}.mascotDock.show{opacity:1;transform:none;pointer-events:auto}</style></head>
 <body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
 <div class="wrap">
@@ -476,20 +476,23 @@ visual();sync();
 })();
 </script>
 <script>
-/* ---------- Living Mascot ---------- */
 (function(){
- var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');
- if(!dock||!bubble)return;
- window.GEIMascot={
-  say:function(msg,kind){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);void dock.offsetWidth;if(kind)dock.classList.add(kind);},
-  success:function(msg){this.say(msg||'🎉 Excellent work! You got it! ⭐','success')},
-  wrong:function(msg){this.say(msg||'💡 Almost! Think about the water flow and try again.','wrong')}
- };
- document.addEventListener('click',function(e){
-  var b=e.target.closest&&e.target.closest('.choice');
-  if(!b)return;
-  setTimeout(function(){var bad=b.classList.contains('wrong'),good=b.classList.contains('correct');if(good)window.GEIMascot.success('🎉 YES! That\'s correct! Ready for the next mission?');else if(bad)window.GEIMascot.wrong()},20);
- });
+ var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');if(!dock||!bubble)return;
+ window.GEIMascot={hide:function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},say:function(msg,kind,duration){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);dock.classList.add('show');dock.setAttribute('aria-hidden','false');clearTimeout(window.__geiMascotTimer);window.__geiMascotTimer=setTimeout(function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},duration||1400)},success:function(msg){this.say(msg||'🎉 Correct!','success',1400)},wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1400)}};GEIMascot.hide();
+ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.choice');if(!b)return;setTimeout(function(){if(b.classList.contains('correct'))GEIMascot.success();else if(b.classList.contains('wrong'))GEIMascot.wrong()},40)});
+})();
+</script><script id="gei-reliable-next-flow">
+(function(){
+'use strict';
+function boot(){
+ var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m\d+$/.test(c.id)});if(!cards.length)return;
+ function nextSound(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiNextAudio||(window.__geiNextAudio=new C());if(a.state==='suspended')a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
+ function show(i){cards.forEach(function(c,n){c.classList.toggle('gei-hidden',n!==i);c.classList.toggle('current',n===i)});if(cards[i])setTimeout(function(){cards[i].scrollIntoView({behavior:'smooth',block:'start'})},40)}
+ function add(card,index){if(index>=cards.length-1||card.querySelector('.gei-next-row'))return;var row=document.createElement('div');row.className='gei-next-row';var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';b.addEventListener('click',function(){nextSound();show(index+1);if(window.GEIMascot)window.GEIMascot.hide()});row.appendChild(b);card.appendChild(row)}
+ cards.forEach(function(card,index){if(card.querySelector('.feedback.good'))add(card,index);card.querySelectorAll('.choice').forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(btn.classList.contains('correct')){add(card,index);if(window.GEIMascot)window.GEIMascot.hide()}},70)})})});
+ var first=cards.findIndex(function(c){return !c.querySelector('.feedback.good')});show(first<0?cards.length-1:first);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 </script></body>
 </html>
