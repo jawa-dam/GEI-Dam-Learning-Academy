@@ -48,6 +48,72 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
 </style>
 <style id="gei-compact-shared">
 .wrap{width:min(760px,94vw)!important;padding-bottom:24px!important}.top{padding:8px 0 4px!important}.topbar{gap:8px!important}.card{padding:14px 16px!important;margin:9px 0!important;border-radius:18px!important;box-shadow:0 4px 0 var(--edge),0 10px 24px rgba(10,20,50,.06)!important}.hero{padding:13px 15px!important}.hero h1{font-size:clamp(1.55rem,5.5vw,2.25rem)!important;margin:.2rem 0 .45rem!important}.hero p{font-size:.9rem!important;margin:.25rem 0!important}.progressWrap{margin-top:9px!important;padding:9px 11px!important;border-radius:15px!important}.bar{height:11px!important;margin:6px 0!important}.controls{gap:5px!important}.control,.skin{padding:7px 10px!important;font-size:.84rem!important}.mission,.missionCard{padding:13px!important;margin:8px 0!important}.missionHead{gap:10px!important}.num{flex-basis:36px!important;width:36px!important;height:36px!important;border-radius:11px!important;font-size:1rem!important}.mission h2,.missionCard h2{font-size:1.12rem!important}.mission p,.missionCard p{font-size:.9rem!important}.choices{gap:6px!important;margin-top:8px!important}.choice{padding:9px 11px!important;border-radius:13px!important;font-size:.9rem!important}.feedback{min-height:1.35em!important;margin-top:6px!important;font-size:.88rem!important}.gei-next-row{margin-top:8px!important}.gei-next{padding:10px 17px!important;border-radius:12px!important;font-size:.9rem!important}.builder,.reservoir,.systemLab{min-height:240px!important;padding:12px!important}.footer{padding:12px 0 20px!important}@media(max-width:720px){.wrap{width:96vw!important}.card{padding:12px 13px!important;margin:7px 0!important}.skin{max-width:none}.builder,.reservoir,.systemLab{min-height:220px!important}.mission h2,.missionCard h2{font-size:1.04rem!important}.choice{font-size:.86rem!important;padding:8px 10px!important}}
+</style><style id="gei-mobile-app-mode">
+@media (max-width:700px){
+  html.gei-mobile-app,html.gei-mobile-app body{height:100%;overflow:hidden}
+  body.gei-mobile-app{height:100dvh;min-height:100dvh;overflow:hidden;overscroll-behavior:none}
+  body.gei-mobile-app .wrap{
+    width:100%!important;max-width:none!important;height:100dvh;min-height:100dvh;
+    padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)!important;
+    margin:0!important;display:flex;flex-direction:column;overflow:hidden;
+  }
+  body.gei-mobile-app .top,body.gei-mobile-app .topbar{
+    flex:0 0 auto;padding:4px 0!important;min-height:0!important;
+  }
+  body.gei-mobile-app .topbar{gap:6px!important}
+  body.gei-mobile-app .brand{font-size:.62rem!important;letter-spacing:.07em!important}
+  body.gei-mobile-app .who{font-size:.7rem!important}
+  body.gei-mobile-app .controls{gap:4px!important}
+  body.gei-mobile-app .control,body.gei-mobile-app .skin,body.gei-mobile-app #themeBtn{
+    min-height:32px!important;padding:5px 8px!important;font-size:.72rem!important;border-radius:10px!important;
+  }
+  body.gei-mobile-app .card.hero,
+  body.gei-mobile-app .wrap > .card:not(.mission):not(.missionCard):not(#finish),
+  body.gei-mobile-app .foot{display:none!important}
+  body.gei-mobile-app .missionCard,
+  body.gei-mobile-app .mission{
+    display:block!important;position:relative;flex:1 1 auto;min-height:0;
+    margin:5px 0!important;padding:12px!important;border-radius:18px!important;
+    overflow:hidden!important;transform-origin:top center;
+  }
+  body.gei-mobile-app .mission:not(.current){display:none!important}
+  body.gei-mobile-app .missionHead{gap:9px!important;margin-bottom:7px!important}
+  body.gei-mobile-app .num{width:38px!important;height:38px!important;min-width:38px!important;font-size:1rem!important}
+  body.gei-mobile-app .mission h2{font-size:clamp(1.05rem,5vw,1.4rem)!important;line-height:1.12!important;margin:.12rem 0 .28rem!important}
+  body.gei-mobile-app .mission p,body.gei-mobile-app .missionCard p{font-size:.78rem!important;line-height:1.28!important;margin:.25rem 0!important}
+  body.gei-mobile-app .eyebrow,body.gei-mobile-app .tag{font-size:.62rem!important;letter-spacing:.08em!important}
+  body.gei-mobile-app .choices{gap:6px!important;margin-top:7px!important}
+  body.gei-mobile-app .choice{
+    min-height:44px!important;padding:9px 11px!important;border-radius:13px!important;
+    font-size:.78rem!important;line-height:1.24!important;
+  }
+  body.gei-mobile-app .feedback{font-size:.8rem!important;line-height:1.25!important;margin-top:6px!important}
+  body.gei-mobile-app .hint{font-size:.72rem!important;padding:7px!important}
+  body.gei-mobile-app .nextRow,body.gei-mobile-app .gei-next-row{margin-top:7px!important;display:flex!important;justify-content:center!important}
+  body.gei-mobile-app .nextMission,body.gei-mobile-app .gei-next{
+    min-height:42px!important;padding:8px 22px!important;font-size:.9rem!important;border-radius:13px!important;
+  }
+  body.gei-mobile-app .builder,body.gei-mobile-app .millScene,body.gei-mobile-app .systemLab,
+  body.gei-mobile-app .reservoir{max-height:34vh!important}
+  body.gei-mobile-app .blocks,body.gei-mobile-app .levelButtons,body.gei-mobile-app .labControls{
+    gap:5px!important;margin-top:6px!important
+  }
+  body.gei-mobile-app .fillBtn,body.gei-mobile-app .block,body.gei-mobile-app .labBtn,body.gei-mobile-app .millBtn{
+    min-height:38px!important;padding:7px 9px!important;font-size:.7rem!important;border-radius:11px!important;
+  }
+  body.gei-mobile-app .finish,#finish{
+    flex:1 1 auto;min-height:0;overflow:hidden!important;margin:5px 0!important;padding:15px!important;
+    display:flex;flex-direction:column;justify-content:center;text-align:center;
+  }
+  body.gei-mobile-app #finish h2{font-size:clamp(1.35rem,6vw,1.9rem)!important}
+  body.gei-mobile-app #finish p{font-size:.8rem!important;line-height:1.3!important}
+  body.gei-mobile-app #finish .btn{min-height:44px!important;padding:9px 14px!important;font-size:.8rem!important}
+  body.gei-mobile-app .mascotDock{max-width:86vw!important;transform:translateY(8px) scale(.82)!important;transform-origin:bottom center!important}
+  body.gei-mobile-app .mascotDock.show{transform:scale(.82)!important}
+  body.gei-mobile-app .reward{transform:scale(.82)!important;transform-origin:center!important}
+  body.gei-mobile-app .day6Idea{display:none!important}
+}
+@media (min-width:701px){html.gei-mobile-app body{overflow-x:hidden}}
 </style></head><body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div><div class="wrap">
 <header class="top"><div class="topbar"><div class="brand">GEI DAM LEARNING ACADEMY · DAY 5</div><div class="controls"><button class="control" id="theme" type="button">🌙 Dark Mode</button><select class="skin" id="skin" aria-label="Choose Academy skin"><option value="academic">🎓 Academic</option><option value="journal">📓 Journal</option><option value="museum">🏛️ Museum</option><option value="blueprint">📐 Blueprint</option><option value="obsidian">🌌 Obsidian</option></select></div></div></header>
@@ -226,5 +292,46 @@ function boot(){
  apply();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script><script id="gei-mobile-app-controller">
+(function(){
+'use strict';
+function start(){
+ document.documentElement.classList.add('gei-mobile-app');
+ document.body.classList.add('gei-mobile-app');
+ if(!window.matchMedia || !window.matchMedia('(max-width:700px)').matches)return;
+ var finish=document.getElementById('finish');
+ function active(){
+   return document.querySelector('.mission.current') ||
+          document.querySelector('.missionCard') ||
+          (finish && !finish.hidden ? finish : null);
+ }
+ function fit(){
+   var el=active(); if(!el)return;
+   el.style.transform='none';
+   var vh=window.innerHeight||document.documentElement.clientHeight;
+   var header=(document.querySelector('.top')||document.querySelector('.topbar')||{}).getBoundingClientRect?.().height||46;
+   var available=Math.max(250,vh-header-18);
+   var h=el.scrollHeight;
+   if(h>available){
+     var scale=Math.max(.60,Math.min(1,available/h));
+     el.style.transform='scale('+scale+')';
+     el.style.width=(100/scale)+'%';
+     el.style.marginLeft=((100-(100/scale))/2)+'%';
+   }else{
+     el.style.width='';
+     el.style.marginLeft='';
+   }
+ }
+ function refresh(){setTimeout(fit,60);setTimeout(fit,260);setTimeout(fit,700)}
+ window.addEventListener('resize',refresh,{passive:true});
+ window.addEventListener('orientationchange',function(){setTimeout(refresh,180)},{passive:true});
+ document.addEventListener('click',function(e){
+   if(e.target.closest && e.target.closest('button,a,.choice,.nextMission,.gei-next'))refresh();
+ });
+ new MutationObserver(refresh).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']});
+ refresh();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
 </script></body></html>
