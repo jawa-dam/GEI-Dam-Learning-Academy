@@ -657,7 +657,8 @@ function start(){
  document.addEventListener('click',function(e){
    if(e.target.closest && e.target.closest('button,a,.choice,.nextMission,.gei-next'))refresh();
  });
- new MutationObserver(refresh).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']});
+ /* Do not observe style/class/hidden mutations here: fit() changes styles itself, and observing them creates a mutation-feedback loop that can freeze answer progression. */
+new MutationObserver(function(){refresh()}).observe(document.body,{subtree:true,childList:true});
  refresh();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
