@@ -425,4 +425,46 @@ function boot(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
+</script><script id="gei-completion-navigation-fix">
+(function(){
+'use strict';
+/* GEI completion navigation: completion CTA always wins over refresh/sync listeners. */
+var LEVEL=5, KEY='gei-academy-state-v1', NEXT='level6.html';
+function state(){
+ try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}
+}
+function completed(){
+ var s=state(), a=Array.isArray(s.completed)&&s.completed.indexOf(LEVEL)!==-1;
+ var task=s['level'+LEVEL+'Tasks'];
+ if(a)return true;
+ return Array.isArray(task)&&[1,2,3,4,5,6].every(function(x){return task.indexOf(x)!==-1});
+}
+function go(e){
+ var a=e.target&&e.target.closest?e.target.closest('a[href*="'+NEXT+'"]'):null;
+ if(!a||!completed())return;
+ e.preventDefault();
+ e.stopPropagation();
+ if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+ var url=new URL(NEXT,window.location.href);
+ url.search='?v=20260827-flow';
+ window.location.assign(url.href);
+}
+document.addEventListener('click',go,true);
+function bind(){
+ var finish=document.getElementById('finish');
+ if(!finish)return;
+ var a=finish.querySelector('a[href*="'+NEXT+'"]');
+ if(!a)return;
+ a.setAttribute('data-gei-completion-next','true');
+ a.href=NEXT+'?v=20260827-flow';
+ a.addEventListener('click',function(e){
+   if(!completed())return;
+   e.preventDefault(); e.stopPropagation();
+   if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+   window.location.assign(new URL(NEXT+'?v=20260827-flow',window.location.href).href);
+ },true);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+window.addEventListener('pageshow',bind);
+})();
 </script></body></html>
