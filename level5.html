@@ -188,7 +188,22 @@ function complete(){
   setTimeout(function(){if(f)f.scrollIntoView({behavior:"smooth",block:"center"})},50);
  }
 }
-function init(){var p=document.getElementById("player");if(p)p.textContent=state.name||"Explorer";var xp=document.getElementById("xp");if(xp)xp.textContent=state.xp;visual();initMill();bindQuestions();var pending=[1,2,3,4,5,6].find(function(id){return earned.indexOf(id)===-1});document.querySelectorAll(".mission").forEach(function(x){x.classList.add("gei-hidden");x.classList.remove("current")});var target=document.getElementById("m"+(pending||6));if(target){target.classList.remove("gei-hidden");target.classList.add("current")}}
+function init(){
+ var p=document.getElementById("player");if(p)p.textContent=state.name||"Explorer";
+ var xp=document.getElementById("xp");if(xp)xp.textContent=state.xp;
+ visual();initMill();bindQuestions();
+ var missions=document.querySelectorAll(".mission");
+ for(var i=0;i<missions.length;i++){missions[i].classList.add("gei-hidden");missions[i].classList.remove("current")}
+ if(earned.length>=6){
+  var f=document.getElementById("finish");
+  if(f){f.hidden=false;f.removeAttribute("hidden");var n=document.getElementById("finishName");if(n)n.textContent=state.name||"Explorer"}
+  mascotHide();
+  return;
+ }
+ var pending=[1,2,3,4,5,6].find(function(id){return earned.indexOf(id)===-1});
+ var target=document.getElementById("m"+(pending||6));
+ if(target){target.classList.remove("gei-hidden");target.classList.add("current")}
+}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script><script id="gei-shared-controls">
