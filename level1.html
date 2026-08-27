@@ -450,17 +450,25 @@ function renderQuestion(){
           state.xp=Math.min(150,Number(state.xp||0)+25);
           writeState(state);
           els.missionCard.classList.add('celebrate');
-          reward();syncBar();buildDots();
-          say('🎉 YES! That\u2019s correct!','success');
+          // Cosmetic feedback must never be able to block progression.
+          try{reward()}catch(e){}
+          syncBar();buildDots();
           answered=true;
           if(earned.length===6){
+            // Mission 6 has NO NEXT button. Complete immediately after the
+            // correct answer so there is no race with mascot/audio effects.
             els.nextRow.hidden=true;
+            els.nextRow.setAttribute('hidden','');
             els.nextRow.setAttribute('aria-hidden','true');
             els.nextRow.style.setProperty('display','none','important');
             els.nextBtn.disabled=true;
-            setTimeout(complete,700);
+            try{say('🎉 YES! That\u2019s correct!','success')}catch(e){}
+            complete();
           }else{
+            try{say('🎉 YES! That\u2019s correct!','success')}catch(e){}
             els.nextRow.hidden=false;
+            els.nextRow.removeAttribute('hidden');
+            els.nextRow.removeAttribute('aria-hidden');
             els.nextRow.style.removeProperty('display');
             els.nextBtn.disabled=false;
           }
@@ -478,6 +486,8 @@ function renderQuestion(){
 }
 
 els.nextBtn.onclick=function(){
+  // Mission 6 is terminal; NEXT can never advance beyond it.
+  if(cur===Q.length-1)return;
   if(!answered || earned.indexOf(cur+1)===-1)return;
   if(window.GEIMascot)window.GEIMascot.hide();
   sound('next');
@@ -485,7 +495,16 @@ els.nextBtn.onclick=function(){
 };
 
 function complete(){
-  showCompletedScreen();
+  try{showCompletedScreen()}catch(e){
+    document.documentElement.classList.add('gei-level1-complete');
+    document.body.classList.add('gei-level1-complete');
+    if(els.missionCard)els.missionCard.style.setProperty('display','none','important');
+    if(els.finish){
+      els.finish.hidden=false;
+      els.finish.removeAttribute('hidden');
+      els.finish.style.setProperty('display','flex','important');
+    }
+  }
   els.missionCard.classList.add('gei-hidden');
   els.nextRow.hidden=true;
   els.nextRow.setAttribute('aria-hidden','true');
@@ -495,7 +514,7 @@ function complete(){
   state.xp=Math.max(150,state.xp);
   state.level1Tasks=[1,2,3,4,5,6];
   writeState(state);
-  sound('level');
+  try{sound('level')}catch(e){}
   els.finish.hidden=false;
   els.finish.scrollIntoView({behavior:'smooth',block:'center'});
   if(window.GEIMascot)window.GEIMascot.hide();
