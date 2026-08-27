@@ -155,7 +155,67 @@ html.gei-compact .foot{font-size:.68rem!important;line-height:1.25!important;mar
 @media(max-width:700px){html.gei-compact .dashGrid{grid-template-columns:1fr!important}}
 </style><style id="gei-certificate-style">
 .gei-certificate{margin-top:12px;text-align:center}.certificateInner{padding:24px 16px;border:2px solid var(--accent2);border-radius:20px;background:linear-gradient(135deg,rgba(0,180,216,.08),rgba(255,183,3,.08));box-shadow:0 12px 40px rgba(0,0,0,.12)}.certSeal{font-size:3rem}.gei-certificate h1{font-size:clamp(1.5rem,5vw,2.2rem);margin:8px 0}.certSignature{margin-top:18px;font-weight:900}.certDate{font-size:.85rem;opacity:.75}
-</style><style id="gei-compact-shared">.wrap{width:min(760px,94vw)!important;padding-bottom:24px!important}.top{padding:8px 0 4px!important}.topbar{gap:8px!important}.card{padding:14px 16px!important;margin:9px 0!important;border-radius:18px!important}.hero{padding:13px 15px!important}.hero h1{font-size:clamp(1.55rem,5.5vw,2.25rem)!important}.controls{gap:5px!important}.control{padding:7px 10px!important;font-size:.84rem!important}@media(max-width:720px){.wrap{width:96vw!important}.card{padding:12px 13px!important;margin:7px 0!important}}</style></head>
+</style><style id="gei-compact-shared">.wrap{width:min(760px,94vw)!important;padding-bottom:24px!important}.top{padding:8px 0 4px!important}.topbar{gap:8px!important}.card{padding:14px 16px!important;margin:9px 0!important;border-radius:18px!important}.hero{padding:13px 15px!important}.hero h1{font-size:clamp(1.55rem,5.5vw,2.25rem)!important}.controls{gap:5px!important}.control{padding:7px 10px!important;font-size:.84rem!important}@media(max-width:720px){.wrap{width:96vw!important}.card{padding:12px 13px!important;margin:7px 0!important}}</style><style id="gei-dashboard-mobile-app">
+@media(max-width:700px){
+ html.gei-dashboard-app,html.gei-dashboard-app body{height:100%;overflow:hidden}
+ body.gei-dashboard-app{height:100dvh;min-height:100dvh;overflow:hidden;overscroll-behavior:none}
+ body.gei-dashboard-app .wrap{
+   width:100%!important;height:100dvh;min-height:100dvh;margin:0!important;
+   padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)!important;
+   overflow:hidden!important;display:flex;flex-direction:column;
+ }
+ body.gei-dashboard-app .topbar{flex:0 0 auto;padding:4px 4px!important;min-height:0!important}
+ body.gei-dashboard-app .topbar img{max-height:28px!important}
+ body.gei-dashboard-app .brand{gap:7px!important}
+ body.gei-dashboard-app .who b{font-size:.75rem!important}
+ body.gei-dashboard-app .who span{font-size:.62rem!important}
+ body.gei-dashboard-app #themeBtn{min-height:32px!important;padding:5px 9px!important;font-size:.7rem!important}
+ body.gei-dashboard-app .hero{
+   flex:0 0 auto!important;grid-template-columns:48px 1fr!important;
+   padding:7px 9px!important;margin:4px 0!important;border-radius:15px!important;gap:7px!important
+ }
+ body.gei-dashboard-app .hero .mascot{width:45px!important;height:50px!important}
+ body.gei-dashboard-app .heroText h1{font-size:1.05rem!important;line-height:1.05!important;margin:0 0 2px!important}
+ body.gei-dashboard-app .heroText .speech{font-size:.68rem!important;line-height:1.15!important}
+ body.gei-dashboard-app #identity{
+   flex:0 0 auto!important;padding:7px 9px!important;margin:4px 0!important;border-radius:15px!important
+ }
+ body.gei-dashboard-app #identity #idForm{padding:0!important}
+ body.gei-dashboard-app #identity .statusLine{font-size:.68rem!important;margin:0 0 4px!important}
+ body.gei-dashboard-app #identity .avatars{gap:2px!important;margin:1px 0!important}
+ body.gei-dashboard-app #identity .avatar{width:28px!important;height:28px!important;font-size:1rem!important}
+ body.gei-dashboard-app #identity .nameRow{gap:4px!important}
+ body.gei-dashboard-app #identity .nameInput{min-height:32px!important;padding:5px 8px!important;font-size:.72rem!important}
+ body.gei-dashboard-app #identity .nameRow .btn{min-height:32px!important;padding:5px 9px!important;font-size:.7rem!important}
+ body.gei-dashboard-app #identity .profileChip{padding:5px 7px!important}
+ body.gei-dashboard-app #identity .profileChip button{padding:5px 8px!important;font-size:.7rem!important}
+ body.gei-dashboard-app .dashGrid{
+   flex:1 1 auto!important;min-height:0!important;display:grid!important;
+   grid-template-columns:1fr 1fr!important;gap:6px!important;margin:4px 0!important
+ }
+ body.gei-dashboard-app .dashGrid .card{margin:0!important;padding:9px 10px!important;border-radius:15px!important;min-height:0!important}
+ body.gei-dashboard-app .dashGrid .tag{font-size:.58rem!important}
+ body.gei-dashboard-app .dashGrid .stats{grid-template-columns:1fr 1fr!important;gap:3px!important;margin-top:3px!important}
+ body.gei-dashboard-app .dashGrid .stat{padding:5px!important;border-radius:10px!important}
+ body.gei-dashboard-app .dashGrid .stat .tag{font-size:.53rem!important}
+ body.gei-dashboard-app .dashGrid .stat b{font-size:1rem!important}
+ body.gei-dashboard-app .dashGrid .bar{height:5px!important;margin:5px 0!important}
+ body.gei-dashboard-app .dashGrid .statusLine{font-size:.62rem!important;line-height:1.15!important;margin:3px 0!important}
+ body.gei-dashboard-app .dashGrid .mission h2{font-size:1rem!important;line-height:1.08!important;margin:4px 0!important}
+ body.gei-dashboard-app .dashGrid .mission p{font-size:.65rem!important;line-height:1.15!important;margin:4px 0 6px!important}
+ body.gei-dashboard-app .dashGrid .mission .btn{min-height:35px!important;padding:6px 8px!important;font-size:.68rem!important}
+ body.gei-dashboard-app .geiDashboardAccordion{
+   flex:0 0 auto!important;margin:4px 0!important;border-radius:14px!important
+ }
+ body.gei-dashboard-app .geiDashboardAccordion>button{padding:7px 10px!important;font-size:.68rem!important}
+ body.gei-dashboard-app .geiDashboardAccordion .body{max-height:36dvh!important;overflow:auto}
+ body.gei-dashboard-app .geiDashboardAccordion .gate{padding:6px 0!important}
+ body.gei-dashboard-app .geiDashboardAccordion .gateBody b{font-size:.7rem!important}
+ body.gei-dashboard-app .geiDashboardAccordion .gateBody small{font-size:.55rem!important}
+ body.gei-dashboard-app .foot{display:none!important}
+ body.gei-dashboard-app .gei-certificate{max-height:70dvh!important;overflow:auto}
+}
+</style></head>
 <body>
 <div class="wrap">
 
@@ -428,6 +488,26 @@ function showCert(){
 }
 window.addEventListener('hashchange',function(){if(location.hash==='#certificate')showCert()});
 document.addEventListener('DOMContentLoaded',function(){if(location.hash==='#certificate')showCert()});
+})();
+</script><script id="gei-dashboard-mobile-controller">
+(function(){
+'use strict';
+function boot(){
+ document.documentElement.classList.add('gei-dashboard-app');
+ document.body.classList.add('gei-dashboard-app');
+ var root=document.documentElement;
+ function refresh(){
+   if(window.matchMedia && window.matchMedia('(max-width:700px)').matches){
+     root.classList.add('gei-dashboard-app');document.body.classList.add('gei-dashboard-app');
+   }else{
+     root.classList.remove('gei-dashboard-app');document.body.classList.remove('gei-dashboard-app');
+   }
+ }
+ window.addEventListener('resize',refresh,{passive:true});
+ window.addEventListener('orientationchange',function(){setTimeout(refresh,150)},{passive:true});
+ refresh();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 </script></body>
 </html>
