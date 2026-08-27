@@ -493,7 +493,8 @@ function syncBar(){
 function renderQuestion(){
   var i=cur,q=Q[i];
   if(!q)return;
-  answered=earned.indexOf(i+1)!==-1;
+  answered=false;
+
   els.nextRow.hidden=true;
   els.nextRow.style.setProperty('display','none','important');
   els.nextBtn.disabled=true;
@@ -508,23 +509,14 @@ function renderQuestion(){
   els.missionCard.classList.remove('celebrate');
 
   els.choices.innerHTML=q.choices.map(function(choice){
-    var letter=choice[1];
-    var done=earned.indexOf(i+1)!==-1;
-    return '<button class="choice'+(done&&letter===q.correct?' correct':'')+'" data-v="'+letter+'"'+(done?' disabled':'')+'>'+choice[0]+'</button>';
+    return '<button class="choice" data-v="'+choice[1]+'">'+choice[0]+'</button>';
   }).join('');
-
-  if(answered){
-    els.feedback.textContent=q.msg;
-    els.feedback.className='feedback good';
-    if(q.hint)els.hint.hidden=false;
-    return;
-  }
 
   els.choices.querySelectorAll('.choice').forEach(function(btn){
     btn.onclick=function(){
       if(answered)return;
-      var val=btn.getAttribute('data-v');
 
+      var val=btn.getAttribute('data-v');
       if(val!==q.correct){
         btn.classList.add('wrong');
         els.feedback.textContent='Not quite — read the clue again and try once more!';
@@ -535,7 +527,7 @@ function renderQuestion(){
         return;
       }
 
-      /* AUTHORITATIVE SUCCESS PATH */
+      /* LOCK + SAVE FIRST. Nothing visual/audio can block progression. */
       answered=true;
       els.choices.querySelectorAll('.choice').forEach(function(x){x.disabled=true});
       btn.classList.add('correct');
@@ -547,27 +539,32 @@ function renderQuestion(){
       state.level1Tasks=earned.slice();
       state.xp=Math.min(150,Number(state.xp||0)+25);
       try{writeState(state)}catch(e){}
+
+      var thisQuestion=i;
+
+      /* PROGRESSION IS SCHEDULED BEFORE ANY OPTIONAL EFFECTS. */
+      if(thisQuestion===Q.length-1){
+        setTimeout(function(){
+          try{complete()}catch(e){}
+        },250);
+      }else{
+        var nextIndex=thisQuestion+1;
+        setTimeout(function(){
+          cur=nextIndex;
+          answered=false;
+          try{renderQuestion()}catch(e){
+            setTimeout(function(){try{renderQuestion()}catch(_e){}},50);
+          }
+          try{buildDots();syncBar()}catch(e){}
+          try{if(window.GEIMascot&&typeof window.GEIMascot.hide==='function')window.GEIMascot.hide()}catch(e){}
+          try{sound('next')}catch(e){}
+        },250);
+      }
+
+      /* Cosmetic effects run AFTER progression is safely queued. */
       try{syncBar();buildDots()}catch(e){}
       try{reward()}catch(e){}
       try{say('🎉 YES! That’s correct!','success')}catch(e){}
-
-      /* Question 6 is the only terminal question. */
-      if(i===Q.length-1){
-        setTimeout(function(){complete()},250);
-        return;
-      }
-
-      /* Questions 1–5 ALWAYS advance to exactly the next question. */
-      var nextIndex=i+1;
-      setTimeout(function(){
-        cur=nextIndex;
-        answered=false;
-        try{if(window.GEIMascot)window.GEIMascot.hide()}catch(e){}
-        try{sound('next')}catch(e){}
-        renderQuestion();
-        buildDots();
-        syncBar();
-      },300);
     };
   });
 }
