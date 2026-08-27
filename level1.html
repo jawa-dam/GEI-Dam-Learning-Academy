@@ -296,7 +296,7 @@ var els={player:$('player'),xp:$('xp'),xpbar:$('xpbar'),progressText:$('progress
 
 els.player.textContent=state.name;els.finishName.textContent=state.name;
 
-var earned=state.level1Tasks.slice();
+var earned=[];for(var ei=1;ei<=6;ei++){if(state.level1Tasks.indexOf(ei)!==-1)earned.push(ei);else break;}state.level1Tasks=earned.slice();writeState(state);
 var cur=Math.min(earned.length,5);
 var answered=false; // index of question currently shown
 
@@ -383,6 +383,8 @@ els.nextBtn.onclick=function(){
 };
 
 function complete(){
+  els.missionCard.classList.add('gei-hidden');
+  els.nextRow.hidden=true;
   if(state.completed.indexOf(1)===-1)state.completed.push(1);
   state.xp=Math.max(150,state.xp);
   state.level1Tasks=[1,2,3,4,5,6];
@@ -400,6 +402,8 @@ visual();
 
 if(state.completed.indexOf(1)!==-1){
   earned=[1,2,3,4,5,6];
+  els.missionCard.classList.add('gei-hidden');
+  els.nextRow.hidden=true;
   els.finish.hidden=false;
   els.progressText.textContent='Level 1 complete';
   if(window.GEIMascot)window.GEIMascot.hide();
@@ -417,9 +421,9 @@ function start(){
  if(!window.matchMedia || !window.matchMedia('(max-width:700px)').matches)return;
  var finish=document.getElementById('finish');
  function active(){
-   return document.querySelector('.mission.current') ||
-          document.querySelector('.missionCard') ||
-          (finish && !finish.hidden ? finish : null);
+   return (finish && !finish.hidden ? finish : null) ||
+          document.querySelector('.mission.current') ||
+          document.querySelector('.missionCard') || null;
  }
  function fit(){
    var el=active(); if(!el)return;
