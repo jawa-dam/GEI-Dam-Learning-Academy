@@ -297,7 +297,8 @@ var els={player:$('player'),xp:$('xp'),xpbar:$('xpbar'),progressText:$('progress
 els.player.textContent=state.name;els.finishName.textContent=state.name;
 
 var earned=state.level1Tasks.slice();
-var cur=Math.min(earned.length,5); // index of question currently shown
+var cur=Math.min(earned.length,5);
+var answered=false; // index of question currently shown
 
 function buildDots(){
   els.dots.innerHTML=Q.map(function(_,i){
@@ -316,6 +317,8 @@ function renderQuestion(){
   els.nextRow.hidden=true;
   if(window.GEIMascot)window.GEIMascot.hide();
   var i=cur,q=Q[i];
+  answered=earned.indexOf(i+1)!==-1;
+  els.nextBtn.disabled=true;
   els.mNum.textContent=String(i+1);
   els.mTag.textContent=q.tag;
   els.mTitle.textContent=q.title;
@@ -332,6 +335,7 @@ function renderQuestion(){
   }).join('');
 
   if(done){
+    answered=true;
     els.feedback.textContent=q.msg;els.feedback.className='feedback good';
     if(q.hint)els.hint.hidden=false;
     if(i<Q.length-1){els.nextRow.hidden=false}
@@ -350,10 +354,13 @@ function renderQuestion(){
           els.missionCard.classList.add('celebrate');
           reward();syncBar();buildDots();
           say('🎉 YES! That\u2019s correct!','success');setTimeout(function(){if(window.GEIMascot)window.GEIMascot.hide()},900);
+          answered=true;
           if(earned.length===6){
+            els.nextRow.hidden=true;
             setTimeout(complete,700);
           }else{
             els.nextRow.hidden=false;
+            els.nextBtn.disabled=false;
           }
         }else{
           b.classList.add('wrong');
@@ -369,6 +376,7 @@ function renderQuestion(){
 }
 
 els.nextBtn.onclick=function(){
+  if(!answered || earned.indexOf(cur+1)===-1)return;
   if(window.GEIMascot)window.GEIMascot.hide();
   sound('next');
   if(cur<Q.length-1){cur++;renderQuestion();buildDots();syncBar();els.missionCard.scrollIntoView({behavior:'smooth',block:'start'})}
@@ -391,13 +399,13 @@ els.theme.onclick=function(){state=readState();state.theme=state.theme==='dark'?
 visual();
 
 if(state.completed.indexOf(1)!==-1){
-  cur=5; // show last question, but everything already earned
   earned=[1,2,3,4,5,6];
   els.finish.hidden=false;
-  els.progressText.textContent='Level 1 complete · replay any question to review';
+  els.progressText.textContent='Level 1 complete';
+  if(window.GEIMascot)window.GEIMascot.hide();
+}else{
+  buildDots();syncBar();renderQuestion();
 }
-
-buildDots();syncBar();renderQuestion();
 })();
 </script>
 <script id="gei-mobile-app-controller">
