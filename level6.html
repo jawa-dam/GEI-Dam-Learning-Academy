@@ -450,6 +450,8 @@ function sync(){
 }
 
 function addMission(id){
+  var expected=1;while(earned.indexOf(expected)!==-1&&expected<=6)expected++;
+  if(id!==expected)return;
   if(earned.indexOf(id)!==-1)return;
   earned.push(id); earned=Array.from(new Set(earned)); state.level6Tasks=earned.slice();
   state.xp=Math.min(900,Number(state.xp||0)+25); write();
@@ -550,6 +552,8 @@ if(earned.indexOf(3)!==-1){
 
 /* ---------- Completion ---------- */
 function complete(){
+ document.querySelectorAll('.mission').forEach(function(m){m.classList.remove('current');m.classList.add('gei-hidden')});
+ if(window.GEIMascot)window.GEIMascot.hide();
   if(state.completed.indexOf(6)!==-1)return;
   if(earned.length<6)return;
   state.completed.push(6); state.level6Tasks=[1,2,3,4,5,6]; state.xp=Math.max(900,state.xp); write();
@@ -637,9 +641,9 @@ function start(){
  if(!window.matchMedia || !window.matchMedia('(max-width:700px)').matches)return;
  var finish=document.getElementById('finish');
  function active(){
-   return document.querySelector('.mission.current') ||
-          document.querySelector('.missionCard') ||
-          (finish && !finish.hidden ? finish : null);
+   return (finish && !finish.hidden ? finish : null) ||
+          document.querySelector('.mission.current') ||
+          document.querySelector('.missionCard') || null;
  }
  function fit(){
    var el=active(); if(!el)return;
