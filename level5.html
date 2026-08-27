@@ -365,4 +365,64 @@ function ready(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();
+</script><script id="gei-final-completion-bridge">
+(function(){
+'use strict';
+/*
+ GEI FINAL COMPLETION BRIDGE
+ The level must never finish with a blank/stuck state. Once all six
+ missions are earned, this bridge makes the completion card authoritative,
+ persists completion, hides mission cards, hides Splash, and exposes the
+ existing navigation buttons. It also repairs a completion state on refresh.
+*/
+var LEVEL=5, KEY='gei-academy-state-v1', TASK='level'+LEVEL+'Tasks', MIN_XP=750;
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+function write(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+function allSix(s){
+ var a=Array.isArray(s[TASK])?s[TASK]:[];
+ for(var i=1;i<=6;i++)if(a.indexOf(i)===-1)return false;
+ return true;
+}
+function show(){
+ var s=read();
+ if(!allSix(s))return false;
+ s[TASK]=[1,2,3,4,5,6];
+ if(!Array.isArray(s.completed))s.completed=[];
+ var first=s.completed.indexOf(LEVEL)===-1;
+ if(first)s.completed.push(LEVEL);
+ s.xp=Math.max(Number(s.xp||0),MIN_XP);
+ write(s);
+
+ document.querySelectorAll('.mission').forEach(function(m){
+   m.classList.add('gei-hidden');
+   m.classList.remove('current');
+   m.style.setProperty('display','none','important');
+ });
+ var finish=document.getElementById('finish');
+ if(!finish)return true;
+ finish.hidden=false;
+ finish.removeAttribute('hidden');
+ finish.style.setProperty('display','flex','important');
+ finish.style.visibility='visible';
+ finish.style.opacity='1';
+ var name=document.getElementById('finishName');
+ if(name)name.textContent=s.name||'Explorer';
+ if(window.GEIMascot&&window.GEIMascot.hide)window.GEIMascot.hide();
+ if(first){
+   try{if(window.confetti)window.confetti()}catch(e){}
+   try{if(window.sound)window.sound('level')}catch(e){}
+ }
+ return true;
+}
+function boot(){
+ if(show())return;
+ var tries=0;
+ var timer=setInterval(function(){
+   tries++;
+   if(show()||tries>75)clearInterval(timer);
+ },200);
+ window.addEventListener('pageshow',function(){show()});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
 </script></body></html>
