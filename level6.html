@@ -88,7 +88,20 @@ html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink
 @keyframes finale{0%{opacity:0}10%{opacity:1}78%{opacity:1}100%{opacity:0}}@keyframes finaleCard{0%{transform:scale(.75);opacity:0}35%{transform:scale(1.05);opacity:1}65%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:1}}
 @media(max-width:720px){.systemLab{min-height:300px}.nextMission{width:100%;font-size:1rem}.nextRow{justify-content:stretch}.card{padding:15px}.hero{padding:16px}}
 </style>
-<style id="gei-mascot-visibility">.mascotDock{opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}.mascotDock.show{opacity:1;transform:none;pointer-events:auto}</style></head>
+<style id="gei-mascot-visibility">.mascotDock{opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}.mascotDock.show{opacity:1;transform:none;pointer-events:auto}</style><style id="gei-level6-compact">
+/* GEI Academy Compact Level 6 */
+.top{padding:8px 0 4px}.topbar{gap:8px}.brand{font-size:.68rem;padding:4px 0}
+.controls{gap:5px}.control,.skin{padding:7px 10px;font-size:.86rem}
+.card{padding:14px;margin:9px 0;border-radius:18px;box-shadow:0 4px 0 var(--edge),0 10px 22px rgba(10,20,50,.06)}
+.hero{padding:14px}.hero h1{font-size:clamp(1.55rem,5.5vw,2.35rem);margin:.2rem 0 .45rem}.hero>p{margin:.35rem 0}
+.progressWrap{margin-top:8px;padding:9px}.bar{height:11px;margin:6px 0}
+.day6Idea{padding:11px 14px}.day6Idea summary{cursor:pointer;font-weight:950;list-style:none}.day6Idea summary::-webkit-details-marker{display:none}.day6Idea summary:after{content:'＋';float:right}.day6Idea[open] summary:after{content:'−'}.day6Idea p{margin:.55rem 0 0}
+.mission{margin:8px 0;padding:13px}.missionHead{gap:10px}.num{flex-basis:36px;height:36px;border-radius:11px;font-size:1rem}.mission h2{font-size:1.2rem}.mission p{font-size:.9rem}.choices{gap:6px!important;margin-top:8px!important}.choice{padding:9px 11px!important;border-radius:13px;font-size:.92rem}.feedback{min-height:1.35em;margin-top:6px;font-size:.9rem}
+.systemLab{min-height:235px;height:235px;padding:10px}.node{min-width:95px;padding:8px 9px;border-width:2px;border-radius:14px;font-size:.82rem}.node.source{left:3%;top:10%}.node.reservoir{left:29%;top:25%}.node.gate{left:54%;top:25%}.node.mill{right:3%;top:10%}.pipe{height:7px}.systemWater{height:55px}.labHint{left:3%;right:3%;bottom:65px;padding:6px 8px;font-size:.82rem;text-align:center}.labControls{gap:5px;margin-top:8px}.labBtn{padding:8px 9px;border-radius:11px;font-size:.82rem}.chain{gap:4px;margin-top:7px}.chain span{padding:6px 7px;border-radius:9px;font-size:.75rem}
+.nextMission{padding:10px 15px;border-radius:13px;font-size:.92rem}.nextRow{margin-top:8px}.finish{padding:16px}
+.footer{padding:15px 0 24px}
+@media(max-width:720px){.controls{width:100%;justify-content:flex-end}.skin{width:auto}.systemLab{min-height:220px;height:220px}.node{min-width:78px;font-size:.72rem;padding:7px 5px}.labBtn{flex:1 1 calc(50% - 5px)}.mission h2{font-size:1.08rem}.choice{font-size:.88rem}}
+</style></head>
 <body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
 <div class="wrap">
@@ -119,11 +132,10 @@ html[data-theme="dark"][data-skin="obsidian"]{--bg:#070b16;--panel:#101728;--ink
   </div>
 </section>
 
-<section class="card">
-  <div class="eyebrow">🧭 TODAY'S IDEA</div>
-  <h2>A system is more than one part.</h2>
+<details class="card day6Idea">
+  <summary>🧭 TODAY'S IDEA · A system is more than one part</summary>
   <p class="muted">The Day 6 model connects the pieces learned across the foundation: <strong>🏔️ source → 🌊 reservoir → 🚪 gate → 💧 moving water → ⚙️ mill → ⚡ power</strong>.</p>
-</section>
+</details>
 
 <section class="card mission" id="m1">
   <div class="missionHead"><div class="num">1</div><div>
@@ -481,16 +493,22 @@ visual();sync();
  window.GEIMascot={hide:function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},say:function(msg,kind,duration){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);dock.classList.add('show');dock.setAttribute('aria-hidden','false');clearTimeout(window.__geiMascotTimer);window.__geiMascotTimer=setTimeout(function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},duration||1400)},success:function(msg){this.say(msg||'🎉 Correct!','success',1400)},wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1400)}};GEIMascot.hide();
  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.choice');if(!b)return;setTimeout(function(){if(b.classList.contains('correct'))GEIMascot.success();else if(b.classList.contains('wrong'))GEIMascot.wrong()},40)});
 })();
-</script><script id="gei-reliable-next-flow">
+</script><script id="gei-level6-controls">
 (function(){
-'use strict';
 function boot(){
- var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m\d+$/.test(c.id)});if(!cards.length)return;
- function nextSound(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiNextAudio||(window.__geiNextAudio=new C());if(a.state==='suspended')a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
- function show(i){cards.forEach(function(c,n){c.classList.toggle('gei-hidden',n!==i);c.classList.toggle('current',n===i)});if(cards[i])setTimeout(function(){cards[i].scrollIntoView({behavior:'smooth',block:'start'})},40)}
- function add(card,index){if(index>=cards.length-1||card.querySelector('.gei-next-row'))return;var row=document.createElement('div');row.className='gei-next-row';var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';b.addEventListener('click',function(){nextSound();show(index+1);if(window.GEIMascot)window.GEIMascot.hide()});row.appendChild(b);card.appendChild(row)}
- cards.forEach(function(card,index){if(card.querySelector('.feedback.good'))add(card,index);card.querySelectorAll('.choice').forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(btn.classList.contains('correct')){add(card,index);if(window.GEIMascot)window.GEIMascot.hide()}},70)})})});
- var first=cards.findIndex(function(c){return !c.querySelector('.feedback.good')});show(first<0?cards.length-1:first);
+ var root=document.documentElement,theme=document.getElementById('theme'),skin=document.getElementById('skin');
+ if(!theme||!skin)return;
+ var KEY='gei-academy-state-v1';
+ function get(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+ function put(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+ function apply(){
+  var s=get();s.theme=s.theme==='dark'?'dark':'light';s.skin=s.skin||'academic';
+  root.setAttribute('data-theme',s.theme);root.setAttribute('data-skin',s.skin);
+  theme.textContent=s.theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';skin.value=s.skin;
+ }
+ theme.onclick=function(){var s=get();s.theme=s.theme==='dark'?'light':'dark';put(s);apply()};
+ skin.onchange=function(){var s=get();s.skin=skin.value||'academic';put(s);apply()};
+ apply();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
