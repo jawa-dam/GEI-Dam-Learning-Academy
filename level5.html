@@ -190,7 +190,7 @@ function addNext(card,id){
  card.appendChild(row);
 }
 function mascotHide(){try{if(window.GEIMascot&&typeof window.GEIMascot.hide==="function")window.GEIMascot.hide()}catch(e){}var els=document.querySelectorAll(".gei-mascot,.mascot,.mascot-message,[class*='mascot']");for(var i=0;i<els.length;i++){var el=els[i];if(el.id!=="player")el.classList.remove("show","visible","active");if(el.getAttribute("aria-live"))el.setAttribute("aria-live","off")}}
-function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned.sort(function(a,b){return a-b});state.level5Tasks=earned.slice();write();reward();var card=document.getElementById("m"+id);if(card)card.classList.add("gei-success");mascotHide();addNext(card,id);if(earned.length===6)setTimeout(complete,650)}
+function addMission(id){var expected=1;while(earned.indexOf(expected)!==-1&&expected<=6)expected++;if(id!==expected)return;if(earned.indexOf(id)!==-1)return;earned.push(id);earned.sort(function(a,b){return a-b});state.level5Tasks=earned.slice();write();reward();var card=document.getElementById("m"+id);if(card)card.classList.add("gei-success");mascotHide();addNext(card,id);if(earned.length===6)setTimeout(complete,650)}
 var questions=[
 {id:1,correct:"wheel",msg:"🎉 Correct! Moving water can push or turn a wheel."},
 {id:2,correct:"wheel",msg:"🎉 Correct! The mill uses a water-powered wheel."},
@@ -302,9 +302,9 @@ function start(){
  if(!window.matchMedia || !window.matchMedia('(max-width:700px)').matches)return;
  var finish=document.getElementById('finish');
  function active(){
-   return document.querySelector('.mission.current') ||
-          document.querySelector('.missionCard') ||
-          (finish && !finish.hidden ? finish : null);
+   return (finish && !finish.hidden ? finish : null) ||
+          document.querySelector('.mission.current') ||
+          document.querySelector('.missionCard') || null;
  }
  function fit(){
    var el=active(); if(!el)return;
