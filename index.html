@@ -124,6 +124,37 @@ a.stop:hover{transform:translateY(-3px) rotate(-.4deg)}
 .map .stop:nth-child(odd) .dot,.map .stop:nth-child(even) .dot{left:-60px;right:auto;transform:translateY(-50%);width:40px;height:40px}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none !important;transition:none !important}}
+</style><style id="gei-index-compact-mode">
+/* ===== GEI Academy Compact Mode ===== */
+html.gei-compact .wrap{padding-top:10px}
+html.gei-compact main{max-width:940px;margin:auto}
+html.gei-compact .hero{padding:14px 18px!important;min-height:0!important;gap:12px!important}
+html.gei-compact .heroText h1{font-size:clamp(1.65rem,6vw,2.6rem)!important;margin:3px 0!important}
+html.gei-compact .heroText .lede{font-size:.9rem!important;line-height:1.4!important;margin:5px 0!important}
+html.gei-compact .mascotBox{transform:scale(.78);transform-origin:center right;margin:-12px -8px!important}
+html.gei-compact .card{padding:16px 18px!important;margin-bottom:12px!important;border-radius:20px!important}
+html.gei-compact .card h2{font-size:1.22rem!important;margin:5px 0 8px!important}
+html.gei-compact .welcome{padding:12px 15px!important}
+html.gei-compact .stats{gap:7px!important}
+html.gei-compact .stats .stat{padding:10px!important;min-height:0!important}
+html.gei-compact .stats .ico{font-size:1rem!important}
+html.gei-compact .stats b{font-size:1.25rem!important}
+html.gei-compact .next{padding:14px 16px!important}
+html.gei-compact .next p{margin:7px 0!important;line-height:1.4!important}
+html.gei-compact .map{gap:6px!important}
+html.gei-compact .stop{padding:10px 12px!important;min-height:0!important}
+html.gei-compact .stopBody small{line-height:1.25!important}
+html.gei-compact .advanced{margin-top:8px!important}
+.geiCompactControl{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:9px 11px;font-weight:900;cursor:pointer}
+.geiCompactControl.on{border-color:var(--accent2);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent2),transparent 84%)}
+.gei-collapse{margin-top:8px;border-top:1px solid var(--line);padding-top:9px}
+.gei-collapseBtn{width:100%;display:flex;justify-content:space-between;align-items:center;border:0;background:transparent;color:var(--ink);font:inherit;font-weight:900;text-align:left;padding:5px 0;cursor:pointer}
+.gei-collapseBody{overflow:hidden;max-height:1000px;opacity:1;transition:max-height .3s ease,opacity .2s ease}
+.gei-collapse.closed .gei-collapseBody{max-height:0;opacity:0}
+.gei-collapse.closed .gei-collapseBtn .chev{transform:rotate(-90deg)}
+.chev{transition:transform .2s ease}
+html.gei-compact #releaseNote.gei-collapse{padding-bottom:10px!important}
+@media(max-width:600px){html.gei-compact .hero{display:flex!important;align-items:center!important}.geiCompactControl{font-size:.78rem;padding:8px 9px}}
 </style></head>
 <body><div class="wrap">
 
@@ -419,4 +450,44 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 A.bindVisual(state,els.theme,els.skin,render);
 render();
 })();
-</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a314a3d4bc9abfc2',t:'MTc4Nzc2NjIxOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
+</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a314a3d4bc9abfc2',t:'MTc4Nzc2NjIxOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script id="gei-index-compact-script">
+(function(){
+'use strict';
+var root=document.documentElement;
+var KEY='gei-index-compact-v1';
+var compact=true;
+try{compact=localStorage.getItem(KEY)!=='off'}catch(e){}
+function apply(){
+ root.classList.toggle('gei-compact',compact);
+ var b=document.getElementById('geiCompactBtn');
+ if(b){b.classList.toggle('on',compact);b.textContent=compact?'📱 Compact Mode':'📖 Full Mode';b.setAttribute('aria-pressed',String(compact))}
+}
+function addControl(){
+ var controls=document.querySelector('.controls'); if(!controls||document.getElementById('geiCompactBtn'))return;
+ var b=document.createElement('button');b.id='geiCompactBtn';b.type='button';b.className='geiCompactControl';b.setAttribute('aria-label','Toggle Compact Academy Mode');b.onclick=function(){compact=!compact;try{localStorage.setItem(KEY,compact?'on':'off')}catch(e){}apply()};controls.insertBefore(b,controls.firstChild);
+}
+function makeCollapse(section,label,closed){
+ if(!section||section.dataset.geiCollapse)return;
+ section.dataset.geiCollapse='1';section.classList.add('gei-collapse');
+ var children=[].slice.call(section.children);
+ var body=document.createElement('div');body.className='gei-collapseBody';
+ children.slice(1).forEach(function(x){body.appendChild(x)});
+ var btn=document.createElement('button');btn.type='button';btn.className='gei-collapseBtn';btn.innerHTML='<span>'+label+'</span><span class="chev">⌄</span>';
+ btn.setAttribute('aria-expanded',String(!closed));
+ btn.onclick=function(){var isClosed=section.classList.toggle('closed');btn.setAttribute('aria-expanded',String(!isClosed))};
+ section.insertBefore(btn,section.firstChild);section.appendChild(body);
+ if(closed)section.classList.add('closed');
+}
+function setup(){
+ addControl();
+ var cards=[].slice.call(document.querySelectorAll('main > section.card'));
+ /* Foundation rule: useful, but not worth occupying the screen after the first visit. */
+ makeCollapse(document.getElementById('releaseNote'),'🧱 Foundation Rule · Build before you advance',true);
+ /* Adventure map becomes an on-demand navigator instead of a tall permanent block. */
+ var mapCard=cards.find(function(s){return s.querySelector('.map')});
+ if(mapCard)makeCollapse(mapCard,'🗺️ Adventure Map · Levels 1–6',true);
+ apply();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+</script></body></html>
