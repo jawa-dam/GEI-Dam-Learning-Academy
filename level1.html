@@ -260,7 +260,9 @@ function bind(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
 })();
-</script><style id="gei-level1-no-next-ui">.nextRow,#nextRow{display:none!important}</style></head>
+</script><style id="gei-level1-no-next-ui">.nextRow,#nextRow{display:none!important}</style><style id="gei-level1-progression-guard">
+#choices .choice[disabled]{pointer-events:none!important}
+</style></head>
 <body>
 <div class="wrap">
 
@@ -520,26 +522,55 @@ function renderQuestion(){
       b.onclick=function(){
         var val=b.getAttribute('data-v');
         if(val===q.correct){
+          /* LEVEL 1 — progression is authoritative.
+             Cosmetic systems never decide whether the learner advances. */
+          if(answered)return;
+          answered=true;
+
           els.choices.querySelectorAll('.choice').forEach(function(x){x.disabled=true});
           b.classList.add('correct');
-          els.feedback.textContent=q.msg;els.feedback.className='feedback good';
+          els.feedback.textContent=q.msg;
+          els.feedback.className='feedback good';
           if(q.hint)els.hint.hidden=false;
-          earned.push(i+1);state.level1Tasks=earned.slice();
+
+          // Record this mission immediately.
+          if(earned.indexOf(i+1)===-1) earned.push(i+1);
+          state.level1Tasks=earned.slice();
           state.xp=Math.min(150,Number(state.xp||0)+25);
-          writeState(state);
-          els.missionCard.classList.add('celebrate');
-          // Cosmetic feedback must never be able to block progression.
+          try{writeState(state)}catch(e){}
+
+          try{syncBar();buildDots()}catch(e){}
           try{reward()}catch(e){}
-          syncBar();buildDots();
-          answered=true;
-          if(cur===Q.length-1){
-            // Mission 6 is terminal. Complete from the question index,
-            // not earned.length, so progression cannot stall on saved state.
-            els.nextRow.hidden=true;
-            els.nextBtn.disabled=true;
-            try{say('🎉 YES! That’s correct!','success')}catch(e){}
+          try{say('🎉 YES! That’s correct!','success')}catch(e){}
+
+          // Mission 6 is terminal — no NEXT button and no delay dependency.
+          if(i===Q.length-1){
             complete();
-          }else{
+            return;
+          }
+
+          // Advance from the question that was just answered.
+          var advanceTo=i+1;
+          setTimeout(function(){
+            if(cur!==i)return;
+            cur=advanceTo;
+            answered=false;
+            try{
+              renderQuestion();
+              buildDots();
+              syncBar();
+            }catch(e){
+              // Last-resort direct retry; progression remains committed.
+              cur=advanceTo;
+              answered=false;
+              setTimeout(function(){
+                try{renderQuestion();buildDots();syncBar()}catch(_e){}
+              },50);
+            }
+            try{if(window.GEIMascot&&typeof window.GEIMascot.hide==='function')window.GEIMascot.hide()}catch(e){}
+            try{sound('next')}catch(e){}
+          },180);
+        }        }else{
             // Sequential app flow: every correct answer advances exactly once.
             els.nextRow.hidden=true;
             els.nextBtn.disabled=true;
