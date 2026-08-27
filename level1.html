@@ -543,16 +543,21 @@ function renderQuestion(){
             els.nextRow.hidden=true;
             els.nextBtn.disabled=true;
             setTimeout(function(){
-              if(cur<Q.length-1){
-                if(window.GEIMascot)window.GEIMascot.hide();
-                try{sound('next')}catch(e){}
-                cur++;
-                answered=false;
-                renderQuestion();
-                buildDots();
-                syncBar();
+              /* HARD AUTO-ADVANCE: nothing cosmetic may be able to stop it. */
+              try{ if(window.GEIMascot && typeof window.GEIMascot.hide==='function') window.GEIMascot.hide(); }catch(e){}
+              try{ sound('next'); }catch(e){}
+              if(cur < Q.length-1){
+                cur = cur + 1;
+                answered = false;
+                try{ renderQuestion(); }catch(e){
+                  /* Retry once if a cosmetic/render hook throws. */
+                  setTimeout(function(){
+                    try{ renderQuestion(); buildDots(); syncBar(); }catch(_e){}
+                  },80);
+                }
+                try{ buildDots(); syncBar(); }catch(e){}
               }
-            },320);
+            },450);
           }
         }else{
           b.classList.add('wrong');
