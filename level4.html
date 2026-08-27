@@ -101,4 +101,25 @@ function boot(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
+</script><script id="gei-shared-controls">
+(function(){
+'use strict';
+function boot(){
+ var theme=document.getElementById('theme'),skin=document.getElementById('skin'),root=document.documentElement;
+ if(!theme&&!skin)return;
+ var KEY='gei-academy-state-v1';
+ function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+ function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+ function apply(){
+  var s=read(),t=s.theme==='dark'?'dark':'light',k=s.skin||'academic';
+  root.setAttribute('data-theme',t);root.setAttribute('data-skin',k);
+  if(theme)theme.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+  if(skin)skin.value=k;
+ }
+ if(theme)theme.onclick=function(){var s=read();s.theme=s.theme==='dark'?'light':'dark';save(s);apply()};
+ if(skin)skin.onchange=function(){var s=read();s.skin=this.value||'academic';save(s);apply()};
+ apply();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
 </script></body></html>
