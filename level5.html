@@ -81,7 +81,25 @@ function visual(){document.documentElement.setAttribute("data-theme",state.theme
 function sound(kind){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiAudio||(window.__geiAudio=new C());if(a.state==="suspended")a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type="sine";o.frequency.value=kind==="wrong"?180:kind==="level"?880:kind==="gate"?520:740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
 function reward(){var r=document.getElementById("reward");if(r){r.classList.remove("show");void r.offsetWidth;r.classList.add("show")}}
 function confetti(){for(var i=0;i<24;i++){var x=document.createElement("span");x.textContent="🎉";x.style.position="fixed";x.style.left=(Math.random()*100)+"vw";x.style.top="-20px";x.style.zIndex=100;x.style.fontSize=(12+Math.random()*18)+"px";x.style.transition="transform 1.5s ease,opacity 1.5s ease";document.body.appendChild(x);(function(el){setTimeout(function(){el.style.transform="translateY(105vh) rotate(540deg)";el.style.opacity="0";setTimeout(function(){el.remove()},1600)},30)})(x)}}
-function addNext(card,id){if(id>=6||card.querySelector(".gei-next-row"))return;var row=document.createElement("div");row.className="gei-next-row";var b=document.createElement("button");b.type="button";b.className="gei-next";b.textContent="NEXT →";b.onclick=function(){sound("next");if(window.GEIMascot)window.GEIMascot.hide();var target=document.getElementById("m"+(id+1));document.querySelectorAll(".mission").forEach(function(x){x.classList.add("gei-hidden");x.classList.remove("current")});if(target){target.classList.remove("gei-hidden");target.classList.add("current");target.scrollIntoView({behavior:"smooth",block:"start")}}};row.appendChild(b);card.appendChild(row)}
+function addNext(card,id){
+ if(id>=6||card.querySelector(".gei-next-row"))return;
+ var row=document.createElement("div");
+ row.className="gei-next-row";
+ var btn=document.createElement("button");
+ btn.type="button";
+ btn.className="gei-next";
+ btn.textContent="NEXT →";
+ btn.onclick=function(){
+  sound("next");
+  if(window.GEIMascot)window.GEIMascot.hide();
+  var target=document.getElementById("m"+(id+1));
+  var missions=document.querySelectorAll(".mission");
+  for(var i=0;i<missions.length;i++){missions[i].classList.add("gei-hidden");missions[i].classList.remove("current")}
+  if(target){target.classList.remove("gei-hidden");target.classList.add("current");target.scrollIntoView({behavior:"smooth",block:"start"})}
+ };
+ row.appendChild(btn);
+ card.appendChild(row);
+}
 function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned.sort(function(a,b){return a-b});state.level5Tasks=earned.slice();state.xp+=25;write();reward();var card=document.getElementById("m"+id);if(card)card.classList.add("gei-success");addNext(card,id);if(earned.length===6)setTimeout(complete,650)}
 var questions=[
 {id:1,correct:"wheel",msg:"🎉 Correct! Moving water can push or turn a wheel."},
