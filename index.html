@@ -544,5 +544,26 @@ function boot(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
+</script><script id="gei-dashboard-gaming-audio">
+(function(){
+'use strict';
+window.GEIGameAudio=window.GEIGameAudio||{};
+window.GEIGameAudio.play=function(k){
+ try{
+  var C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  var a=window.__geiDashAudio||(window.__geiDashAudio=new C());if(a.state==='suspended')a.resume();
+  function n(f,d,t,v,w){var q=a.currentTime+(w||0),o=a.createOscillator(),g=a.createGain();o.type=t;o.frequency.setValueAtTime(f,q);g.gain.setValueAtTime(.0001,q);g.gain.exponentialRampToValueAtTime(v,q+.01);g.gain.exponentialRampToValueAtTime(.0001,q+d);o.connect(g).connect(a.destination);o.start(q);o.stop(q+d+.02)}
+  if(k==='launch'){n(330,.07,'square',.045,0);n(494,.08,'triangle',.055,.05);n(659,.12,'sine',.06,.11)}
+  else if(k==='click'){n(440,.06,'triangle',.04,0);n(660,.08,'sine',.045,.05)}
+  else if(k==='save'){n(392,.07,'triangle',.04,0);n(523,.10,'sine',.05,.06)}
+ }catch(e){}
+};
+document.addEventListener('click',function(e){
+ var a=e.target.closest&&e.target.closest('a[href],button');
+ if(!a)return;
+ if(a.id==='theme'||a.id==='skin')return;
+ window.GEIGameAudio.play(a.href?'launch':'click');
+},true);
+})();
 </script></body>
 </html>
