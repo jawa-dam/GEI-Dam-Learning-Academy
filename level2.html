@@ -184,12 +184,62 @@ document.getElementById('theme').onclick=function(){state.theme=state.theme==='d
 (function(){
 'use strict';
 function boot(){
- var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m\d+$/.test(c.id)});if(!cards.length)return;
+ var level=2, key='level'+level+'Tasks', max=6;
+ function read(){try{return JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}')||{}}catch(e){return {}}}
+ function write(s){try{localStorage.setItem('gei-academy-state-v1',JSON.stringify(s))}catch(e){}}
+ function normalize(){
+   var s=read(), raw=Array.isArray(s[key])?s[key]:[], keep=[];
+   for(var i=1;i<=max;i++){if(raw.indexOf(i)!==-1)keep.push(i);else break}
+   var changed=keep.length!==raw.length||keep.some(function(v,i){return v!==raw[i]});
+   if(changed){s[key]=keep;write(s)}
+   return keep;
+ }
+ var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m[1-6]$/.test(c.id)});
+ if(!cards.length)return;
+ function completed(){return normalize()}
+ function hideAll(){cards.forEach(function(c){c.classList.add('gei-hidden');c.classList.remove('current')})}
+ function show(index){
+   hideAll();
+   if(index>=0&&index<cards.length){cards[index].classList.remove('gei-hidden');cards[index].classList.add('current');setTimeout(function(){cards[index].scrollIntoView({behavior:'smooth',block:'start'})},30)}
+ }
+ function prefix(tasks){var n=0;while(n<max&&tasks.indexOf(n+1)!==-1)n++;return n}
+ function removeNext(card){card.querySelectorAll('.gei-next-row,.nextRow').forEach(function(x){x.remove()})}
  function nextSound(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiNextAudio||(window.__geiNextAudio=new C());if(a.state==='suspended')a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
- function show(i){cards.forEach(function(c,n){c.classList.toggle('gei-hidden',n!==i);c.classList.toggle('current',n===i)});if(cards[i])setTimeout(function(){cards[i].scrollIntoView({behavior:'smooth',block:'start'})},40)}
- function add(card,index){if(index>=cards.length-1||card.querySelector('.gei-next-row'))return;var row=document.createElement('div');row.className='gei-next-row';var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';b.addEventListener('click',function(){nextSound();show(index+1);if(window.GEIMascot)window.GEIMascot.hide()});row.appendChild(b);card.appendChild(row)}
- cards.forEach(function(card,index){if(card.querySelector('.feedback.good'))add(card,index);card.querySelectorAll('.choice').forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(btn.classList.contains('correct')){add(card,index);if(window.GEIMascot)window.GEIMascot.hide()}},70)})})});
- var first=cards.findIndex(function(c){return !c.querySelector('.feedback.good')});show(first<0?cards.length-1:first);
+ function addNext(index,tasks){
+   if(index>=max-1)return;
+   var card=cards[index], expected=index+1;
+   removeNext(card);
+   if(tasks.indexOf(expected)===-1)return;
+   var row=document.createElement('div');row.className='gei-next-row';
+   var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';
+   b.onclick=function(){
+     var now=completed(),done=prefix(now);
+     if(done!==expected+0){if(window.GEIMascot)window.GEIMascot.wrong('🔒 Complete this mission correctly first.');return}
+     nextSound();if(window.GEIMascot)window.GEIMascot.hide();show(index+1);sync();
+   };
+   row.appendChild(b);card.appendChild(row);
+ }
+ function finish(){
+   hideAll();
+   var f=document.getElementById('finish');
+   if(f){f.hidden=false;f.removeAttribute('hidden')}
+   if(window.GEIMascot)window.GEIMascot.hide();
+ }
+ function sync(){
+   var tasks=completed(),done=prefix(tasks);
+   cards.forEach(removeNext);
+   if(done>=max){finish();return}
+   var current=done;
+   show(current);
+   addNext(current,tasks);
+ }
+ cards.forEach(function(card,index){
+   card.querySelectorAll('button.choice,button:not(.gei-next):not(.nextMission)').forEach(function(btn){
+     btn.addEventListener('click',function(){setTimeout(sync,120)});
+   });
+ });
+ sync();
+ window.addEventListener('pageshow',sync);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
