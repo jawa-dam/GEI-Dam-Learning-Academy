@@ -114,6 +114,9 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
   body.gei-mobile-app .day6Idea{display:none!important}
 }
 @media (min-width:701px){html.gei-mobile-app body{overflow-x:hidden}}
+</style><style id="gei-finish-visibility-fix">
+/* Hidden completion cards must remain hidden until the level is actually complete. */
+#finish[hidden]{display:none!important}
 </style></head><body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div><div class="wrap">
 <header class="top"><div class="topbar"><div class="brand">GEI DAM LEARNING ACADEMY · DAY 5</div><div class="controls"><button class="control" id="theme" type="button">🌙 Dark Mode</button><select class="skin" id="skin" aria-label="Choose Academy skin"><option value="academic">🎓 Academic</option><option value="journal">📓 Journal</option><option value="museum">🏛️ Museum</option><option value="blueprint">📐 Blueprint</option><option value="obsidian">🌌 Obsidian</option></select></div></div></header>
@@ -333,5 +336,33 @@ function start(){
  refresh();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script><script id="gei-completion-link-guard">
+(function(){
+'use strict';
+var KEY='gei-academy-state-v1', LEVEL=5;
+function read(){
+ try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}
+}
+function ready(){
+ var finish=document.getElementById('finish');
+ if(!finish)return;
+ var s=read(), completed=Array.isArray(s.completed)&&s.completed.indexOf(LEVEL)!==-1;
+ if(!completed){
+   finish.hidden=true;
+   finish.setAttribute('hidden','');
+   finish.style.setProperty('display','none','important');
+   var next=finish.querySelector('a[href*="level6.html"]');
+   if(next){
+     next.setAttribute('aria-disabled','true');
+     next.addEventListener('click',function(e){
+       e.preventDefault();
+       e.stopImmediatePropagation();
+       if(window.GEIMascot&&window.GEIMascot.wrong)window.GEIMascot.wrong('🔒 Complete all six missions in order first.');
+     },true);
+   }
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();
 </script></body></html>
