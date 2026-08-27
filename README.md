@@ -1,46 +1,19 @@
-# GEI Dam Learning Academy — Six-Day Foundation Release
+# GEI Dam Learning Academy
 
-## Milestone
-**Day 6 · The System** completes the six-day Genesis foundation.
+Six-level Genesis Engineered Interpretations Academy.
 
-### Core roadmap
-1. Genesis / Light
-2. Dam / Firmament
-3. Reservoir
-4. Operations
-5. The Mill
-6. The System
+- `index.html` — Academy dashboard
+- `level1.html` — Genesis / Light
+- `level2.html` — Dam / Firmament
+- `level3.html` — Reservoir
+- `level4.html` — Operations
+- `level5.html` — The Mill
+- `level6.html` — The System
 
-Advanced missions 07–38 remain outside this foundation build.
+Level 5 completion links directly to Level 6. The dashboard roadmap unlocks Level 6 after Day 5 completion. The Explorer ID editor collapses into a compact profile bar after saving and can be reopened with **✏️ Edit**.
 
-## Level 4 learning goals
-Students learn:
-- what a gate does
-- how opening a gate permits movement
-- why controlled release matters
-- a simple operation sequence
-- how source → reservoir → gate → moving water connects the system
+The six-level foundation uses `gei-academy-state-v1` localStorage progression, responsive/mobile presentation, light/dark mode, skins, mascot reactions, success sounds, and Level 6 System Lab.
 
-The lesson is designed to stay approachable for a fifth-grade learner while preserving the GEI engineering-learning framework.
+Keep the HTML files together for static GitHub Pages or Hostinger deployment.
 
-## Files
-- `index.html` — Academy home, identity, dashboard, roadmap, unlock logic
-- `level1.html` — Day 1 Genesis / Light
-- `level2.html` — Day 2 Dam / Firmament
-- `level3.html` — Day 3 Reservoir
-- `level4.html` — Day 4 Operations
-- `level5.html` — Day 5 The Mill
-- `level6.html` — Day 6 The System
-- `GEI-ACADEMY-RELEASE-CHECKLIST.md` — release verification checklist
-
-## Persistence
-The academy uses the existing localStorage key:
-`gei-academy-state-v1`
-
-Level 5 and Level 6 add `level5Tasks` and `level6Tasks` without changing the existing PayPal system.
-
-## PayPal safety
-No PayPal credentials, checkout code, or backend configuration is included in or modified by this learning milestone. Keep the existing PayPal integration separate.
-
-## Deployment
-For a static GitHub/Hostinger deployment, upload the extracted files so `index.html` and the level files are in the same directory. Do not upload a ZIP as the site's root unless the host specifically extracts it for you.
+Live external backend/payment health and release-version checks must be verified separately from this static package.

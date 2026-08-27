@@ -104,3 +104,20 @@
 17. Confirm no Level 7 link exists.
 18. Confirm PayPal checkout/backend remains untouched.
 19. External PayPal release-version consistency check: verify the live PayPal health/status endpoint and service endpoint report the same current Academy release version. This cannot be proven from these static files alone.
+
+## Final Presentation Rollout — 2026-08-26
+
+- [x] Compact Explorer ID after name save
+- [x] Explorer ID Edit control reopens the editor
+- [x] Compact profile displays avatar, name, level, and XP
+- [x] Level 5 completion links directly to Level 6
+- [x] Academy roadmap includes functional Level 6 unlock state
+- [x] Level 6 remains protected until Level 5 is complete
+- [x] Splash/GEI mascot present across Levels 1–6
+- [x] Success/reaction animations present
+- [x] Level 6 NEXT → flow and sound retained
+- [x] Level 6 completion celebration retained
+- [x] No Level 7 core link introduced
+- [x] JavaScript syntax checks passed for Levels 1–6 and index
+- [x] Internal HTML-link audit passed with no missing local targets
+
