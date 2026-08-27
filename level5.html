@@ -164,7 +164,30 @@ questions.forEach(function(q){
  });
 });
 }function initMill(){var power=0,send=document.getElementById("sendWater"),val=document.getElementById("powerValue"),bar=document.getElementById("powerBar"),wheel=document.getElementById("millWheel"),flow=document.getElementById("millFlow");if(!send)return;send.onclick=function(){if(power>=75)return;power=Math.min(100,power+25);if(val)val.textContent=power;if(bar)bar.style.width=power+"%";if(wheel)wheel.style.animation=power?"spin .8s linear infinite":"";if(flow)flow.style.opacity=power?"1":"0";sound("gate");if(power>=75){send.disabled=true;var fb=document.getElementById("f3");if(fb){fb.textContent="🎉 Correct! The wheel reaches 75% power.";fb.className="feedback good"}addMission(3)}}}
-function complete(){if(state.completed.indexOf(5)!==-1)return;if(earned.length<6)return;state.completed.push(5);state.level5Tasks=[1,2,3,4,5,6];state.xp=Math.max(750,state.xp);write();sound("level");confetti();var f=document.getElementById("finish");if(f){f.hidden=false;var n=document.getElementById("finishName");if(n)n.textContent=state.name||"Explorer";f.scrollIntoView({behavior:"smooth",block:"center"})}}
+function complete(){
+ if(earned.length<6)return;
+ var firstCompletion=state.completed.indexOf(5)===-1;
+ if(firstCompletion){
+  state.completed.push(5);
+  state.level5Tasks=[1,2,3,4,5,6];
+  state.xp=Math.max(750,state.xp);
+  write();
+  sound("level");
+  confetti();
+ }
+ mascotHide();
+ var missions=document.querySelectorAll(".mission");
+ for(var i=0;i<missions.length;i++){missions[i].classList.add("gei-hidden");missions[i].classList.remove("current")}
+ var f=document.getElementById("finish");
+ if(f){
+  f.hidden=false;
+  f.removeAttribute("hidden");
+  var n=document.getElementById("finishName");
+  if(n)n.textContent=state.name||"Explorer";
+  f.classList.add("celebrate");
+  setTimeout(function(){if(f)f.scrollIntoView({behavior:"smooth",block:"center"})},50);
+ }
+}
 function init(){var p=document.getElementById("player");if(p)p.textContent=state.name||"Explorer";var xp=document.getElementById("xp");if(xp)xp.textContent=state.xp;visual();initMill();bindQuestions();var pending=[1,2,3,4,5,6].find(function(id){return earned.indexOf(id)===-1});document.querySelectorAll(".mission").forEach(function(x){x.classList.add("gei-hidden");x.classList.remove("current")});var target=document.getElementById("m"+(pending||6));if(target){target.classList.remove("gei-hidden");target.classList.add("current")}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
