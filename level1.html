@@ -543,7 +543,7 @@ function renderQuestion(){
             els.nextRow.hidden=true;
             els.nextBtn.disabled=true;
             setTimeout(function(){
-              if(cur<Q.length-1 && earned.indexOf(cur+1)!==-1){
+              if(cur<Q.length-1){
                 if(window.GEIMascot)window.GEIMascot.hide();
                 try{sound('next')}catch(e){}
                 cur++;
