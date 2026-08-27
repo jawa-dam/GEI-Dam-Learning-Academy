@@ -312,6 +312,7 @@ function render(){
  syncFromStorage();
  A.visual(state);
  var hasName=!!A.name(state);
+ var c=A.completedCount(state);
  if(els.name)els.name.value=A.name(state);
  els.welcome.textContent=hasName?('👋 Welcome, '+A.name(state)+'!'):'👋 Welcome, Explorer!';
  els.hello.textContent=hasName?((state.avatar||'🌟')+' Your Explorer ID is saved on this device.'):'Pick an avatar and choose a username to begin the adventure!';
