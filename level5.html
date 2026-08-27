@@ -66,8 +66,31 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
 <script>
 (function(){
  var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');if(!dock||!bubble)return;
- window.GEIMascot={hide:function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},say:function(msg,kind,duration){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);dock.classList.add('show');dock.setAttribute('aria-hidden','false');clearTimeout(window.__geiMascotTimer);window.__geiMascotTimer=setTimeout(function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},duration||1400)},success:function(msg){this.say(msg||'🎉 Correct!','success',1400)},wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1400)}};GEIMascot.hide();
- document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.choice');if(!b)return;setTimeout(function(){if(b.classList.contains('correct'))GEIMascot.success();else if(b.classList.contains('wrong'))GEIMascot.wrong()},40)});
+ window.GEIMascot={
+ hide:function(){
+  clearTimeout(window.__geiMascotTimer);
+  dock.classList.remove('show','success','wrong','visible','active');
+  dock.setAttribute('aria-hidden','true');
+  dock.style.opacity='0';
+  dock.style.visibility='hidden';
+  dock.style.pointerEvents='none';
+ },
+ say:function(msg,kind,duration){
+  bubble.innerHTML=msg;
+  dock.classList.remove('success','wrong');
+  if(kind)dock.classList.add(kind);
+  dock.classList.add('show');
+  dock.setAttribute('aria-hidden','false');
+  dock.style.opacity='1';
+  dock.style.visibility='visible';
+  dock.style.pointerEvents='none';
+  clearTimeout(window.__geiMascotTimer);
+  window.__geiMascotTimer=setTimeout(function(){window.GEIMascot.hide()},duration||1100);
+ },
+ success:function(msg){this.say(msg||'🎉 Correct!','success',1100)},
+ wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1100)}
+};
+GEIMascot.hide();
 })();
 </script><script id="gei-level5-core">
 (function(){
