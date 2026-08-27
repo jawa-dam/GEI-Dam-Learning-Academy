@@ -168,6 +168,9 @@ h1,h2,h3{font-family:"Baloo 2","Quicksand",ui-rounded,sans-serif;margin:0;line-h
   body.gei-mobile-app .day6Idea{display:none!important}
 }
 @media (min-width:701px){html.gei-mobile-app body{overflow-x:hidden}}
+</style><style id="gei-finish-visibility-fix">
+/* Hidden completion cards must remain hidden until the level is actually complete. */
+#finish[hidden]{display:none!important}
 </style></head>
 <body>
 <div class="wrap">
@@ -452,6 +455,34 @@ function start(){
  refresh();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script><script id="gei-completion-link-guard">
+(function(){
+'use strict';
+var KEY='gei-academy-state-v1', LEVEL=1;
+function read(){
+ try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}
+}
+function ready(){
+ var finish=document.getElementById('finish');
+ if(!finish)return;
+ var s=read(), completed=Array.isArray(s.completed)&&s.completed.indexOf(LEVEL)!==-1;
+ if(!completed){
+   finish.hidden=true;
+   finish.setAttribute('hidden','');
+   finish.style.setProperty('display','none','important');
+   var next=finish.querySelector('a[href*="level2.html"]');
+   if(next){
+     next.setAttribute('aria-disabled','true');
+     next.addEventListener('click',function(e){
+       e.preventDefault();
+       e.stopImmediatePropagation();
+       if(window.GEIMascot&&window.GEIMascot.wrong)window.GEIMascot.wrong('🔒 Complete all six missions in order first.');
+     },true);
+   }
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();
 </script></body>
 </html>
