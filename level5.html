@@ -91,7 +91,7 @@ function addNext(card,id){
  btn.textContent="NEXT →";
  btn.onclick=function(){
   sound("next");
-  if(window.GEIMascot)window.GEIMascot.hide();
+  mascotHide();
   var target=document.getElementById("m"+(id+1));
   var missions=document.querySelectorAll(".mission");
   for(var i=0;i<missions.length;i++){missions[i].classList.add("gei-hidden");missions[i].classList.remove("current")}
@@ -100,7 +100,8 @@ function addNext(card,id){
  row.appendChild(btn);
  card.appendChild(row);
 }
-function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned.sort(function(a,b){return a-b});state.level5Tasks=earned.slice();state.xp+=25;write();reward();var card=document.getElementById("m"+id);if(card)card.classList.add("gei-success");addNext(card,id);if(earned.length===6)setTimeout(complete,650)}
+function mascotHide(){try{if(window.GEIMascot&&typeof window.GEIMascot.hide==="function")window.GEIMascot.hide()}catch(e){}var els=document.querySelectorAll(".gei-mascot,.mascot,.mascot-message,[class*='mascot']");for(var i=0;i<els.length;i++){var el=els[i];if(el.id!=="player")el.classList.remove("show","visible","active");if(el.getAttribute("aria-live"))el.setAttribute("aria-live","off")}}
+function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned.sort(function(a,b){return a-b});state.level5Tasks=earned.slice();write();reward();var card=document.getElementById("m"+id);if(card)card.classList.add("gei-success");mascotHide();addNext(card,id);if(earned.length===6)setTimeout(complete,650)}
 var questions=[
 {id:1,correct:"wheel",msg:"🎉 Correct! Moving water can push or turn a wheel."},
 {id:2,correct:"wheel",msg:"🎉 Correct! The mill uses a water-powered wheel."},
@@ -128,12 +129,12 @@ questions.forEach(function(q){
     if(fb){fb.textContent=q.msg;fb.className="feedback good"}
     sound("correct");
     addMission(q.id);
-    if(window.GEIMascot)window.GEIMascot.success("🎉 YES! That is correct!");
+    mascotHide();
    }else{
     btn.classList.add("wrong");
     if(fb){fb.textContent="Not quite — try again!";fb.className="feedback bad"}
     sound("wrong");
-    if(window.GEIMascot)window.GEIMascot.wrong("💡 Look for the clue and try again.");
+    
     setTimeout(function(){btn.classList.remove("wrong")},450);
    }
   };
