@@ -93,4 +93,25 @@ function complete(){if(state.completed.indexOf(5)!==-1)return;if(earned.length<6
 function initMill(){var power=0,send=document.getElementById('sendWater'),val=document.getElementById('powerValue'),bar=document.getElementById('powerBar'),wheel=document.getElementById('millWheel'),flow=document.getElementById('millFlow');if(!send)return;send.onclick=function(){if(power>=75)return;power=Math.min(100,power+25);if(val)val.textContent=power;if(bar)bar.style.width=power+'%';if(wheel)wheel.style.animation=power?'spin .8s linear infinite':'';if(flow)flow.style.opacity=power?'1':'0';sound('gate');if(power>=75){send.disabled=true;var fb=document.getElementById('f3');if(fb){fb.textContent='🎉 Correct! The wheel reaches 75% power.';fb.className='feedback good'}addMission(3);setTimeout(function(){var card=document.getElementById('m3');if(card)addNext(card,2)},80)}}}
 function init(){document.getElementById('player').textContent=state.name||'Explorer';document.getElementById('xp').textContent=state.xp;var theme=document.getElementById('theme'),skin=document.getElementById('skin');if(theme)theme.onclick=function(){state.theme=state.theme==='dark'?'light':'dark';write();visual();theme.textContent=state.theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode'};if(skin)skin.value=state.skin||'academic';if(skin)skin.onchange=function(){state.skin=this.value;write();visual()};visual();if(theme)theme.textContent=state.theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';initMill();bindQuestions();var pending=[1,2,3,4,5,6].find(function(id){return earned.indexOf(id)===-1});document.querySelectorAll('.mission').forEach(function(x){x.classList.add('gei-hidden')});var target=document.getElementById('m'+(pending||6));if(target){target.classList.remove('gei-hidden');target.classList.add('current')}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();</script></body></html>
+})();</script><script id="gei-shared-controls">
+(function(){
+'use strict';
+function boot(){
+ var theme=document.getElementById('theme'),skin=document.getElementById('skin'),root=document.documentElement;
+ if(!theme&&!skin)return;
+ var KEY='gei-academy-state-v1';
+ function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+ function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+ function apply(){
+  var s=read(),t=s.theme==='dark'?'dark':'light',k=s.skin||'academic';
+  root.setAttribute('data-theme',t);root.setAttribute('data-skin',k);
+  if(theme)theme.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+  if(skin)skin.value=k;
+ }
+ if(theme)theme.onclick=function(){var s=read();s.theme=s.theme==='dark'?'light':'dark';save(s);apply()};
+ if(skin)skin.onchange=function(){var s=read();s.skin=this.value||'academic';save(s);apply()};
+ apply();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script></body></html>
