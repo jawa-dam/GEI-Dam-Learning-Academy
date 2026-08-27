@@ -260,7 +260,7 @@ function bind(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
 })();
-</script></head>
+</script><style id="gei-level1-no-next-ui">.nextRow,#nextRow{display:none!important}</style></head>
 <body>
 <div class="wrap">
 
@@ -293,7 +293,7 @@ window.addEventListener('pageshow',bind);
   <div class="choices" id="choices"></div>
   <div class="feedback" id="feedback"></div>
   <div class="hint" id="hint" hidden></div>
-  <div class="nextRow" id="nextRow" hidden><button class="btn primary" id="nextBtn" type="button">Next →</button></div>
+  <div class="nextRow" id="nextRow" hidden aria-hidden="true"></div>
 </section>
 
 <section class="card" id="finish" hidden>
@@ -533,22 +533,26 @@ function renderQuestion(){
           syncBar();buildDots();
           answered=true;
           if(earned.length===6){
-            // Mission 6 has NO NEXT button. Complete immediately after the
-            // correct answer so there is no race with mascot/audio effects.
+            // Mission 6: terminal completion. No NEXT button.
             els.nextRow.hidden=true;
-            els.nextRow.setAttribute('hidden','');
-            els.nextRow.setAttribute('aria-hidden','true');
-            els.nextRow.style.setProperty('display','none','important');
             els.nextBtn.disabled=true;
-            try{say('🎉 YES! That\u2019s correct!','success')}catch(e){}
+            try{say('🎉 YES! That’s correct!','success')}catch(e){}
             complete();
           }else{
-            try{say('🎉 YES! That\u2019s correct!','success')}catch(e){}
-            els.nextRow.hidden=false;
-            els.nextRow.removeAttribute('hidden');
-            els.nextRow.removeAttribute('aria-hidden');
-            els.nextRow.style.removeProperty('display');
-            els.nextBtn.disabled=false;
+            // Auto-advance: no NEXT button in Level 1.
+            els.nextRow.hidden=true;
+            els.nextBtn.disabled=true;
+            setTimeout(function(){
+              if(cur<Q.length-1 && earned.indexOf(cur+1)!==-1){
+                if(window.GEIMascot)window.GEIMascot.hide();
+                try{sound('next')}catch(e){}
+                cur++;
+                answered=false;
+                renderQuestion();
+                buildDots();
+                syncBar();
+              }
+            },320);
           }
         }else{
           b.classList.add('wrong');
