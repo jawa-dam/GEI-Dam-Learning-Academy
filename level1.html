@@ -171,6 +171,10 @@ h1,h2,h3{font-family:"Baloo 2","Quicksand",ui-rounded,sans-serif;margin:0;line-h
 </style><style id="gei-finish-visibility-fix">
 /* Hidden completion cards must remain hidden until the level is actually complete. */
 #finish[hidden]{display:none!important}
+</style><style id="gei-next-mascot-fix">
+/* Hidden NEXT controls must stay hidden even in Mobile App Mode. */
+.nextRow[hidden], .gei-next-row[hidden]{display:none!important}
+.gei-mascot-fade{opacity:0!important;transform:translateY(10px) scale(.96)!important;pointer-events:none!important;transition:opacity .35s ease,transform .35s ease!important}
 </style></head>
 <body>
 <div class="wrap">
@@ -261,7 +265,34 @@ function reward(){var r=document.getElementById('reward');r.classList.remove('sh
 
 /* ---- mascot ---- */
 var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');
-function say(msg,kind){bubble.textContent=msg;dock.classList.remove('success','wrong');if(kind){void dock.offsetWidth;dock.classList.add(kind)}}
+/* Local mascot controller: never let a missing external mascot API block the lesson flow. */
+window.GEIMascot=window.GEIMascot||{};
+window.GEIMascot.hide=function(){
+  if(!dock)return;
+  dock.classList.add('gei-mascot-fade');
+  setTimeout(function(){if(dock)dock.style.visibility='hidden'},360);
+};
+window.GEIMascot.show=function(){
+  if(!dock)return;
+  dock.style.visibility='visible';
+  dock.classList.remove('gei-mascot-fade');
+};
+window.GEIMascot.wrong=function(msg){
+  if(!dock||!bubble)return;
+  bubble.textContent=msg||'💡 Try again!';
+  window.GEIMascot.show();
+  dock.classList.remove('success','wrong');
+  void dock.offsetWidth;
+  dock.classList.add('wrong');
+  setTimeout(function(){window.GEIMascot.hide()},1400);
+};
+function say(msg,kind){
+  if(!dock||!bubble)return;
+  bubble.textContent=msg;
+  window.GEIMascot.show();
+  dock.classList.remove('success','wrong');
+  if(kind){void dock.offsetWidth;dock.classList.add(kind)}
+}
 
 /* ---- questions ---- */
 var Q=[
@@ -318,6 +349,7 @@ function syncBar(){
 
 function renderQuestion(){
   els.nextRow.hidden=true;
+  els.nextRow.style.setProperty('display','none','important');
   if(window.GEIMascot)window.GEIMascot.hide();
   var i=cur,q=Q[i];
   answered=earned.indexOf(i+1)!==-1;
@@ -341,7 +373,7 @@ function renderQuestion(){
     answered=true;
     els.feedback.textContent=q.msg;els.feedback.className='feedback good';
     if(q.hint)els.hint.hidden=false;
-    if(i<Q.length-1){els.nextRow.hidden=false}
+    if(i<Q.length-1){els.nextRow.hidden=false;els.nextRow.style.removeProperty('display')}
   }else{
     els.choices.querySelectorAll('.choice').forEach(function(b){
       b.onclick=function(){
@@ -360,9 +392,11 @@ function renderQuestion(){
           answered=true;
           if(earned.length===6){
             els.nextRow.hidden=true;
+            els.nextRow.style.setProperty('display','none','important');
             setTimeout(complete,700);
           }else{
             els.nextRow.hidden=false;
+            els.nextRow.style.removeProperty('display');
             els.nextBtn.disabled=false;
           }
         }else{
@@ -388,6 +422,7 @@ els.nextBtn.onclick=function(){
 function complete(){
   els.missionCard.classList.add('gei-hidden');
   els.nextRow.hidden=true;
+  els.nextRow.style.setProperty('display','none','important');
   if(state.completed.indexOf(1)===-1)state.completed.push(1);
   state.xp=Math.max(150,state.xp);
   state.level1Tasks=[1,2,3,4,5,6];
