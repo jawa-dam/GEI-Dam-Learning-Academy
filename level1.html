@@ -247,6 +247,8 @@ function syncBar(){
 }
 
 function renderQuestion(){
+  els.nextRow.hidden=true;
+  if(window.GEIMascot)window.GEIMascot.hide();
   var i=cur,q=Q[i];
   els.mNum.textContent=String(i+1);
   els.mTag.textContent=q.tag;
@@ -281,7 +283,7 @@ function renderQuestion(){
           writeState(state);
           els.missionCard.classList.add('celebrate');
           reward();syncBar();buildDots();
-          say('🎉 YES! That\u2019s correct! Ready for the next mission?','success');
+          say('🎉 YES! That\u2019s correct!','success');setTimeout(function(){if(window.GEIMascot)window.GEIMascot.hide()},900);
           if(earned.length===6){
             setTimeout(complete,700);
           }else{
@@ -301,6 +303,8 @@ function renderQuestion(){
 }
 
 els.nextBtn.onclick=function(){
+  if(window.GEIMascot)window.GEIMascot.hide();
+  sound('next');
   if(cur<Q.length-1){cur++;renderQuestion();buildDots();syncBar();els.missionCard.scrollIntoView({behavior:'smooth',block:'start'})}
 };
 
@@ -312,6 +316,7 @@ function complete(){
   sound('level');
   els.finish.hidden=false;
   els.finish.scrollIntoView({behavior:'smooth',block:'center'});
+  if(window.GEIMascot)window.GEIMascot.hide();
   syncBar();
 }
 
