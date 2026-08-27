@@ -188,6 +188,19 @@ body.gei-mobile-app .nextRow[aria-hidden="true"]{
   pointer-events:none!important;
   transition:opacity .4s ease,transform .4s ease!important;
 }
+</style><style id="gei-level1-complete-screen-fix">
+/* A completed Level 1 must show ONLY the completion screen. */
+html.gei-level1-complete #missionCard,
+body.gei-level1-complete #missionCard,
+html.gei-level1-complete .missionCard{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+html.gei-level1-complete #finish{
+  display:flex!important;
+  visibility:visible!important;
+}
 </style></head>
 <body>
 <div class="wrap">
@@ -353,7 +366,34 @@ var els={player:$('player'),xp:$('xp'),xpbar:$('xpbar'),progressText:$('progress
 
 els.player.textContent=state.name;els.finishName.textContent=state.name;
 
-var earned=[];for(var ei=1;ei<=6;ei++){if(state.level1Tasks.indexOf(ei)!==-1)earned.push(ei);else break;}state.level1Tasks=earned.slice();writeState(state);
+function showCompletedScreen(){
+  document.documentElement.classList.add('gei-level1-complete');
+  document.body.classList.add('gei-level1-complete');
+  els.missionCard.hidden=true;
+  els.missionCard.setAttribute('hidden','');
+  els.missionCard.style.setProperty('display','none','important');
+  els.missionCard.style.setProperty('visibility','hidden','important');
+  els.nextRow.hidden=true;
+  els.nextRow.setAttribute('aria-hidden','true');
+  els.nextBtn.disabled=true;
+  els.finish.hidden=false;
+  els.finish.removeAttribute('hidden');
+  els.finish.style.setProperty('display','flex','important');
+}
+var earned=[];
+/* Progress is strictly sequential. If Level 1 is not officially complete,
+   only the contiguous prefix 1..5 can determine the starting mission. */
+for(var ei=1;ei<=6;ei++){
+  if(state.level1Tasks.indexOf(ei)!==-1)earned.push(ei);else break;
+}
+if(state.completed.indexOf(1)===-1 && earned.length>=6){
+  earned=earned.slice(0,5);
+  state.level1Tasks=earned.slice();
+  writeState(state);
+}else{
+  state.level1Tasks=earned.slice();
+  writeState(state);
+}
 var cur=Math.min(earned.length,5);
 var answered=false; // index of question currently shown
 
@@ -445,6 +485,7 @@ els.nextBtn.onclick=function(){
 };
 
 function complete(){
+  showCompletedScreen();
   els.missionCard.classList.add('gei-hidden');
   els.nextRow.hidden=true;
   els.nextRow.setAttribute('aria-hidden','true');
@@ -467,9 +508,9 @@ visual();
 
 if(state.completed.indexOf(1)!==-1){
   earned=[1,2,3,4,5,6];
+  showCompletedScreen();
   els.missionCard.classList.add('gei-hidden');
   els.nextRow.hidden=true;
-  els.finish.hidden=false;
   els.progressText.textContent='Level 1 complete';
   if(window.GEIMascot)window.GEIMascot.hide();
 }else{
