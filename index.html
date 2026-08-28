@@ -570,18 +570,23 @@ function initGEIAccordions(){
   btn.dataset.geiAccordionBound='1';
   btn.addEventListener('click',function(e){
    e.preventDefault();e.stopPropagation();
-   var closed=acc.classList.toggle('closed');
-   body.style.display=closed?'none':'block';
-   body.setAttribute('aria-hidden',String(closed));
-   btn.setAttribute('aria-expanded',String(!closed));
+   var willOpen=acc.classList.contains('closed');
+   if(willOpen){
+    document.querySelectorAll('.geiDashboardAccordion').forEach(function(other){
+     if(other===acc)return;
+     other.classList.add('closed');
+     var ob=other.querySelector(':scope > button'), odb=other.querySelector(':scope > .body');
+     if(odb){odb.style.display='none';odb.setAttribute('aria-hidden','true');}
+     if(ob)ob.setAttribute('aria-expanded','false');
+    });
+   }
+   acc.classList.toggle('closed',!willOpen);
+   body.style.display=willOpen?'block':'none';
+   body.setAttribute('aria-hidden',String(!willOpen));
+   btn.setAttribute('aria-expanded',String(willOpen));
   },true);
  });
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initGEIAccordions);else initGEIAccordions();
-})();
-</script>
-(function(){
-'use strict';
 function boot(){
  document.documentElement.classList.add('gei-dashboard-app');
  document.body.classList.add('gei-dashboard-app');
