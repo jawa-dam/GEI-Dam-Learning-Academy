@@ -515,6 +515,18 @@ els.edit.addEventListener('click',function(){els.idForm.style.display='block';el
 els.openLevel.addEventListener('click',function(e){
   state=readState();
   if(!state.name){e.preventDefault();sound('wrong');els.hello.textContent='🔐 Please save your username before starting.';els.idForm.style.display='block';els.chip.classList.remove('show');els.name.focus();return}
+  if(state.completed.length>=6){
+    e.preventDefault();
+    var vault=document.getElementById('gei-reward-vault');
+    var vaultBtn=vault&&vault.querySelector(':scope > button');
+    if(vaultBtn){
+      var isClosed=vault.classList.contains('closed');
+      if(isClosed)vaultBtn.click();
+      vault.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+    sound('level');
+    return;
+  }
   sound('level');
 });
 els.theme.addEventListener('click',function(){state=readState();state.theme=state.theme==='dark'?'light':'dark';writeState(state);render()});
