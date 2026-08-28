@@ -220,6 +220,72 @@ html.gei-compact .foot{font-size:.68rem!important;line-height:1.25!important;mar
  body.gei-dashboard-app .foot{display:none!important}
  body.gei-dashboard-app .gei-certificate{max-height:70dvh!important;overflow:auto}
 }
+</style><style id="gei-dashboard-frame-overflow-fix">
+/* Final dashboard frame fix: keep every section, including the accordion,
+   inside one scrollable mobile viewport instead of placing the accordion
+   below a locked 100dvh flex column. */
+@media(max-width:700px){
+  html.gei-dashboard-app,
+  html.gei-dashboard-app body{
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    max-height:none!important;
+    overflow:hidden!important;
+  }
+  body.gei-dashboard-app{
+    position:static!important;
+    inset:auto!important;
+  }
+  body.gei-dashboard-app .wrap{
+    position:relative!important;
+    width:100%!important;
+    height:100dvh!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+    margin:0!important;
+    padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-y:contain!important;
+    display:block!important;
+    box-sizing:border-box!important;
+  }
+  body.gei-dashboard-app .topbar,
+  body.gei-dashboard-app .hero,
+  body.gei-dashboard-app #identity,
+  body.gei-dashboard-app .dashGrid,
+  body.gei-dashboard-app .geiDashboardAccordion,
+  body.gei-dashboard-app .foot{
+    flex:none!important;
+  }
+  body.gei-dashboard-app .dashGrid{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    height:auto!important;
+    min-height:0!important;
+  }
+  body.gei-dashboard-app .geiDashboardAccordion{
+    position:relative!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:6px 0!important;
+    clear:both!important;
+  }
+  body.gei-dashboard-app .geiDashboardAccordion .body{
+    max-height:min(52dvh,420px)!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body.gei-dashboard-app .geiDashboardAccordion.closed .body{
+    display:none!important;
+  }
+  body.gei-dashboard-app .foot{
+    display:none!important;
+  }
+}
 </style><style id="gei-cinematic-polish-v1">
 /* =========================================================
    GEI ACADEMY — COMPACT + CINEMATIC POLISH
