@@ -227,8 +227,23 @@ renderGate();
 document.getElementById('openGate').onclick=function(){if(gateOpen)return;gateOpen=true;sound('gate');renderGate()};
 document.getElementById('closeGate').onclick=function(){if(!gateOpen||gateClosed)return;gateClosed=true;sound('gate');renderGate();addMission(3)};
 function complete(){
+ var all=[1,2,3,4,5,6].every(function(n){return earned.indexOf(n)!==-1});
+ if(!all)return;
+ state.completed=Array.isArray(state.completed)?state.completed:[];
+ if(state.completed.indexOf(4)===-1)state.completed.push(4);
+ state.level4Tasks=[1,2,3,4,5,6];
+ state.xp=Math.max(600,Number(state.xp||0));
+ write(); sound('level'); confetti();
  document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});
- if(window.GEIMascot)window.GEIMascot.hide();if(![1,2,3,4,5,6].every(function(n){return earned.indexOf(n)!==-1}))return;state.completed.push(4);state.level4Tasks=[1,2,3,4,5,6];state.xp=Math.max(600,state.xp);write();sound('level');confetti();document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer';document.getElementById('finish').scrollIntoView({behavior:'smooth',block:'center'});sync()}
+ if(window.GEIMascot)window.GEIMascot.hide();
+ var f=document.getElementById('finish');
+ if(f){
+  f.hidden=false; f.removeAttribute('hidden'); f.style.display='block';
+  var n=document.getElementById('finishName');if(n)n.textContent=state.name||'Explorer';
+  setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},60);
+ }
+ sync();
+}
 document.getElementById('theme').onclick=function(){state.theme=state.theme==='dark'?'light':'dark';write();visual();sound('save')};document.getElementById('skin').onchange=function(){state.skin=this.value;write();visual();sound('save')};
 visual();sync();
 })();
@@ -515,4 +530,22 @@ document.addEventListener('click',function(e){
  if(a)window.GEIGameAudio.play('next');
 },true);
 })();
-</script></body></html>
+</script><script id="gei-level4-completion-watch">
+(function(){
+ function restoreCompletion(){
+  try{
+   var s=JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}');
+   var t=Array.isArray(s.level4Tasks)&&[1,2,3,4,5,6].every(function(n){return s.level4Tasks.indexOf(n)!==-1});
+   var done=(Array.isArray(s.completed)&&s.completed.indexOf(4)!==-1)||t;
+   if(done){
+    var f=document.getElementById('finish');
+    if(f){f.hidden=false;f.removeAttribute('hidden');f.style.display='block';var n=document.getElementById('finishName');if(n)n.textContent=s.name||'Explorer';}
+    document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});
+   }
+  }catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restoreCompletion);else restoreCompletion();
+ window.addEventListener('pageshow',restoreCompletion);
+})();
+</script>
+</body></html>
