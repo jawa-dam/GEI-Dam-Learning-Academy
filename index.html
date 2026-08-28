@@ -627,49 +627,51 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script><script id="gei-accordion-final-fix">
 (function(){
 'use strict';
-function initGEIAccordions(){
- document.querySelectorAll('.geiDashboardAccordion').forEach(function(acc){
-  var btn=acc.querySelector(':scope > button'), body=acc.querySelector(':scope > .body');
-  if(!btn||!body)return;
+function closeAccordion(acc){
+  if(!acc)return;
   acc.classList.add('closed');
-  body.style.display='none';
-  body.setAttribute('aria-hidden','true');
-  btn.setAttribute('aria-expanded','false');
-  if(btn.dataset.geiAccordionBound==='1')return;
-  btn.dataset.geiAccordionBound='1';
-  btn.addEventListener('click',function(e){
-   e.preventDefault();e.stopPropagation();
-   var willOpen=acc.classList.contains('closed');
-   if(willOpen){
-    document.querySelectorAll('.geiDashboardAccordion').forEach(function(other){
-     if(other===acc)return;
-     other.classList.add('closed');
-     var ob=other.querySelector(':scope > button'), odb=other.querySelector(':scope > .body');
-     if(odb){odb.style.display='none';odb.setAttribute('aria-hidden','true');}
-     if(ob)ob.setAttribute('aria-expanded','false');
-    });
-   }
-   acc.classList.toggle('closed',!willOpen);
-   body.style.display=willOpen?'block':'none';
-   body.setAttribute('aria-hidden',String(!willOpen));
-   btn.setAttribute('aria-expanded',String(willOpen));
-  },true);
- });
+  var body=acc.querySelector(':scope > .body'),btn=acc.querySelector(':scope > button');
+  if(body){body.style.display='none';body.hidden=true;body.setAttribute('aria-hidden','true');}
+  if(btn)btn.setAttribute('aria-expanded','false');
+}
+function openAccordion(acc){
+  if(!acc)return;
+  document.querySelectorAll('.geiDashboardAccordion').forEach(function(other){
+    if(other!==acc)closeAccordion(other);
+  });
+  acc.classList.remove('closed');
+  var body=acc.querySelector(':scope > .body'),btn=acc.querySelector(':scope > button');
+  if(body){body.hidden=false;body.style.display='block';body.setAttribute('aria-hidden','false');}
+  if(btn)btn.setAttribute('aria-expanded','true');
+}
+function initGEIAccordions(){
+  document.querySelectorAll('.geiDashboardAccordion').forEach(function(acc){
+    var btn=acc.querySelector(':scope > button');
+    if(!btn)return;
+    closeAccordion(acc);
+    if(btn.dataset.geiAccordionBound==='1')return;
+    btn.dataset.geiAccordionBound='1';
+    btn.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(acc.classList.contains('closed'))openAccordion(acc);
+      else closeAccordion(acc);
+    };
+  });
 }
 function boot(){
- document.documentElement.classList.add('gei-dashboard-app');
- document.body.classList.add('gei-dashboard-app');
- var root=document.documentElement;
- function refresh(){
-   if(window.matchMedia && window.matchMedia('(max-width:700px)').matches){
-     root.classList.add('gei-dashboard-app');document.body.classList.add('gei-dashboard-app');
-   }else{
-     root.classList.remove('gei-dashboard-app');document.body.classList.remove('gei-dashboard-app');
-   }
- }
- window.addEventListener('resize',refresh,{passive:true});
- window.addEventListener('orientationchange',function(){setTimeout(refresh,150)},{passive:true});
- refresh();
+  document.documentElement.classList.add('gei-dashboard-app');
+  document.body.classList.add('gei-dashboard-app');
+  initGEIAccordions();
+  var root=document.documentElement;
+  function refresh(){
+    var mobile=window.matchMedia&&window.matchMedia('(max-width:700px)').matches;
+    root.classList.toggle('gei-dashboard-app',mobile);
+    document.body.classList.toggle('gei-dashboard-app',mobile);
+  }
+  window.addEventListener('resize',refresh,{passive:true});
+  window.addEventListener('orientationchange',function(){setTimeout(refresh,150)},{passive:true});
+  refresh();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
