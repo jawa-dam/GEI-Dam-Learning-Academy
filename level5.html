@@ -232,23 +232,33 @@ function sound(k){
   var C=window.AudioContext||window.webkitAudioContext;if(!C)return;
   var a=window.__geiGameAudio||(window.__geiGameAudio=new C());
   if(a.state==="suspended")a.resume();
-  function hit(freq,dur,type,vol,delay,slide){
+  function tone(f,d,type,v,delay,slide){
    var t=a.currentTime+(delay||0),o=a.createOscillator(),g=a.createGain();
-   o.type=type||"sine";o.frequency.setValueAtTime(freq,t);
-   if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+   o.type=type||"sine";o.frequency.setValueAtTime(f,t);
+   if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);
    g.gain.setValueAtTime(.0001,t);
-   g.gain.exponentialRampToValueAtTime(vol||.07,t+.012);
-   g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-   o.connect(g).connect(a.destination);o.start(t);o.stop(t+dur+.025);
+   g.gain.exponentialRampToValueAtTime(v||.06,t+.008);
+   g.gain.exponentialRampToValueAtTime(.0001,t+d);
+   o.connect(g).connect(a.destination);o.start(t);o.stop(t+d+.02);
   }
-  if(k==="correct"){hit(440,.07,"triangle",.06,0);hit(660,.09,"sine",.07,.055);hit(880,.16,"sine",.075,.12)}
-  else if(k==="wrong"){hit(240,.08,"sawtooth",.045,0);hit(170,.16,"triangle",.04,.055)}
-  else if(k==="next"){hit(520,.06,"square",.045,0);hit(780,.10,"triangle",.06,.055);hit(1040,.12,"sine",.055,.11)}
-  else if(k==="xp"){hit(660,.07,"triangle",.055,0);hit(990,.08,"sine",.065,.055);hit(1320,.13,"sine",.07,.11);hit(1760,.18,"sine",.055,.17)}
-  else if(k==="gate"){hit(120,.09,"square",.045,0,220);hit(330,.12,"triangle",.055,.07);hit(495,.13,"sine",.05,.14)}
-  else if(k==="save"){hit(392,.07,"triangle",.04,0);hit(523,.10,"sine",.05,.06)}
-  else if(k==="level"){[330,440,554,659,784,988,1319].forEach(function(f,i){hit(f,.13,"triangle",.065,i*.07)});hit(1760,.28,"sine",.075,.52)}
-  else {hit(520,.09,"triangle",.045)}
+  if(k==="correct"){
+   tone(523,.08,"triangle",.07,0);tone(659,.09,"triangle",.075,.055);tone(784,.14,"sine",.08,.11);
+  }else if(k==="wrong"){
+   tone(220,.09,"square",.045,0,180);tone(165,.16,"triangle",.04,.07);
+  }else if(k==="next"){
+   tone(659,.07,"triangle",.06,0);tone(880,.08,"triangle",.065,.055);tone(1175,.13,"sine",.075,.11);
+  }else if(k==="xp"){
+   tone(784,.07,"triangle",.06,0);tone(988,.08,"sine",.065,.05);tone(1319,.10,"sine",.07,.10);tone(1760,.16,"sine",.06,.15);
+  }else if(k==="gate"){
+   tone(196,.10,"square",.05,0,330);tone(392,.10,"triangle",.06,.07);tone(587,.14,"sine",.065,.14);
+  }else if(k==="save"){
+   tone(523,.07,"triangle",.05,0);tone(659,.10,"sine",.055,.06);
+  }else if(k==="level"){
+   [523,659,784,988,1175,1319,1568,1760].forEach(function(f,i){tone(f,.13,"sine",.065,i*.065)});
+   tone(2093,.24,"sine",.07,.55);
+  }else{
+   tone(520,.08,"triangle",.045,0);
+  }
  }catch(e){}
 }
 function reward(){var r=document.getElementById("reward");if(r){r.classList.remove("show");void r.offsetWidth;r.classList.add("show")}}
@@ -311,7 +321,8 @@ questions.forEach(function(q){
 }
 function initMill(){var power=0,send=document.getElementById("sendWater"),val=document.getElementById("powerValue"),bar=document.getElementById("powerBar"),wheel=document.getElementById("millWheel"),flow=document.getElementById("millFlow");if(!send)return;send.onclick=function(){if(power>=75)return;power=Math.min(100,power+25);if(val)val.textContent=power;if(bar)bar.style.width=power+"%";if(wheel)wheel.style.animation=power?"spin .8s linear infinite":"";if(flow)flow.style.opacity=power?"1":"0";sound("gate");if(power>=75){send.disabled=true;var fb=document.getElementById("f3");if(fb){fb.textContent="🎉 Correct! The wheel reaches 75% power.";fb.className="feedback good"}addMission(3);advanceToNext(3)}}}
 function complete(){
- if(earned.length<6)return;
+ var all=[1,2,3,4,5,6].every(function(n){return earned.indexOf(n)!==-1});
+ if(!all)return;
  var firstCompletion=state.completed.indexOf(5)===-1;
  if(firstCompletion){
   state.completed.push(5);
@@ -322,16 +333,16 @@ function complete(){
   confetti();
  }
  mascotHide();
- var missions=document.querySelectorAll(".mission");
- for(var i=0;i<missions.length;i++){missions[i].classList.add("gei-hidden");missions[i].classList.remove("current")}
+ document.querySelectorAll(".mission").forEach(function(m){m.classList.add("gei-hidden");m.classList.remove("current")});
  var f=document.getElementById("finish");
  if(f){
   f.hidden=false;
   f.removeAttribute("hidden");
+  f.style.display="block";
+  f.classList.add("celebrate");
   var n=document.getElementById("finishName");
   if(n)n.textContent=state.name||"Explorer";
-  f.classList.add("celebrate");
-  setTimeout(function(){if(f)f.scrollIntoView({behavior:"smooth",block:"center"})},50);
+  setTimeout(function(){f.scrollIntoView({behavior:"smooth",block:"center"})},60);
  }
 }
 function init(){
@@ -544,25 +555,4 @@ function bind(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
 })();
-</script><script id="gei-top-gaming-audio">
-(function(){
-'use strict';
-window.GEIGameAudio=window.GEIGameAudio||{};
-window.GEIGameAudio.play=function(k){
- try{
-  var C=window.AudioContext||window.webkitAudioContext;if(!C)return;
-  var a=window.__geiTopAudio||(window.__geiTopAudio=new C());if(a.state==='suspended')a.resume();
-  function n(f,d,t,v,w){var q=a.currentTime+(w||0),o=a.createOscillator(),g=a.createGain();o.type=t;o.frequency.setValueAtTime(f,q);g.gain.setValueAtTime(.0001,q);g.gain.exponentialRampToValueAtTime(v,q+.01);g.gain.exponentialRampToValueAtTime(.0001,q+d);o.connect(g).connect(a.destination);o.start(q);o.stop(q+d+.02)}
-  if(k==='next'){n(523,.06,'square',.045,0);n(784,.09,'triangle',.055,.05);n(1047,.12,'sine',.06,.10)}
-  else if(k==='correct'){n(392,.07,'triangle',.045,0);n(587,.08,'sine',.055,.05);n(784,.14,'sine',.065,.11)}
-  else if(k==='wrong'){n(247,.09,'sawtooth',.04,0);n(165,.14,'triangle',.035,.06)}
-  else if(k==='level'){[392,523,659,784,988,1319,1568].forEach(function(f,i){n(f,.14,'sine',.065,i*.075)})}
-  else n(520,.08,'triangle',.04,0);
- }catch(e){}
-};
-document.addEventListener('click',function(e){
- var a=e.target.closest&&e.target.closest('#finish a.btn,.gei-next');
- if(a)window.GEIGameAudio.play('next');
-},true);
-})();
-</script></body></html><style id="gei-no-next-level5">.gei-next-row,.nextRow,.gei-next{display:none!important}</style>
+</script><style id="gei-no-next-level5">.gei-next-row,.nextRow,.gei-next{display:none!important}</style></body></html>
