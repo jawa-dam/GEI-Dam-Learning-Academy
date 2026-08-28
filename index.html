@@ -619,76 +619,52 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 render();
 })();
 </script>
-<script id="gei-compact-v2-script">
-(function(){
-var root=document.documentElement;
-function accordion(target,label,closed){
- if(!target||target.dataset.geiCompactWrapped)return;
- target.dataset.geiCompactWrapped='1';
- var wrap=document.createElement('div');wrap.className='geiDashboardAccordion'+(closed?' closed':'');
- var btn=document.createElement('button');btn.type='button';btn.innerHTML='<span>'+label+'</span><span class="chev">⌄</span>';
- var body=document.createElement('div');body.className='body';
- while(target.firstChild)body.appendChild(target.firstChild);
- 
- wrap.appendChild(btn);wrap.appendChild(body);target.parentNode.insertBefore(wrap,target);target.remove();
-}
-function setup(){
- root.classList.add('gei-compact');
- /* Turn the roadmap into an on-demand section. */
- var rail=document.querySelector('.railCard');
- if(rail&&!rail.dataset.geiCompactWrapped){
-   var wrap=document.createElement('div');wrap.className='geiDashboardAccordion closed';
-   var btn=document.createElement('button');btn.type='button';btn.innerHTML='<span>🗺️ Six-Day Build · tap to expand</span><span class="chev">⌄</span>';
-   var body=document.createElement('div');body.className='body';
-   var h=rail.querySelector('h2'),note=rail.querySelector('.railNote'),r=rail.querySelector('.rail');
-   if(h)h.remove();if(note)note.remove();if(r)body.appendChild(r);
-   
-   wrap.appendChild(btn);wrap.appendChild(body);rail.parentNode.replaceChild(wrap,rail);
- }
- /* Keep the introductory greeting visually small; the detailed roadmap is the accordion above. */
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
-})();
-</script><script id="gei-accordion-final-fix">
+<script id="gei-dashboard-accordion-controller">
 (function(){
 'use strict';
-function closeAccordion(acc){
+
+function all(){return Array.prototype.slice.call(document.querySelectorAll('.geiDashboardAccordion'));}
+function close(acc){
   if(!acc)return;
   acc.classList.add('closed');
-  var body=acc.children[1],btn=acc.children[0];
+  var body=acc.querySelector(':scope > .body'),btn=acc.querySelector(':scope > button');
   if(body){body.hidden=true;body.style.display='none';body.setAttribute('aria-hidden','true');}
   if(btn)btn.setAttribute('aria-expanded','false');
 }
-function openAccordion(acc){
+function open(acc){
   if(!acc)return;
-  document.querySelectorAll('.geiDashboardAccordion').forEach(function(other){
-    if(other!==acc)closeAccordion(other);
-  });
+  all().forEach(function(other){if(other!==acc)close(other);});
   acc.classList.remove('closed');
-  var body=acc.children[1],btn=acc.children[0];
+  var body=acc.querySelector(':scope > .body'),btn=acc.querySelector(':scope > button');
   if(body){body.hidden=false;body.style.display='block';body.setAttribute('aria-hidden','false');}
   if(btn)btn.setAttribute('aria-expanded','true');
 }
-function bind(){
-  document.querySelectorAll('.geiDashboardAccordion').forEach(function(acc){
-    var btn=acc.children[0];
-    if(!btn||btn.tagName!=='BUTTON')return;
-    closeAccordion(acc);
-    if(btn.dataset.geiSingleAccordion==='1')return;
-    btn.dataset.geiSingleAccordion='1';
-    btn.addEventListener('click',function(e){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      if(acc.classList.contains('closed'))openAccordion(acc);
-      else closeAccordion(acc);
-    },true);
-  });
+function wrapRoadmap(){
+  var rail=document.querySelector('.railCard');
+  if(!rail||rail.dataset.geiAccordionWrapped==='1')return;
+  var wrap=document.createElement('section');
+  wrap.className='geiDashboardAccordion closed';
+  wrap.setAttribute('aria-label','Six-Day Build');
+  wrap.dataset.geiAccordionWrapped='1';
+  var btn=document.createElement('button');
+  btn.type='button';btn.setAttribute('aria-expanded','false');
+  btn.innerHTML='<span>🗺️ Six-Day Build · tap to expand</span><span class="chev">⌄</span>';
+  var body=document.createElement('div');body.className='body';
+  var h=rail.querySelector('h2'),note=rail.querySelector('.railNote'),content=rail.querySelector('.rail');
+  if(h)h.remove();if(note)note.remove();if(content)body.appendChild(content);
+  wrap.appendChild(btn);wrap.appendChild(body);rail.parentNode.replaceChild(wrap,rail);
 }
-function boot(){
-  bind();
-  window.addEventListener('pageshow',bind);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+function init(){document.documentElement.classList.add('gei-compact');wrapRoadmap();all().forEach(close);}
+document.addEventListener('click',function(e){
+  var btn=e.target.closest&&e.target.closest('.geiDashboardAccordion > button');
+  if(!btn)return;
+  var acc=btn.parentElement;
+  e.preventDefault();e.stopPropagation();
+  if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+  if(acc.classList.contains('closed'))open(acc);else close(acc);
+},true);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+window.addEventListener('pageshow',init);
 })();
 </script><script id="gei-dashboard-gaming-audio">
 (function(){
