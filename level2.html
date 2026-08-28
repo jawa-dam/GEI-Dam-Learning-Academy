@@ -27,7 +27,7 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
 @media(max-width:600px){.mascotDock{right:9px;bottom:9px}.mascotBubble{font-size:.82rem;padding:8px 10px;max-width:240px}.mascotAvatar{width:50px;height:50px;font-size:1.55rem}}
 </style>
 <style id="gei-presentation-upgrade">
-.mission{padding:18px!important;margin:12px 0!important;transition:opacity .28s ease,transform .28s ease,box-shadow .28s ease}.mission.current{animation:geiMissionIn .32s ease-out}.mission.gei-success{animation:geiSuccess .65s ease-out;box-shadow:0 0 0 5px color-mix(in srgb,var(--good),transparent 78%),0 14px 40px color-mix(in srgb,var(--good),transparent 85%)}.choices{gap:7px!important;margin-top:11px!important}.choice{padding:11px 13px!important}.feedback{min-height:22px!important;margin-top:8px!important}.gei-next-row{display:flex;justify-content:flex-end;margin-top:10px}.gei-next{border:0;border-radius:14px;padding:12px 20px;background:linear-gradient(100deg,var(--accent2),var(--accent));color:#fff;font:inherit;font-weight:950;cursor:pointer;box-shadow:0 4px 0 var(--edge);animation:geiPulse 1.8s infinite}.gei-next:active{transform:translateY(2px);box-shadow:0 2px 0 var(--edge)}.gei-hidden{display:none!important}@keyframes geiMissionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@keyframes geiSuccess{50%{transform:scale(1.012)}}@keyframes geiPulse{50%{filter:brightness(1.12);transform:translateY(-1px)}}@media(max-width:700px){.mission{padding:16px!important}.card{margin:11px 0!important}}
+.mission{padding:18px!important;margin:12px 0!important;transition:opacity .28s ease,transform .28s ease,box-shadow .28s ease}.mission.current{animation:geiMissionIn .32s ease-out}.mission.gei-success{animation:geiSuccess .65s ease-out;box-shadow:0 0 0 5px color-mix(in srgb,var(--good),transparent 78%),0 14px 40px color-mix(in srgb,var(--good),transparent 85%)}.choices{gap:7px!important;margin-top:11px!important}.choice{padding:11px 13px!important}.feedback{min-height:22px!important;margin-top:8px!important}.gei-next:active{transform:translateY(2px);box-shadow:0 2px 0 var(--edge)}.gei-hidden{display:none!important}@keyframes geiMissionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@keyframes geiSuccess{50%{transform:scale(1.012)}}@keyframes geiPulse{50%{filter:brightness(1.12);transform:translateY(-1px)}}@media(max-width:700px){.mission{padding:16px!important}.card{margin:11px 0!important}}
 </style><style id="gei-mascot-visibility">.mascotDock{opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}.mascotDock.show{opacity:1;transform:none;pointer-events:auto}</style><style id="gei-compact-shared">
 /* GEI Compact Academy — presentation layer */
 .wrap{width:min(760px,94vw)!important;padding-bottom:24px!important}
@@ -46,7 +46,7 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"][data-skin="aca
 .mission h2,.missionCard h2{font-size:1.12rem!important}.mission p,.missionCard p{font-size:.9rem!important}
 .choices{gap:6px!important;margin-top:8px!important}.choice{padding:9px 11px!important;border-radius:13px!important;font-size:.9rem!important}
 .feedback{min-height:1.35em!important;margin-top:6px!important;font-size:.88rem!important}
-.gei-next-row{margin-top:8px!important}.gei-next{padding:10px 17px!important;border-radius:12px!important;font-size:.9rem!important}
+
 .builder,.reservoir,.systemLab{min-height:240px!important}
 .builder,.reservoir,.systemLab{padding:12px!important}
 .mountain,.mountainBig{font-size:3rem!important}
@@ -287,72 +287,6 @@ document.getElementById('theme').onclick=function(){state.theme=state.theme==='d
  var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');if(!dock||!bubble)return;
  window.GEIMascot={hide:function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},say:function(msg,kind,duration){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);dock.classList.add('show');dock.setAttribute('aria-hidden','false');clearTimeout(window.__geiMascotTimer);window.__geiMascotTimer=setTimeout(function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},duration||1400)},success:function(msg){this.say(msg||'🎉 Correct!','success',1400)},wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1400)}};GEIMascot.hide();
  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.choice');if(!b)return;setTimeout(function(){if(b.classList.contains('correct'))GEIMascot.success();else if(b.classList.contains('wrong'))GEIMascot.wrong()},40)});
-})();
-</script><script id="gei-reliable-next-flow">
-(function(){
-'use strict';
-function boot(){
- var level=2, key='level'+level+'Tasks', max=6;
- function read(){try{return JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}')||{}}catch(e){return {}}}
- function write(s){try{localStorage.setItem('gei-academy-state-v1',JSON.stringify(s))}catch(e){}}
- function normalize(){
-   var s=read(), raw=Array.isArray(s[key])?s[key]:[], keep=[];
-   /* Completion is based on which missions are earned, not the order in
-      which the underlying array happened to receive them. Mission 4 is a
-      builder and can legitimately be saved between other missions. */
-   for(var i=1;i<=max;i++){if(raw.indexOf(i)!==-1)keep.push(i)}
-   var changed=keep.length!==raw.length||keep.some(function(v,i){return v!==raw[i]});
-   if(changed){s[key]=keep;write(s)}
-   return keep;
- }
- var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m[1-6]$/.test(c.id)});
- if(!cards.length)return;
- function completed(){return normalize()}
- function hideAll(){cards.forEach(function(c){c.classList.add('gei-hidden');c.classList.remove('current')})}
- function show(index){
-   hideAll();
-   if(index>=0&&index<cards.length){cards[index].classList.remove('gei-hidden');cards[index].classList.add('current');setTimeout(function(){cards[index].scrollIntoView({behavior:'smooth',block:'start'})},30)}
- }
- function prefix(tasks){var n=0;while(n<max&&tasks.indexOf(n+1)!==-1)n++;return n}
- function removeNext(card){card.querySelectorAll('.gei-next-row,.nextRow').forEach(function(x){x.remove()})}
- function nextSound(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiNextAudio||(window.__geiNextAudio=new C());if(a.state==='suspended')a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
- function addNext(index,tasks){
-   if(index>=max-1)return;
-   var card=cards[index], expected=index+1;
-   removeNext(card);
-   if(tasks.indexOf(expected)===-1)return;
-   var row=document.createElement('div');row.className='gei-next-row';
-   var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';
-   b.onclick=function(){
-     var now=completed(),done=prefix(now);
-     if(done!==expected+0){if(window.GEIMascot)window.GEIMascot.wrong('🔒 Complete this mission correctly first.');return}
-     nextSound();if(window.GEIMascot)window.GEIMascot.hide();show(index+1);sync();
-   };
-   row.appendChild(b);card.appendChild(row);
- }
- function finish(){
-   hideAll();
-   var f=document.getElementById('finish');
-   if(f){f.hidden=false;f.removeAttribute('hidden')}
-   if(window.GEIMascot)window.GEIMascot.hide();
- }
- function sync(){
-   var tasks=completed(),done=prefix(tasks);
-   cards.forEach(removeNext);
-   if(done>=max){finish();return}
-   var current=done;
-   show(current);
-   addNext(current,tasks);
- }
- cards.forEach(function(card,index){
-   card.querySelectorAll('button.choice,button:not(.gei-next):not(.nextMission)').forEach(function(btn){
-     btn.addEventListener('click',function(){setTimeout(sync,120)});
-   });
- });
- sync();
- window.addEventListener('pageshow',sync);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 </script><script id="gei-shared-controls">
 (function(){
