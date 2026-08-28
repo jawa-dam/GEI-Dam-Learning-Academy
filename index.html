@@ -630,8 +630,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 function closeAccordion(acc){
   if(!acc)return;
   acc.classList.add('closed');
-  var body=acc.querySelector(':scope > .body'),btn=acc.querySelector(':scope > button');
-  if(body){body.style.display='none';body.hidden=true;body.setAttribute('aria-hidden','true');}
+  var body=acc.children[1],btn=acc.children[0];
+  if(body){body.hidden=true;body.style.display='none';body.setAttribute('aria-hidden','true');}
   if(btn)btn.setAttribute('aria-expanded','false');
 }
 function openAccordion(acc){
@@ -640,38 +640,28 @@ function openAccordion(acc){
     if(other!==acc)closeAccordion(other);
   });
   acc.classList.remove('closed');
-  var body=acc.querySelector(':scope > .body'),btn=acc.querySelector(':scope > button');
+  var body=acc.children[1],btn=acc.children[0];
   if(body){body.hidden=false;body.style.display='block';body.setAttribute('aria-hidden','false');}
   if(btn)btn.setAttribute('aria-expanded','true');
 }
-function initGEIAccordions(){
+function bind(){
   document.querySelectorAll('.geiDashboardAccordion').forEach(function(acc){
-    var btn=acc.querySelector(':scope > button');
-    if(!btn)return;
+    var btn=acc.children[0];
+    if(!btn||btn.tagName!=='BUTTON')return;
     closeAccordion(acc);
-    if(btn.dataset.geiAccordionBound==='1')return;
-    btn.dataset.geiAccordionBound='1';
-    btn.onclick=function(e){
+    if(btn.dataset.geiSingleAccordion==='1')return;
+    btn.dataset.geiSingleAccordion='1';
+    btn.addEventListener('click',function(e){
       e.preventDefault();
-      e.stopPropagation();
+      e.stopImmediatePropagation();
       if(acc.classList.contains('closed'))openAccordion(acc);
       else closeAccordion(acc);
-    };
+    },true);
   });
 }
 function boot(){
-  document.documentElement.classList.add('gei-dashboard-app');
-  document.body.classList.add('gei-dashboard-app');
-  initGEIAccordions();
-  var root=document.documentElement;
-  function refresh(){
-    var mobile=window.matchMedia&&window.matchMedia('(max-width:700px)').matches;
-    root.classList.toggle('gei-dashboard-app',mobile);
-    document.body.classList.toggle('gei-dashboard-app',mobile);
-  }
-  window.addEventListener('resize',refresh,{passive:true});
-  window.addEventListener('orientationchange',function(){setTimeout(refresh,150)},{passive:true});
-  refresh();
+  bind();
+  window.addEventListener('pageshow',bind);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
