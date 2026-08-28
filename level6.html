@@ -556,12 +556,8 @@ function addMission(id){
   document.getElementById('m'+id).classList.add('celebrate'); reward(); sync();
   if(window.GEIMascot)window.GEIMascot.success('🏆 Mission complete! You earned <strong>+25 XP</strong>.');
   var card=document.getElementById('m'+id);
-  if(id<6 && earned.length<6){
-    var row=card.querySelector('.nextRow');
-    if(!row){row=document.createElement('div');row.className='nextRow';card.appendChild(row)}
-    var btn=document.createElement('button');btn.className='nextMission';btn.type='button';btn.textContent='NEXT →';
-    btn.onclick=function(){sound('next');showMission(id+1);};row.appendChild(btn);
-  } else if(id===6){setTimeout(complete,500)}
+  if(id===6){setTimeout(complete,300);return;}
+  setTimeout(function(){showMission(id+1)},250);
 }
 
 questions.forEach(function(q){
@@ -766,7 +762,7 @@ function start(){
  document.addEventListener('click',function(e){
    if(e.target.closest && e.target.closest('button,a,.choice,.nextMission,.gei-next'))refresh();
  });
- new MutationObserver(refresh).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']});
+ new MutationObserver(function(){refresh()}).observe(document.body,{subtree:true,childList:true});
  refresh();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
