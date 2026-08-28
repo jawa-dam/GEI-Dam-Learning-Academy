@@ -258,6 +258,20 @@ body{
 @media(max-width:700px){.geiIdentityLogo{width:34px;height:34px}.geiGoldPill{padding:6px 9px;font-size:.78rem}.geiIdentity .who span{font-size:.68rem}}
 </style><style id="gei-reward-vault-home-style">
 .geiRewardGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.geiHomeReward{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;border:1px solid var(--line);border-radius:16px;padding:12px;background:rgba(255,255,255,.45)}.geiHomeIcon{font-size:2rem}.geiHomeReward span,.geiVaultLocked{font-size:.82rem;color:var(--muted);line-height:1.35}.geiVaultThumb{position:relative;width:min(250px,100%);padding:0;border:0;border-radius:13px;overflow:hidden;background:#000;cursor:pointer}.geiVaultThumb img{display:block;width:100%;height:auto}.geiVaultThumb i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-style:normal;font-size:1.8rem;line-height:52px;width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.68);color:#fff}.geiRewardModal{position:fixed;inset:0;z-index:100000;background:rgba(7,12,25,.88);display:flex;align-items:center;justify-content:center;padding:14px}.geiRewardModalBox{width:min(900px,100%);max-height:94dvh;overflow:auto;background:var(--panel,#fff);color:var(--ink,#17233d);border-radius:20px;padding:14px;position:relative}.geiRewardClose{position:absolute;right:10px;top:10px;border:0;border-radius:999px;padding:8px 11px;font-weight:900;cursor:pointer;z-index:2}.geiVideoFrame{display:block;width:min(430px,100%);height:min(76dvh,760px);margin:35px auto 0;border:0;border-radius:14px;background:#000}.geiCertificatePaper{background:#fff;color:#17233d;border:7px double #004d61;border-radius:16px;padding:38px 22px;text-align:center;margin:28px 4px 8px}.geiCertificatePaper h2{font-size:clamp(1.5rem,5vw,2.2rem);margin:16px 0}.geiCertificatePaper .certName{font-size:clamp(1.7rem,6vw,2.8rem);font-weight:950;color:#004d61}.geiPrint{display:block;margin:12px auto 4px}@media(max-width:700px){.geiRewardGrid{grid-template-columns:1fr}.geiHomeReward{padding:10px}.geiVideoFrame{height:72dvh}}
+</style><style id="gei-reward-vault-fix">
+.geiDashboardAccordion>button{position:relative;z-index:3;-webkit-tap-highlight-color:transparent}
+.geiDashboardAccordion .body{transition:max-height .22s ease,opacity .18s ease;max-height:1200px;opacity:1}
+.geiDashboardAccordion.closed .body{max-height:0;opacity:0;overflow:hidden}
+.geiDashboardAccordion:not(.closed) .chev{transform:rotate(0deg)}
+.geiRewardModal[hidden]{display:none!important}
+@media print{
+ body *{visibility:hidden!important}
+ .geiRewardModal,.geiRewardModal *{visibility:visible!important}
+ .geiRewardModal{position:static!important;background:#fff!important;padding:0!important}
+ .geiRewardModalBox{box-shadow:none!important;max-height:none!important;width:100%!important}
+ .geiRewardClose,.geiPrint{display:none!important}
+ .geiCertificatePaper{margin:0!important;page-break-inside:avoid}
+}
 </style></head>
 <body>
 <div class="wrap">
@@ -579,6 +593,99 @@ document.addEventListener('click',function(e){
  if(a.id==='theme'||a.id==='skin')return;
  window.GEIGameAudio.play(a.href?'launch':'click');
 },true);
+})();
+</script><script id="gei-reward-vault-fix-script">
+(function(){
+'use strict';
+var KEY='gei-academy-state-v1';
+var VIDEO='FetuY7WFS3M';
+
+function state(){
+  try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){return {};}
+}
+function complete(){
+  var s=state(), done=s.completed;
+  if(!Array.isArray(done)) return false;
+  return [1,2,3,4,5,6].every(function(n){return done.indexOf(n)!==-1;});
+}
+function safeName(v){
+  return String(v||'Explorer').replace(/[&<>"']/g,function(x){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x];
+  });
+}
+function closeModal(m){if(m&&m.parentNode)m.parentNode.removeChild(m);}
+function makeModal(inner){
+  var m=document.createElement('div');
+  m.className='geiRewardModal';
+  m.setAttribute('role','dialog');
+  m.setAttribute('aria-modal','true');
+  m.innerHTML='<div class="geiRewardModalBox"><button type="button" class="geiRewardClose" aria-label="Close">✕</button>'+inner+'</div>';
+  document.body.appendChild(m);
+  m.querySelector('.geiRewardClose').addEventListener('click',function(){closeModal(m)});
+  m.addEventListener('click',function(e){if(e.target===m)closeModal(m)});
+  document.addEventListener('keydown',function esc(e){
+    if(e.key==='Escape'){closeModal(m);document.removeEventListener('keydown',esc);}
+  });
+  return m;
+}
+function openCertificate(){
+  if(!complete()) return;
+  var s=state(), name=safeName(s.name), date=new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+  var m=makeModal(
+    '<div class="geiCertificatePaper">'+
+      '<div style="font-size:3.2rem">🏆</div>'+
+      '<div style="font-weight:950;letter-spacing:.12em">YALL TOO · GEI ACADEMY</div>'+
+      '<div>GENESIS ENGINEERED INTERPRETATIONS</div>'+
+      '<h2>Certificate of Completion</h2>'+
+      '<p>This certifies that</p>'+
+      '<div class="certName">'+name+'</div>'+
+      '<p>has successfully completed the <strong>Six-Day GEI Foundation Academy.</strong></p>'+
+      '<p>Completion date: '+date+'</p>'+
+      '<p>⭐ Master Builder · 150 XP</p>'+
+    '</div>'+
+    '<button type="button" class="btn primary geiPrint">⬇️ Save / Print Certificate</button>'
+  );
+  m.querySelector('.geiPrint').addEventListener('click',function(){
+    window.print();
+  });
+}
+function openVault(){
+  if(!complete()) return;
+  makeModal(
+    '<h2 style="text-align:center;margin:34px 0 6px">🎬 A\'Dam Video Vault</h2>'+
+    '<p style="text-align:center;color:var(--muted)">Six-Day Foundation unlocked.</p>'+
+    '<iframe class="geiVideoFrame" src="https://www.youtube.com/embed/'+VIDEO+'?autoplay=1&playsinline=1" title="A\'Dam Video Vault" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>'
+  );
+}
+function refreshRewards(){
+  var locked=document.getElementById('geiVaultLocked'), grid=document.getElementById('geiRewardGrid');
+  if(!locked||!grid)return;
+  var ok=complete();
+  locked.hidden=ok;
+  grid.hidden=!ok;
+}
+function setup(){
+  var acc=document.getElementById('gei-reward-vault');
+  if(!acc)return;
+  var toggle=acc.querySelector(':scope > button');
+  if(toggle){
+    toggle.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var closed=acc.classList.toggle('closed');
+      toggle.setAttribute('aria-expanded',String(!closed));
+    };
+    toggle.setAttribute('aria-expanded',String(!acc.classList.contains('closed')));
+  }
+  var cert=document.getElementById('homeCertificate');
+  var vault=document.getElementById('homeVault');
+  if(cert)cert.onclick=function(e){e.preventDefault();e.stopPropagation();openCertificate();};
+  if(vault)vault.onclick=function(e){e.preventDefault();e.stopPropagation();openVault();};
+  refreshRewards();
+  window.addEventListener('storage',refreshRewards);
+  window.addEventListener('pageshow',refreshRewards);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
 </script></body>
 </html>
