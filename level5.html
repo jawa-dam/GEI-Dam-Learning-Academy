@@ -570,7 +570,7 @@ function gold(s){return (Array.isArray(s.completed)?s.completed.length:0)*25}
 function apply(){
  var s=state(), top=document.querySelector('.topbar'); if(!top)return;
  var brand=top.querySelector('.brand');
- if(brand && !brand.querySelector('.geiIdentityLogo')){
+ if(brand && !brand.querySelector('img')){
    var img=document.createElement('img');img.className='geiIdentityLogo';img.alt='YallToo';img.src='https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-logo-vq2GKHxbTzr7g8bO.png';
    var wrap=document.createElement('div');wrap.className='geiIdentity';
    brand.parentNode.insertBefore(wrap,brand);wrap.appendChild(img);wrap.appendChild(brand);
