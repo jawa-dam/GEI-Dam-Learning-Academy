@@ -232,26 +232,7 @@ body{
 #finish .btn,#finish a.btn{position:relative!important;z-index:30!important;pointer-events:auto!important;touch-action:manipulation!important}
 #finish .nav{position:relative!important;z-index:30!important}
 </style>
-<script id="gei-finish-navigation-polish-js">
-(function(){
-function bind(){
- var f=document.getElementById('finish');if(!f)return;
- var links=f.querySelectorAll('a.btn');
- for(var i=0;i<links.length;i++){
-  var a=links[i];
-  if(a.dataset.geiBound)return;
-  a.dataset.geiBound='1';
-  a.addEventListener('touchend',function(e){
-   if(!this.href)return;
-   e.preventDefault();e.stopPropagation();
-   window.location.href=this.href;
-  },{passive:false});
- }
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-window.addEventListener('pageshow',bind);
-})();
-</script><style id="gei-level1-progression-guard">
+<style id="gei-level1-progression-guard">
 #choices .choice[disabled]{pointer-events:none!important}
 </style><style id="gei-reward-identity-v1">
 .geiIdentityLogo{width:42px;height:42px;object-fit:contain;border-radius:10px;flex:0 0 auto}
@@ -575,27 +556,35 @@ function renderQuestion(){
 }
 
 function complete(){
-  try{showCompletedScreen()}catch(e){
-    document.documentElement.classList.add('gei-level1-complete');
-    document.body.classList.add('gei-level1-complete');
-    if(els.missionCard)els.missionCard.style.setProperty('display','none','important');
-    if(els.finish){
-      els.finish.hidden=false;
-      els.finish.removeAttribute('hidden');
-      els.finish.style.setProperty('display','flex','important');
-    }
-  }
-  els.missionCard.classList.add('gei-hidden');
-  els.hidden=true;
+  /* Persist completion before any visual effect or navigation. */
+  state=readState();
   if(state.completed.indexOf(1)===-1)state.completed.push(1);
-  state.xp=Math.max(150,state.xp);
+  state.xp=Math.max(150,Number(state.xp||0));
   state.level1Tasks=[1,2,3,4,5,6];
   writeState(state);
-  try{sound('level')}catch(e){}
-  els.finish.hidden=false;
-  els.finish.scrollIntoView({behavior:'smooth',block:'center'});
-  if(window.GEIMascot)window.GEIMascot.hide();
+
+  try{showCompletedScreen()}catch(e){}
+  document.documentElement.classList.add('gei-level1-complete');
+  document.body.classList.add('gei-level1-complete');
+  if(els.missionCard){
+    els.missionCard.hidden=true;
+    els.missionCard.setAttribute('hidden','');
+    els.missionCard.style.setProperty('display','none','important');
+  }
+  if(els.finish){
+    els.finish.hidden=false;
+    els.finish.removeAttribute('hidden');
+    els.finish.style.setProperty('display','flex','important');
+    els.finish.style.setProperty('visibility','visible','important');
+    els.finish.style.setProperty('opacity','1','important');
+  }
+  els.finishName.textContent=state.name||'Explorer';
   syncBar();
+  try{confetti(120)}catch(e){}
+  try{sound('level')}catch(e){}
+  try{say('🏆 LEVEL 1 COMPLETE! Day 2 is unlocked!','success')}catch(e){}
+  try{if(window.GEIMascot)window.GEIMascot.hide()}catch(e){}
+  setTimeout(function(){try{els.finish.scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}},60);
 }
 
 function visual(){document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'light');els.theme.textContent=state.theme==='dark'?'☀️ Light':'🌙 Dark'}
@@ -656,76 +645,6 @@ new MutationObserver(function(){refresh()}).observe(document.body,{subtree:true,
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
-</script><script id="gei-completion-link-guard">
-(function(){
-'use strict';
-var KEY='gei-academy-state-v1', LEVEL=1;
-function read(){
- try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}
-}
-function ready(){
- var finish=document.getElementById('finish');
- if(!finish)return;
- var s=read(), completed=Array.isArray(s.completed)&&s.completed.indexOf(LEVEL)!==-1;
- if(!completed){
-   finish.hidden=true;
-   finish.setAttribute('hidden','');
-   finish.style.setProperty('display','none','important');
-   var next=finish.querySelector('a[href*="level2.html"]');
-   if(next){
-     next.setAttribute('aria-disabled','true');
-     next.addEventListener('click',function(e){
-       e.preventDefault();
-       e.stopImmediatePropagation();
-       if(window.GEIMascot&&window.GEIMascot.wrong)window.GEIMascot.wrong('🔒 Complete all six missions in order first.');
-     },true);
-   }
- }
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
-})();
-</script><script id="gei-completion-navigation-fix">
-(function(){
-'use strict';
-/* GEI completion navigation: completion CTA always wins over refresh/sync listeners. */
-var LEVEL=1, KEY='gei-academy-state-v1', NEXT='level2.html';
-function state(){
- try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}
-}
-function completed(){
- var s=state(), a=Array.isArray(s.completed)&&s.completed.indexOf(LEVEL)!==-1;
- var task=s['level'+LEVEL+'Tasks'];
- if(a)return true;
- return Array.isArray(task)&&[1,2,3,4,5,6].every(function(x){return task.indexOf(x)!==-1});
-}
-function go(e){
- var a=e.target&&e.target.closest?e.target.closest('a[href*="'+NEXT+'"]'):null;
- if(!a||!completed())return;
- e.preventDefault();
- e.stopPropagation();
- if(e.stopImmediatePropagation)e.stopImmediatePropagation();
- var url=new URL(NEXT,window.location.href);
- url.search='?v=20260827-flow';
- window.location.assign(url.href);
-}
-document.addEventListener('click',go,true);
-function bind(){
- var finish=document.getElementById('finish');
- if(!finish)return;
- var a=finish.querySelector('a[href*="'+NEXT+'"]');
- if(!a)return;
- a.setAttribute('data-gei-completion-next','true');
- a.href=NEXT+'?v=20260827-flow';
- a.addEventListener('click',function(e){
-   if(!completed())return;
-   e.preventDefault(); e.stopPropagation();
-   if(e.stopImmediatePropagation)e.stopImmediatePropagation();
-   window.location.assign(new URL(NEXT+'?v=20260827-flow',window.location.href).href);
- },true);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-window.addEventListener('pageshow',bind);
-})();
 </script><script id="gei-top-gaming-audio">
 (function(){
 'use strict';
@@ -746,6 +665,31 @@ document.addEventListener('click',function(e){
  var a=e.target.closest&&e.target.closest('#finish a.btn,');
  if(a)window.GEIGameAudio.play('next');
 },true);
+})();
+</script><script id="gei-completion-controller">
+(function(){
+'use strict';
+var KEY='gei-academy-state-v1', LEVEL=1, NEXT='level2.html?v=20260828-flow';
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){return {};}}
+function isComplete(){var s=read();return Array.isArray(s.completed)&&s.completed.indexOf(LEVEL)!==-1;}
+function syncCompletionUI(){
+  var finish=document.getElementById('finish'),mission=document.getElementById('missionCard');
+  if(!finish||!mission)return;
+  if(isComplete()){
+    document.documentElement.classList.add('gei-level1-complete');
+    document.body.classList.add('gei-level1-complete');
+    mission.hidden=true;mission.setAttribute('hidden','');mission.style.setProperty('display','none','important');
+    finish.hidden=false;finish.removeAttribute('hidden');finish.style.setProperty('display','flex','important');
+    var s=read(),name=document.getElementById('finishName');if(name)name.textContent=s.name||'Explorer';
+    var next=finish.querySelector('a[href*="level2.html"]');
+    if(next){next.href=NEXT;next.removeAttribute('aria-disabled');next.style.pointerEvents='auto';}
+  }else{
+    finish.hidden=true;finish.setAttribute('hidden','');finish.style.setProperty('display','none','important');
+  }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncCompletionUI);else syncCompletionUI();
+window.addEventListener('pageshow',syncCompletionUI);
+window.addEventListener('storage',function(e){if(e.key===KEY)syncCompletionUI();});
 })();
 </script></body>
 </html>
