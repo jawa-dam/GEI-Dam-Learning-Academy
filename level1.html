@@ -76,7 +76,6 @@ h1,h2,h3{font-family:"Baloo 2","Quicksand",ui-rounded,sans-serif;margin:0;line-h
 .btn{border:2px solid var(--aqua);background:var(--panel);color:var(--ink);padding:11px 16px;border-radius:13px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 0 var(--edge)}
 .btn.primary{background:linear-gradient(90deg,var(--aqua),var(--yellow));color:#12233c;border-color:transparent}
 .btn:hover{transform:translateY(-1px)}
-.nextRow{display:flex;justify-content:flex-end;margin-top:10px}
 
 .celebrate{animation:celebrate .6s ease both}
 @keyframes celebrate{0%{transform:scale(1)}35%{transform:scale(1.03) rotate(-.5deg)}70%{transform:scale(1.015) rotate(.5deg)}100%{transform:scale(1)}}
@@ -143,11 +142,7 @@ h1,h2,h3{font-family:"Baloo 2","Quicksand",ui-rounded,sans-serif;margin:0;line-h
   }
   body.gei-mobile-app .feedback{font-size:.8rem!important;line-height:1.25!important;margin-top:6px!important}
   body.gei-mobile-app .hint{font-size:.72rem!important;padding:7px!important}
-  body.gei-mobile-app .nextRow,body.gei-mobile-app .gei-next-row{margin-top:7px!important;display:flex!important;justify-content:center!important}
-  body.gei-mobile-app .nextMission,body.gei-mobile-app .gei-next{
-    min-height:42px!important;padding:8px 22px!important;font-size:.9rem!important;border-radius:13px!important;
-  }
-  body.gei-mobile-app .builder,body.gei-mobile-app .millScene,body.gei-mobile-app .systemLab,
+      body.gei-mobile-app .builder,body.gei-mobile-app .millScene,body.gei-mobile-app .systemLab,
   body.gei-mobile-app .reservoir{max-height:34vh!important}
   body.gei-mobile-app .blocks,body.gei-mobile-app .levelButtons,body.gei-mobile-app .labControls{
     gap:5px!important;margin-top:6px!important
@@ -171,14 +166,10 @@ h1,h2,h3{font-family:"Baloo 2","Quicksand",ui-rounded,sans-serif;margin:0;line-h
 </style><style id="gei-finish-visibility-fix">
 /* Hidden completion cards must remain hidden until the level is actually complete. */
 #finish[hidden]{display:none!important}
-</style><style id="gei-next-mascot-fix">
-/* Hidden NEXT controls must stay hidden even in Mobile App Mode. */
-.nextRow[hidden], .gei-next-row[hidden]{display:none!important}
-.gei-mascot-fade{opacity:0!important;transform:translateY(10px) scale(.96)!important;pointer-events:none!important;transition:opacity .35s ease,transform .35s ease!important}
 </style><style id="gei-level1-final-flow-fix">
 /* FINAL FLOW LOCK: NEXT is only visible for missions 1–5 after a correct answer. */
-body.gei-mobile-app .nextRow[hidden],
-body.gei-mobile-app .nextRow[aria-hidden="true"]{
+body.gei-mobile-app [hidden],
+body.gei-mobile-app [aria-hidden="true"]{
   display:none!important;
 }
 /* Splash's speech bubble is temporary; keep the mascot available without blocking controls. */
@@ -446,7 +437,7 @@ var Q=[
 var $=function(id){return document.getElementById(id)};
 var els={player:$('player'),xp:$('xp'),xpbar:$('xpbar'),progressText:$('progressText'),dots:$('dots'),
  missionCard:$('missionCard'),mNum:$('mNum'),mTag:$('mTag'),mTitle:$('mTitle'),mQ:$('mQ'),
- choices:$('choices'),feedback:$('feedback'),hint:$('hint'),nextRow:$('nextRow'),nextBtn:$('nextBtn'),
+ choices:$('choices'),feedback:$('feedback'),hint:$('hint'),
  finish:$('finish'),finishName:$('finishName'),theme:$('themeBtn')};
 
 els.player.textContent=state.name;els.finishName.textContent=state.name;
@@ -496,9 +487,6 @@ function renderQuestion(){
   var i=cur,q=Q[i];
   if(!q)return;
   answered=false;
-
-  els.nextRow.hidden=true;
-  els.nextBtn.disabled=true;
   els.mNum.textContent=String(i+1);
   els.mTag.textContent=q.tag;
   els.mTitle.textContent=q.title;
@@ -582,8 +570,7 @@ function complete(){
     }
   }
   els.missionCard.classList.add('gei-hidden');
-  els.nextRow.hidden=true;
-  els.nextRow.setAttribute('aria-hidden','true');
+  els.hidden=true;
   els.nextBtn.disabled=true;
   if(state.completed.indexOf(1)===-1)state.completed.push(1);
   state.xp=Math.max(150,state.xp);
@@ -604,7 +591,7 @@ if(state.completed.indexOf(1)!==-1){
   earned=[1,2,3,4,5,6];
   showCompletedScreen();
   els.missionCard.classList.add('gei-hidden');
-  els.nextRow.hidden=true;
+  els.hidden=true;
   els.progressText.textContent='Level 1 complete';
   if(window.GEIMascot)window.GEIMascot.hide();
 }else{
@@ -646,7 +633,7 @@ function start(){
  window.addEventListener('resize',refresh,{passive:true});
  window.addEventListener('orientationchange',function(){setTimeout(refresh,180)},{passive:true});
  document.addEventListener('click',function(e){
-   if(e.target.closest && e.target.closest('button,a,.choice,.nextMission,.gei-next'))refresh();
+   if(e.target.closest && e.target.closest('button,a,.choice,.nextMission,'))refresh();
  });
  /* Do not observe style/class/hidden mutations here: fit() changes styles itself, and observing them creates a mutation-feedback loop that can freeze answer progression. */
 new MutationObserver(function(){refresh()}).observe(document.body,{subtree:true,childList:true});
@@ -741,7 +728,7 @@ window.GEIGameAudio.play=function(k){
  }catch(e){}
 };
 document.addEventListener('click',function(e){
- var a=e.target.closest&&e.target.closest('#finish a.btn,.gei-next');
+ var a=e.target.closest&&e.target.closest('#finish a.btn,');
  if(a)window.GEIGameAudio.play('next');
 },true);
 })();
