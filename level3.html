@@ -267,9 +267,26 @@ setTimeout(function(){var n=document.getElementById('m'+nextId);if(n){n.classLis
 document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});var first=earned.length?Math.min(earned.length+1,6):1;document.getElementById('m'+first).classList.remove('gei-hidden');document.getElementById('m'+first).classList.add('current');
 questions.forEach(function(q){var card=document.getElementById('m'+q.id),buttons=card.querySelectorAll('.choice'),fb=document.getElementById('f'+q.id);if(earned.indexOf(q.id)!==-1){buttons.forEach(function(b){b.disabled=true;if(b.getAttribute('data-answer')===q.correct)b.classList.add('correct')});fb.textContent=q.msg;fb.className='feedback good';return}buttons.forEach(function(b){b.onclick=function(){var val=b.getAttribute('data-answer');if(val===q.correct){buttons.forEach(function(x){x.disabled=true});b.classList.add('correct');fb.textContent=q.msg;fb.className='feedback good';sound('correct');addMission(q.id)}else{b.classList.add('wrong');fb.textContent='Not quite — look at the clue and try again!';fb.className='feedback bad';sound('wrong');setTimeout(function(){b.classList.remove('wrong')},450)}}})});
 var fillButtons=document.querySelectorAll('.fillBtn'),fill=earned.indexOf(3)!==-1?75:0;function renderFill(){document.getElementById('waterLevel').style.height=fill+'%';document.getElementById('waterMeter').style.width=fill+'%';document.getElementById('f3').textContent=fill>=75?'🌊 Reservoir target reached! Great job!':'💧 Keep filling — you need 75% or more.';document.getElementById('f3').className='feedback '+(fill>=75?'good':'');if(fill>=75)fillButtons.forEach(function(x){x.disabled=true;x.classList.add('used')})}renderFill();fillButtons.forEach(function(b){b.onclick=function(){if(b.classList.contains('used'))return;b.classList.add('used');fill=Math.min(100,fill+25);sound('block');renderFill();if(fill>=75){fillButtons.forEach(function(x){x.disabled=true});addMission(3)}}});
-function complete(){
+function showCompletion(){
+ var f=document.getElementById('finish');if(!f)return;
  document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});
- if(window.GEIMascot)window.GEIMascot.hide();if(state.completed.indexOf(3)!==-1)return;if(earned.length<6)return;state.completed.push(3);state.level3Tasks=[1,2,3,4,5,6];state.xp=Math.max(450,state.xp);write();sound('level');confetti();document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer';document.getElementById('finish').scrollIntoView({behavior:'smooth',block:'center'});sync()}
+ if(window.GEIMascot)window.GEIMascot.hide();
+ f.hidden=false;f.removeAttribute('hidden');f.style.display='block';
+ var n=document.getElementById('finishName');if(n)n.textContent=state.name||'Explorer';
+}
+function complete(){
+ if(earned.length<6)return;
+ var fresh=state.completed.indexOf(3)===-1;
+ state.completed=Array.isArray(state.completed)?state.completed:[];
+ if(fresh)state.completed.push(3);
+ state.level3Tasks=[1,2,3,4,5,6];
+ state.xp=Math.max(450,state.xp);
+ write();
+ if(fresh){sound('level');confetti();}
+ showCompletion();
+ sync();
+ var f=document.getElementById('finish');if(f)setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},60);
+}
 document.getElementById('theme').onclick=function(){state.theme=state.theme==='dark'?'light':'dark';write();visual();sound('save')};document.getElementById('skin').onchange=function(){state.skin=this.value;write();visual();sound('save')};
 visual();sync();
 })();
@@ -492,5 +509,20 @@ document.addEventListener('click',function(e){
  var a=e.target.closest&&e.target.closest('#finish a.btn,.gei-next');
  if(a)window.GEIGameAudio.play('next');
 },true);
+})();
+</script><script id="gei-level3-completion-watch">
+(function(){
+ function restore(){
+  try{
+   var s=JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}');
+   var t=Array.isArray(s.level3Tasks)&&[1,2,3,4,5,6].every(function(n){return s.level3Tasks.indexOf(n)!==-1});
+   if((Array.isArray(s.completed)&&s.completed.indexOf(3)!==-1)||t){
+    var f=document.getElementById('finish');
+    if(f){f.hidden=false;f.removeAttribute('hidden');f.style.display='block';var n=document.getElementById('finishName');if(n)n.textContent=s.name||'Explorer';}
+   }
+  }catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restore);else restore();
+ window.addEventListener('pageshow',restore);
 })();
 </script></body></html>
