@@ -352,7 +352,7 @@ body{
 
 <section class="geiDashboardAccordion closed" id="gei-reward-vault">
   <button type="button" aria-expanded="false"><span>🏆🎓 A'Dam Rewards Vault · tap to expand</span><span class="chev">⌄</span></button>
-  <div class="body">
+  <div class="body" hidden>
     <div class="geiVaultLocked" id="geiVaultLocked">🔒 Complete all six foundation levels to unlock your certificate and A'Dam Video Vault.</div>
     <div class="geiRewardGrid" id="geiRewardGrid" hidden>
       <article class="geiHomeReward">
@@ -673,9 +673,14 @@ function setup(){
       e.preventDefault();
       e.stopPropagation();
       var closed=acc.classList.toggle('closed');
+      var body=acc.querySelector(':scope > .body');
+      if(body) body.hidden=closed;
       toggle.setAttribute('aria-expanded',String(!closed));
     };
-    toggle.setAttribute('aria-expanded',String(!acc.classList.contains('closed')));
+    var initialClosed=acc.classList.contains('closed');
+    var initialBody=acc.querySelector(':scope > .body');
+    if(initialBody) initialBody.hidden=initialClosed;
+    toggle.setAttribute('aria-expanded',String(!initialClosed));
   }
   var cert=document.getElementById('homeCertificate');
   var vault=document.getElementById('homeVault');
