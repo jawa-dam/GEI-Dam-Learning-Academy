@@ -259,7 +259,12 @@ var earned=state.level3Tasks.slice();
 if(state.completed.indexOf(2)===-1){document.body.innerHTML='<main class="wrap"><section class="card hero" style="margin-top:40px"><div class="eyebrow">🔒 LEVEL 3 LOCKED</div><h1>Finish Level 2 first.</h1><p>You need to complete the six Day 2 missions before entering the reservoir lesson.</p><a class="btn primary" href="level2.html?v=20260827-flow">🚀 Go to Level 2</a></section></main>';return}
 if(state.completed.indexOf(3)!==-1){document.getElementById('finish').hidden=false;document.getElementById('finishName').textContent=state.name||'Explorer'}
 function sync(){document.getElementById('player').textContent=state.name||'Explorer';document.getElementById('xp').textContent=String(state.xp);document.getElementById('xpbar').style.width=Math.min(100,(Math.min(150,state.xp-300)/150)*100)+'%';document.getElementById('progressText').textContent=earned.length>=6?'All six missions complete!':'Mission '+Math.min(earned.length+1,6)+' of 6 · +25 XP each'}
-function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned=Array.from(new Set(earned));state.level3Tasks=earned.slice();state.xp=Math.min(450,Number(state.xp||0)+25);write();document.getElementById('m'+id).classList.add('celebrate');reward();sync();if(earned.length===6)setTimeout(complete,700)}
+function addMission(id){if(earned.indexOf(id)!==-1)return;earned.push(id);earned=Array.from(new Set(earned));state.level3Tasks=earned.slice();state.xp=Math.min(450,Number(state.xp||0)+25);write();document.getElementById('m'+id).classList.add('celebrate');reward();sync();
+if(earned.length===6){setTimeout(complete,300);return;}
+var nextId=id+1;
+document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});
+setTimeout(function(){var n=document.getElementById('m'+nextId);if(n){n.classList.remove('gei-hidden');n.classList.add('current')}},250)}
+document.querySelectorAll('.mission').forEach(function(m){m.classList.add('gei-hidden');m.classList.remove('current')});var first=earned.length?Math.min(earned.length+1,6):1;document.getElementById('m'+first).classList.remove('gei-hidden');document.getElementById('m'+first).classList.add('current');
 questions.forEach(function(q){var card=document.getElementById('m'+q.id),buttons=card.querySelectorAll('.choice'),fb=document.getElementById('f'+q.id);if(earned.indexOf(q.id)!==-1){buttons.forEach(function(b){b.disabled=true;if(b.getAttribute('data-answer')===q.correct)b.classList.add('correct')});fb.textContent=q.msg;fb.className='feedback good';return}buttons.forEach(function(b){b.onclick=function(){var val=b.getAttribute('data-answer');if(val===q.correct){buttons.forEach(function(x){x.disabled=true});b.classList.add('correct');fb.textContent=q.msg;fb.className='feedback good';sound('correct');addMission(q.id)}else{b.classList.add('wrong');fb.textContent='Not quite — look at the clue and try again!';fb.className='feedback bad';sound('wrong');setTimeout(function(){b.classList.remove('wrong')},450)}}})});
 var fillButtons=document.querySelectorAll('.fillBtn'),fill=earned.indexOf(3)!==-1?75:0;function renderFill(){document.getElementById('waterLevel').style.height=fill+'%';document.getElementById('waterMeter').style.width=fill+'%';document.getElementById('f3').textContent=fill>=75?'🌊 Reservoir target reached! Great job!':'💧 Keep filling — you need 75% or more.';document.getElementById('f3').className='feedback '+(fill>=75?'good':'');if(fill>=75)fillButtons.forEach(function(x){x.disabled=true;x.classList.add('used')})}renderFill();fillButtons.forEach(function(b){b.onclick=function(){if(b.classList.contains('used'))return;b.classList.add('used');fill=Math.min(100,fill+25);sound('block');renderFill();if(fill>=75){fillButtons.forEach(function(x){x.disabled=true});addMission(3)}}});
 function complete(){
@@ -274,69 +279,6 @@ visual();sync();
  var dock=document.getElementById('mascotDock'),bubble=document.getElementById('mascotBubble');if(!dock||!bubble)return;
  window.GEIMascot={hide:function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},say:function(msg,kind,duration){bubble.innerHTML=msg;dock.classList.remove('success','wrong');if(kind)dock.classList.add(kind);dock.classList.add('show');dock.setAttribute('aria-hidden','false');clearTimeout(window.__geiMascotTimer);window.__geiMascotTimer=setTimeout(function(){dock.classList.remove('show');dock.setAttribute('aria-hidden','true')},duration||1400)},success:function(msg){this.say(msg||'🎉 Correct!','success',1400)},wrong:function(msg){this.say(msg||'💡 Almost! Try again.','wrong',1400)}};GEIMascot.hide();
  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.choice');if(!b)return;setTimeout(function(){if(b.classList.contains('correct'))GEIMascot.success();else if(b.classList.contains('wrong'))GEIMascot.wrong()},40)});
-})();
-</script><script id="gei-reliable-next-flow">
-(function(){
-'use strict';
-function boot(){
- var level=3, key='level'+level+'Tasks', max=6;
- function read(){try{return JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}')||{}}catch(e){return {}}}
- function write(s){try{localStorage.setItem('gei-academy-state-v1',JSON.stringify(s))}catch(e){}}
- function normalize(){
-   var s=read(), raw=Array.isArray(s[key])?s[key]:[], keep=[];
-   for(var i=1;i<=max;i++){if(raw.indexOf(i)!==-1)keep.push(i);else break}
-   var changed=keep.length!==raw.length||keep.some(function(v,i){return v!==raw[i]});
-   if(changed){s[key]=keep;write(s)}
-   return keep;
- }
- var cards=[].slice.call(document.querySelectorAll('.mission')).filter(function(c){return /^m[1-6]$/.test(c.id)});
- if(!cards.length)return;
- function completed(){return normalize()}
- function hideAll(){cards.forEach(function(c){c.classList.add('gei-hidden');c.classList.remove('current')})}
- function show(index){
-   hideAll();
-   if(index>=0&&index<cards.length){cards[index].classList.remove('gei-hidden');cards[index].classList.add('current');setTimeout(function(){cards[index].scrollIntoView({behavior:'smooth',block:'start'})},30)}
- }
- function prefix(tasks){var n=0;while(n<max&&tasks.indexOf(n+1)!==-1)n++;return n}
- function removeNext(card){card.querySelectorAll('.gei-next-row,.nextRow').forEach(function(x){x.remove()})}
- function nextSound(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var a=window.__geiNextAudio||(window.__geiNextAudio=new C());if(a.state==='suspended')a.resume();var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.18)}catch(e){}}
- function addNext(index,tasks){
-   if(index>=max-1)return;
-   var card=cards[index], expected=index+1;
-   removeNext(card);
-   if(tasks.indexOf(expected)===-1)return;
-   var row=document.createElement('div');row.className='gei-next-row';
-   var b=document.createElement('button');b.type='button';b.className='gei-next';b.textContent='NEXT →';
-   b.onclick=function(){
-     var now=completed(),done=prefix(now);
-     if(done!==expected+0){if(window.GEIMascot)window.GEIMascot.wrong('🔒 Complete this mission correctly first.');return}
-     nextSound();if(window.GEIMascot)window.GEIMascot.hide();show(index+1);sync();
-   };
-   row.appendChild(b);card.appendChild(row);
- }
- function finish(){
-   hideAll();
-   var f=document.getElementById('finish');
-   if(f){f.hidden=false;f.removeAttribute('hidden')}
-   if(window.GEIMascot)window.GEIMascot.hide();
- }
- function sync(){
-   var tasks=completed(),done=prefix(tasks);
-   cards.forEach(removeNext);
-   if(done>=max){finish();return}
-   var current=done;
-   show(current);
-   addNext(current,tasks);
- }
- cards.forEach(function(card,index){
-   card.querySelectorAll('button.choice,button:not(.gei-next):not(.nextMission)').forEach(function(btn){
-     btn.addEventListener('click',function(){setTimeout(sync,120)});
-   });
- });
- sync();
- window.addEventListener('pageshow',sync);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 </script><script id="gei-shared-controls">
 (function(){
