@@ -465,8 +465,8 @@ function render(){
   var academyComplete=c>=6;
   els.nextTitle.textContent=academyComplete?'🏆 GEI Academy Mastery Complete!':'Level '+next.n+' — '+next.title;
   els.nextDesc.innerHTML=academyComplete?'🎓 Your Six-Day Foundation is complete. Your official certificate is unlocked!':' '+next.desc+' <strong>+25 XP per mission!</strong>';
-  els.openLevel.href=locked?'#':(academyComplete?'#certificate':('level'+next.n+'.html'));
-  els.openLevel.textContent=locked?'🔒 Create Username to Start':(academyComplete?'🎓 View Official Certificate':(c===0?'🚀 Start Level 1':'🚀 Continue to Level '+next.n));
+  els.openLevel.href=locked?'#':(academyComplete?'#gei-reward-vault':('level'+next.n+'.html'));
+  els.openLevel.textContent=locked?'🔒 Create Username to Start':(academyComplete?'🏆 Open Rewards Vault':(c===0?'🚀 Start Level 1':'🚀 Continue to Level '+next.n));
   els.openLevel.classList.toggle('disabled',locked);
   els.openLevel.setAttribute('aria-disabled',String(locked));
 
@@ -538,20 +538,6 @@ function setup(){
  /* Keep the introductory greeting visually small; the detailed roadmap is the accordion above. */
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
-})();
-</script><script id="gei-certificate-script">
-(function(){
-function showCert(){
- var c=document.getElementById('certificate');if(!c)return;
- var s=readState();if(s.completed.length<6)return;
- c.style.display='block';
- var n=document.getElementById('certName'),d=document.getElementById('certDate');
- if(n)n.textContent=s.name||'Explorer';
- if(d)d.textContent='Awarded '+new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
- c.scrollIntoView({behavior:'smooth',block:'center'});
-}
-window.addEventListener('hashchange',function(){if(location.hash==='#certificate')showCert()});
-document.addEventListener('DOMContentLoaded',function(){if(location.hash==='#certificate')showCert()});
 })();
 </script><script id="gei-dashboard-mobile-controller">
 (function(){
