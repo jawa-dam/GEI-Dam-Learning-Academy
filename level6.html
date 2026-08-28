@@ -287,6 +287,8 @@ window.addEventListener('pageshow',bind);
 .geiGoldPill{display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,183,3,.55);background:linear-gradient(135deg,rgba(255,193,7,.18),rgba(255,183,3,.08));color:var(--ink);border-radius:999px;padding:7px 11px;font-weight:950;white-space:nowrap;box-shadow:0 4px 14px rgba(255,183,3,.12)}
 .geiGoldPill b{color:#b47700}
 @media(max-width:700px){.geiIdentityLogo{width:34px;height:34px}.geiGoldPill{padding:6px 9px;font-size:.78rem}.geiIdentity .who span{font-size:.68rem}}
+</style><style id="gei-vault-certificate-v1">
+.geiRewards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.geiRewardCard{border:1px solid rgba(0,150,170,.22);border-radius:16px;padding:12px;text-align:center;background:rgba(255,255,255,.55);display:flex;flex-direction:column;align-items:center;gap:7px}.geiRewardIcon{font-size:2rem}.geiRewardCard span{font-size:.82rem;opacity:.78}.vaultThumb{position:relative;border:0;padding:0;background:none;width:100%;max-width:250px;cursor:pointer;border-radius:12px;overflow:hidden}.vaultThumb img{display:block;width:100%;border-radius:12px}.vaultThumb>span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:2rem;background:rgba(0,0,0,.65);color:#fff;border-radius:50%;width:52px;height:52px;line-height:52px}.geiModal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:99999;display:flex;align-items:center;justify-content:center;padding:14px}.geiModalBox{width:min(920px,100%);position:relative}.geiModal iframe{width:100%;aspect-ratio:9/16;max-height:88vh;border:0;border-radius:14px;background:#000}.geiClose{position:absolute;right:4px;top:-42px;border:0;background:#fff;color:#111;border-radius:999px;padding:8px 12px;font-weight:900;cursor:pointer}@media(max-width:700px){.geiRewards{grid-template-columns:1fr}.geiModal iframe{max-height:82vh}}
 </style></head>
 <body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div>
@@ -422,9 +424,11 @@ window.addEventListener('pageshow',bind);
   <div class="eyebrow">🏆 SIX-DAY FOUNDATION COMPLETE</div>
   <h2>Level 6 complete, <span class="player" id="finishName"></span>!</h2>
   <p>You earned <strong>150 XP</strong> on Day 6 and completed the six-day Genesis foundation. The system is now connected from source through useful power.</p>
-  <div class="nav">
-    <a class="btn primary" href="index.html">🏠 Next Step · Academy Home</a>
+  <div class="geiRewards" id="geiRewards">
+    <div class="geiRewardCard"><div class="geiRewardIcon">🎓</div><strong>Certificate Unlocked</strong><span>Your official GEI Academy certificate is ready.</span><button class="btn primary" id="downloadCertificate" type="button">⬇️ Download Certificate</button></div>
+    <div class="geiRewardCard"><div class="geiRewardIcon">🎬</div><strong>A'Dam Video Vault</strong><span>First vault video unlocked.</span><button class="vaultThumb" id="openVault" type="button"><img src="https://i.ytimg.com/vi/FetuY7WFS3M/hqdefault.jpg" alt="A'Dam Video Vault video thumbnail"><span>▶</span></button></div>
   </div>
+  <div class="nav"><a class="btn primary" href="index.html">🏠 Academy Home</a></div>
 </section>
 
 <div class="reward" id="reward">+25 XP ⭐</div>
