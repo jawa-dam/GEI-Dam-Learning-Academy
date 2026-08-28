@@ -285,12 +285,7 @@ questions.forEach(function(q){
     addMission(q.id);
     mascotHide();
     if(q.id<6){
-      var next=document.getElementById("m"+(q.id+1));
-      var ms=document.querySelectorAll(".mission");
-      for(var j=0;j<ms.length;j++){ms[j].classList.add("gei-hidden");ms[j].classList.remove("current")}
-      setTimeout(function(){
-        if(next){next.classList.remove("gei-hidden");next.classList.add("current");}
-      },250);
+      advanceToNext(q.id);
     }
    }else{
     btn.classList.add("wrong");
@@ -302,7 +297,19 @@ questions.forEach(function(q){
   };
  });
 });
-}function initMill(){var power=0,send=document.getElementById("sendWater"),val=document.getElementById("powerValue"),bar=document.getElementById("powerBar"),wheel=document.getElementById("millWheel"),flow=document.getElementById("millFlow");if(!send)return;send.onclick=function(){if(power>=75)return;power=Math.min(100,power+25);if(val)val.textContent=power;if(bar)bar.style.width=power+"%";if(wheel)wheel.style.animation=power?"spin .8s linear infinite":"";if(flow)flow.style.opacity=power?"1":"0";sound("gate");if(power>=75){send.disabled=true;var fb=document.getElementById("f3");if(fb){fb.textContent="🎉 Correct! The wheel reaches 75% power.";fb.className="feedback good"}addMission(3)}}}
+}function advanceToNext(id){
+ var nextId=id+1;
+ var next=document.getElementById("m"+nextId);
+ var ms=document.querySelectorAll(".mission");
+ for(var j=0;j<ms.length;j++){ms[j].classList.add("gei-hidden");ms[j].classList.remove("current")}
+ if(next){
+  setTimeout(function(){
+   next.classList.remove("gei-hidden");
+   next.classList.add("current");
+  },300);
+ }
+}
+function initMill(){var power=0,send=document.getElementById("sendWater"),val=document.getElementById("powerValue"),bar=document.getElementById("powerBar"),wheel=document.getElementById("millWheel"),flow=document.getElementById("millFlow");if(!send)return;send.onclick=function(){if(power>=75)return;power=Math.min(100,power+25);if(val)val.textContent=power;if(bar)bar.style.width=power+"%";if(wheel)wheel.style.animation=power?"spin .8s linear infinite":"";if(flow)flow.style.opacity=power?"1":"0";sound("gate");if(power>=75){send.disabled=true;var fb=document.getElementById("f3");if(fb){fb.textContent="🎉 Correct! The wheel reaches 75% power.";fb.className="feedback good"}addMission(3);advanceToNext(3)}}}
 function complete(){
  if(earned.length<6)return;
  var firstCompletion=state.completed.indexOf(5)===-1;
