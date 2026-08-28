@@ -260,7 +260,7 @@ function bind(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
 })();
-</script><style id="gei-level1-no-next-ui">.nextRow,#nextRow{display:none!important}</style><style id="gei-level1-progression-guard">
+</script><style id="gei-level1-progression-guard">
 #choices .choice[disabled]{pointer-events:none!important}
 </style><style id="gei-reward-identity-v1">
 .geiIdentityLogo{width:42px;height:42px;object-fit:contain;border-radius:10px;flex:0 0 auto}
@@ -301,7 +301,6 @@ window.addEventListener('pageshow',bind);
   <div class="choices" id="choices"></div>
   <div class="feedback" id="feedback"></div>
   <div class="hint" id="hint" hidden></div>
-  <div class="nextRow" id="nextRow" hidden aria-hidden="true"><button class="btn primary" id="nextBtn" type="button" tabindex="-1" aria-hidden="true">Next →</button></div>
 </section>
 
 <section class="card" id="finish" hidden>
@@ -459,9 +458,6 @@ function showCompletedScreen(){
   els.missionCard.setAttribute('hidden','');
   els.missionCard.style.setProperty('display','none','important');
   els.missionCard.style.setProperty('visibility','hidden','important');
-  els.nextRow.hidden=true;
-  els.nextRow.setAttribute('aria-hidden','true');
-  els.nextBtn.disabled=true;
   els.finish.hidden=false;
   els.finish.removeAttribute('hidden');
   els.finish.style.setProperty('display','flex','important');
@@ -502,7 +498,6 @@ function renderQuestion(){
   answered=false;
 
   els.nextRow.hidden=true;
-  els.nextRow.style.setProperty('display','none','important');
   els.nextBtn.disabled=true;
   els.mNum.textContent=String(i+1);
   els.mTag.textContent=q.tag;
@@ -575,15 +570,6 @@ function renderQuestion(){
   });
 }
 
-els.nextBtn.onclick=function(){
-  // Mission 6 is terminal; NEXT can never advance beyond it.
-  if(cur===Q.length-1)return;
-  if(!answered || earned.indexOf(cur+1)===-1)return;
-  if(window.GEIMascot)window.GEIMascot.hide();
-  sound('next');
-  if(cur<Q.length-1){cur++;renderQuestion();buildDots();syncBar();els.missionCard.scrollIntoView({behavior:'smooth',block:'start'})}
-};
-
 function complete(){
   try{showCompletedScreen()}catch(e){
     document.documentElement.classList.add('gei-level1-complete');
@@ -598,7 +584,6 @@ function complete(){
   els.missionCard.classList.add('gei-hidden');
   els.nextRow.hidden=true;
   els.nextRow.setAttribute('aria-hidden','true');
-  els.nextRow.style.setProperty('display','none','important');
   els.nextBtn.disabled=true;
   if(state.completed.indexOf(1)===-1)state.completed.push(1);
   state.xp=Math.max(150,state.xp);
