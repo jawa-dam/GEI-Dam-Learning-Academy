@@ -174,7 +174,13 @@ function bind(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
 })();
-</script></head><body>
+</script><style id="gei-reward-identity-v1">
+.geiIdentityLogo{width:42px;height:42px;object-fit:contain;border-radius:10px;flex:0 0 auto}
+.geiIdentity{display:flex;align-items:center;gap:9px;min-width:0}
+.geiGoldPill{display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,183,3,.55);background:linear-gradient(135deg,rgba(255,193,7,.18),rgba(255,183,3,.08));color:var(--ink);border-radius:999px;padding:7px 11px;font-weight:950;white-space:nowrap;box-shadow:0 4px 14px rgba(255,183,3,.12)}
+.geiGoldPill b{color:#b47700}
+@media(max-width:700px){.geiIdentityLogo{width:34px;height:34px}.geiGoldPill{padding:6px 9px;font-size:.78rem}.geiIdentity .who span{font-size:.68rem}}
+</style></head><body>
 <div class="mascotDock" id="mascotDock" aria-live="polite"><div class="mascotBubble" id="mascotBubble">🤖 I'm Splash! Let's build this system together. 💧</div><div class="mascotAvatar" aria-label="GEI Academy mascot">💧</div></div><div class="wrap">
 <header class="top"><div class="topbar"><div class="brand">GEI DAM LEARNING ACADEMY · DAY 5</div><div class="controls"><button class="control" id="theme" type="button">🌙 Dark Mode</button><select class="skin" id="skin" aria-label="Choose Academy skin"><option value="academic">🎓 Academic</option><option value="journal">📓 Journal</option><option value="museum">🏛️ Museum</option><option value="blueprint">📐 Blueprint</option><option value="obsidian">🌌 Obsidian</option></select></div></div></header>
 <section class="card hero"><div class="eyebrow">⚙️ LEVEL 5 · THE MILL</div><h1>Turn Moving Water Into Power.</h1><p>Welcome, <span class="player" id="player">Explorer</span>! Day 5 introduces the mill: moving water can make a wheel turn and that motion can become useful power.</p><div class="progressWrap"><div class="progressTop"><span>DAY 5 PROGRESS</span><span id="xp">600 XP</span></div><div class="bar"><i id="xpbar"></i></div><div class="muted" id="progressText">Mission 1 of 6 · +25 XP each</div></div></section>
@@ -555,4 +561,26 @@ function bind(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 window.addEventListener('pageshow',bind);
 })();
-</script><style id="gei-no-next-level5">.gei-next-row,.nextRow,.gei-next{display:none!important}</style></body></html>
+</script><style id="gei-no-next-level5">.gei-next-row,.nextRow,.gei-next{display:none!important}</style><script id="gei-reward-identity-script">
+(function(){
+'use strict';
+var KEY='gei-academy-state-v1';
+function state(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+function gold(s){return (Array.isArray(s.completed)?s.completed.length:0)*25}
+function apply(){
+ var s=state(), top=document.querySelector('.topbar'); if(!top)return;
+ var brand=top.querySelector('.brand');
+ if(brand && !brand.querySelector('.geiIdentityLogo')){
+   var img=document.createElement('img');img.className='geiIdentityLogo';img.alt='YallToo';img.src='https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-logo-vq2GKHxbTzr7g8bO.png';
+   var wrap=document.createElement('div');wrap.className='geiIdentity';
+   brand.parentNode.insertBefore(wrap,brand);wrap.appendChild(img);wrap.appendChild(brand);
+ }
+ var p=document.getElementById('geiGoldPill');
+ if(!p){p=document.createElement('div');p.id='geiGoldPill';p.className='geiGoldPill';p.title='GEI Gold earned through completed foundation levels';top.appendChild(p)}
+ p.innerHTML='🪙 <b>'+gold(s)+'</b> GEI GOLD';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+window.addEventListener('pageshow',apply);
+window.addEventListener('storage',apply);
+})();
+</script></body></html>
