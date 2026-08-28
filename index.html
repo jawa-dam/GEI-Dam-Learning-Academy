@@ -317,6 +317,17 @@ body{font-size:1.04rem}button,.btn,input,select,textarea{font-size:1rem}p,li{lin
 .lessonText,.lesson-body,.lesson-content,.question-text,.question,.prompt,.answer,.answerText,.choice,.option,.explanation,.feedback,.description{font-size:1.02rem!important;line-height:1.48}
 .answers button,.answer-btn,.choice,.option{font-size:1rem!important}
 @media(max-width:700px){body{font-size:1.06rem}p,li{line-height:1.46}.lessonText,.lesson-body,.lesson-content,.question-text,.question,.prompt,.answer,.answerText,.choice,.option,.explanation,.feedback,.description{font-size:1.05rem!important}.answers button,.answer-btn,.choice,.option{font-size:1.04rem!important;min-height:44px}button,.btn{font-size:1.02rem}}
+</style><style id="gei-no-scroll-mobile-app">
+html,html body{overscroll-behavior:none}
+@media(max-width:700px){
+html,body{width:100%;height:100dvh;min-height:100dvh;overflow:hidden!important}
+body{position:fixed;inset:0}
+body.gei-dashboard-app .wrap{height:100dvh;min-height:100dvh;overflow:hidden!important;padding-bottom:4px!important}
+body.gei-dashboard-app .geiDashboardAccordion .body{overflow:hidden!important;max-height:none!important}
+body.gei-dashboard-app .geiDashboardAccordion:not(.closed) .body{max-height:calc(100dvh - 150px)!important}
+body.gei-dashboard-app .geiDashboardAccordion .gate{padding:4px 0!important}
+body.gei-dashboard-app .geiDashboardAccordion .gateBody small{display:none}
+}
 </style></head>
 <body>
 <div class="wrap">
@@ -604,7 +615,7 @@ function accordion(target,label,closed){
  var btn=document.createElement('button');btn.type='button';btn.innerHTML='<span>'+label+'</span><span class="chev">⌄</span>';
  var body=document.createElement('div');body.className='body';
  while(target.firstChild)body.appendChild(target.firstChild);
- btn.onclick=function(){wrap.classList.toggle('closed')};
+ 
  wrap.appendChild(btn);wrap.appendChild(body);target.parentNode.insertBefore(wrap,target);target.remove();
 }
 function setup(){
@@ -617,7 +628,7 @@ function setup(){
    var body=document.createElement('div');body.className='body';
    var h=rail.querySelector('h2'),note=rail.querySelector('.railNote'),r=rail.querySelector('.rail');
    if(h)h.remove();if(note)note.remove();if(r)body.appendChild(r);
-   btn.onclick=function(){wrap.classList.toggle('closed')};
+   
    wrap.appendChild(btn);wrap.appendChild(body);rail.parentNode.replaceChild(wrap,rail);
  }
  /* Keep the introductory greeting visually small; the detailed roadmap is the accordion above. */
@@ -742,20 +753,7 @@ function setup(){
   var acc=document.getElementById('gei-reward-vault');
   if(!acc)return;
   var toggle=acc.querySelector(':scope > button');
-  if(toggle){
-    toggle.onclick=function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      var closed=acc.classList.toggle('closed');
-      var body=acc.querySelector(':scope > .body');
-      if(body) body.hidden=closed;
-      toggle.setAttribute('aria-expanded',String(!closed));
-    };
-    var initialClosed=acc.classList.contains('closed');
-    var initialBody=acc.querySelector(':scope > .body');
-    if(initialBody) initialBody.hidden=initialClosed;
-    toggle.setAttribute('aria-expanded',String(!initialClosed));
-  }
+  if(toggle){ toggle.dataset.geiRewardAccordion='1'; }
   var cert=document.getElementById('homeCertificate');
   var vault=document.getElementById('homeVault');
   if(cert)cert.onclick=function(e){e.preventDefault();e.stopPropagation();openCertificate();};
