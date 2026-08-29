@@ -27,15 +27,15 @@
   --track:rgba(14,36,56,.08);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;overscroll-behavior:none;background:var(--bg)}
-body{font-family:"Nunito",ui-rounded,system-ui,sans-serif;color:var(--ink);touch-action:pan-x pan-y}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;background:var(--bg)}
+body{position:fixed;inset:0;font-family:"Nunito",ui-rounded,system-ui,sans-serif;color:var(--ink);touch-action:pan-x pan-y}
 .dispf{font-family:"Rajdhani","Nunito",sans-serif}
 .monof{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
 a{color:inherit}
 button{font-family:inherit}
 
 .phoneOuter{
-  min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;
+  height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px;
   background:
     radial-gradient(circle at 15% 8%,color-mix(in srgb,var(--aqua),transparent 84%),transparent 40%),
     radial-gradient(circle at 90% 88%,color-mix(in srgb,var(--brass),transparent 86%),transparent 38%),
@@ -54,9 +54,9 @@ button{font-family:inherit}
 
 /* ---------- topbar ---------- */
 .topbar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
-  padding:calc(10px + env(safe-area-inset-top)) 14px 10px;border-bottom:1px solid var(--line);background:var(--panel)}
+  padding:calc(8px + env(safe-area-inset-top)) 14px 8px;border-bottom:1px solid var(--line);background:var(--panel)}
 .brandRow{display:flex;align-items:center;gap:9px;min-width:0;text-decoration:none}
-.brandRow img{width:30px;height:30px;object-fit:contain;border-radius:8px;background:#fff;flex:0 0 auto}
+.brandRow img{width:26px;height:26px;object-fit:contain;border-radius:8px;background:#fff;flex:0 0 auto}
 .brandText{min-width:0}
 .brandText b{display:block;font-size:.86rem;font-weight:700;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brandText span{display:block;font-size:.53rem;letter-spacing:.14em;color:var(--aqua);font-weight:700}
@@ -64,22 +64,22 @@ button{font-family:inherit}
 #themeBtn:active{transform:scale(.94)}
 
 /* ---------- scroll area ---------- */
-.levelScroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
-  padding:14px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.levelScroll{flex:1 1 auto;min-height:0;overflow:hidden;overscroll-behavior:none;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px}
 .levelScroll::-webkit-scrollbar{width:0}
 
 .screenHead{flex:0 0 auto;margin-bottom:2px}
 .eyebrow{display:block;font-size:.58rem;letter-spacing:.14em;color:var(--brass);font-weight:700}
-.screenHead h2{margin:2px 0 0;font-size:1.25rem;font-weight:700}
-.screenHead p{margin:4px 0 0;font-size:.78rem;color:var(--muted);font-weight:600;line-height:1.5}
+.screenHead h2{margin:2px 0 0;font-size:1.1rem;font-weight:700}
+.screenHead p{margin:2px 0 0;font-size:.72rem;color:var(--muted);font-weight:600;line-height:1.4}
 
-.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;flex:0 0 auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;flex:0 0 auto}
 
 /* ---------- mascot bar ---------- */
-.mascotBar{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.mascotBar{display:flex;align-items:center;gap:12px;padding:8px 12px}
 .mascotRow{flex:0 0 auto}
-.mascotRow svg{width:52px;height:auto;display:block}
-.speak{margin:0;font-weight:700;color:var(--muted);font-size:.82rem;line-height:1.45}
+.mascotRow svg{width:44px;height:auto;display:block}
+.speak{margin:0;font-weight:700;color:var(--muted);font-size:.78rem;line-height:1.4}
 
 /* ---------- progress card ---------- */
 .progTop{display:flex;align-items:center;gap:10px}
@@ -89,14 +89,14 @@ button{font-family:inherit}
 .progText small{display:block;font-size:.6rem;letter-spacing:.08em;color:var(--muted);font-weight:700}
 .chipDone{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.56rem;font-weight:700;letter-spacing:.08em;
   color:var(--good);border:1px solid var(--good);border-radius:999px;padding:5px 8px}
-.dayTrack{display:flex;gap:6px;margin-top:12px}
+.dayTrack{display:flex;gap:6px;margin-top:8px}
 .dayDot{flex:1;height:7px;border-radius:99px;background:var(--track);position:relative;transition:background .3s}
 .dayDot.done{background:var(--good)}
 .dayDot.cur{background:linear-gradient(90deg,var(--aqua),var(--brass))}
-.track{height:10px;background:var(--track);border-radius:99px;overflow:hidden;margin-top:10px}
+.track{height:10px;background:var(--track);border-radius:99px;overflow:hidden;margin-top:8px}
 .fill{height:100%;width:0;background:linear-gradient(90deg,var(--aqua),var(--brass));border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
-.readouts{display:flex;gap:8px;margin-top:12px}
-.readout{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:7px 12px;text-align:center;flex:1}
+.readouts{display:flex;gap:8px;margin-top:8px}
+.readout{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:5px 10px;text-align:center;flex:1}
 .readout .tag{display:block;font-size:.55rem;letter-spacing:.1em;color:var(--muted);font-weight:700}
 .readout b{display:block;font-size:1rem;font-family:"Rajdhani",sans-serif}
 
@@ -107,13 +107,13 @@ button{font-family:inherit}
 .mState{font-family:"IBM Plex Mono",monospace;font-size:.56rem;font-weight:700;letter-spacing:.1em;
   color:var(--aqua);border:1px solid var(--aqua);border-radius:999px;padding:4px 8px;white-space:nowrap}
 .mState.done{color:var(--good);border-color:var(--good)}
-.mTitle{margin:8px 0 0;font-size:1.02rem;font-weight:700}
-.lesson{margin:8px 0 0;font-size:.82rem;color:var(--muted);line-height:1.6}
-.question{margin:12px 0 10px;font-size:.92rem;font-weight:800;line-height:1.45}
-.answers{display:flex;flex-direction:column;gap:8px}
+.mTitle{margin:6px 0 0;font-size:.95rem;font-weight:700}
+.lesson{margin:6px 0 0;font-size:.78rem;color:var(--muted);line-height:1.5}
+.question{margin:10px 0 8px;font-size:.88rem;font-weight:800;line-height:1.4}
+.answers{display:flex;flex-direction:column;gap:6px}
 .answerBtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;cursor:pointer;
   background:var(--panel2);border:2px solid var(--line);border-radius:12px;color:var(--ink);
-  font:inherit;font-weight:700;font-size:.84rem;padding:10px 12px;transition:transform .1s,border-color .2s,opacity .2s}
+  font:inherit;font-weight:700;font-size:.8rem;padding:8px 10px;transition:transform .1s,border-color .2s,opacity .2s}
 .answerBtn:active{transform:scale(.985)}
 .answerBtn .aKey{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:var(--panel);border:1px solid var(--line);
   display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.05em;transition:background .2s,color .2s}
@@ -121,12 +121,12 @@ button{font-family:inherit}
 .answerBtn.ok .aKey{background:var(--good);color:#06281a;border-color:transparent}
 .answerBtn.bad{border-color:var(--bad);animation:shake .35s}
 .answerBtn.off{opacity:.45}
-.fb{min-height:1.2em;margin:10px 0 0;font-size:.78rem;font-weight:800;line-height:1.45}
+.fb{min-height:1.2em;margin:8px 0 0;font-size:.74rem;font-weight:800;line-height:1.4}
 .fb.good{color:var(--good)}
 .fb.bad{color:var(--bad)}
-.nextBtn{display:block;width:100%;margin-top:12px;text-align:center;text-decoration:none;cursor:pointer;border:0;
-  font-family:"Rajdhani",sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.02em;color:#08202f;
-  background:linear-gradient(90deg,var(--aqua),var(--brass));border-radius:14px;padding:12px 14px;
+.nextBtn{display:block;width:100%;margin-top:10px;text-align:center;text-decoration:none;cursor:pointer;border:0;
+  font-family:"Rajdhani",sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.02em;color:#08202f;
+  background:linear-gradient(90deg,var(--aqua),var(--brass));border-radius:14px;padding:10px 12px;
   box-shadow:0 5px 0 rgba(0,0,0,.2)}
 .nextBtn:active{transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,.2)}
 .nextBtn:disabled{opacity:.4;filter:saturate(.4);pointer-events:none}
@@ -181,6 +181,17 @@ button{font-family:inherit}
 
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(max-height:700px){
+  .screenHead p{display:none}
+  .mascotBar{padding:6px 12px}
+  .mascotRow svg{width:38px}
+  .levelScroll{gap:8px}
+}
+@media(max-height:640px){
+  .mascotBar{display:none}
+  .readouts{display:none}
+  .dayTrack{margin-top:6px}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -237,7 +248,7 @@ button{font-family:inherit}
     <section class="card locked" id="locked" hidden>
       <div class="lockIcon">🔒</div>
       <h3 class="dispf">Day 5 is locked</h3>
-      <p id="lockMsg">Complete Day 4 first — then this gate opens.</p>
+      <p id="lockMsg">Complete the previous day first — then this gate opens.</p>
       <a class="btnPrimary" href="index.html" style="margin-top:12px;width:100%">🏠 Back to Dashboard</a>
     </section>
 
@@ -307,8 +318,7 @@ function writeState(s){try{store&&store.setItem(KEY,JSON.stringify(s))}catch(e){
 var N=5,SHORT='THE MILL',TITLE='Turn the Mill',ICON='⚙️',XP_PER=25,XP_FLOOR=750;
 var PREV='level4.html',NEXT='level6.html',NEXT_LBL='Next: Level 6 →';
 var TASK_KEY='level5Tasks';
-var MISSIONS=[
- ['01 · Waterpower',
+var MISSIONS=[ ['01 · Waterpower',
   'Moving water carries energy. The GEI mill is where that energy is turned into useful work.',
   'What does moving water provide the mill?',
   ['Energy to do work','Light for the valley','Noise only'],
@@ -338,6 +348,7 @@ var MISSIONS=[
   'The GEI mill uses water power to…',
   ['Do useful work for the community','Empty the reservoir','Stop the dam'],
   'Water power becomes useful work.']
+
 ];
 
 /* ============ AUDIO + CONFETTI ============ */
@@ -372,7 +383,7 @@ els.theme.addEventListener('click',function(){state=readState();state.theme=stat
 
 var done=[];try{done=state[TASK_KEY].map(Number).filter(function(x){return !isNaN(x)})}catch(e){}
 var doneSet={};done.forEach(function(x){doneSet[x]=true});
-var locked=N>1?state.completed.indexOf(N-1)===-1:!state.name;
+var locked=N>1?state.completed.indexOf(N-1)===-1:false;
 var alreadyDone=state.completed.indexOf(N)!==-1;
 
 /* day track */
@@ -402,8 +413,7 @@ function renderTop(){
   els.mVal.textContent=done.length+'/6';
   els.fill.style.width=(done.length/6*100)+'%';
   els.doneChip.hidden=!alreadyDone;
-  if(!state.name)els.speak.textContent='Hi! I\u2019m Splash. Save your Explorer ID on the dashboard, then we build.';
-  else if(locked)els.speak.textContent='Day '+N+' is locked, '+nm+'. Complete Day '+(N-1)+' first!';
+  if(locked)els.speak.textContent='Day '+N+' is locked, '+nm+'. Complete Day '+(N-1)+' first!';
   else if(alreadyDone)els.speak.textContent='Day '+N+' complete, '+nm+'! Replay for practice, or push on to Day '+(N===6?'🏆 the vault':N+1)+'.';
   else els.speak.textContent=done.length===0?('Let\u2019s go, '+nm+'! '+TITLE+' — mission 1 of 6.'):('Nice work, '+nm+'! '+(6-done.length)+' mission'+(6-done.length===1?'':'s')+' left.');
 }
@@ -450,7 +460,7 @@ function completeLevel(){
   renderComplete();
   sound('level');confetti(120);
   scrollTop();
-  els.speak.textContent='Day '+N+' complete, '+state.name+'!';
+  els.speak.textContent='Day '+N+' complete, '+(state.name||'Explorer')+'!';
 }
 
 function bindMissions(){
@@ -484,10 +494,10 @@ function bindMissions(){
 
 if(locked){
   els.locked.hidden=false;
-  els.lockMsg.textContent=N===1?'Save your Explorer ID on the dashboard to begin the Academy.':'Complete Day '+(N-1)+' first — then this gate opens.';
+  els.lockMsg.textContent='Complete Day '+(N-1)+' first — then this gate opens.';
   els.missions.hidden=true;
   els.completeCard.hidden=true;
-  els.speak.textContent=N===1?'Hi! I\u2019m Splash. Save your Explorer ID on the dashboard, then we build.':'Day '+N+' is locked, '+((state.name||'Explorer'))+'. Finish Day '+(N-1)+' first!';
+  els.speak.textContent='Day '+N+' is locked, '+((state.name||'Explorer'))+'. Finish Day '+(N-1)+' first!';
   els.fill.style.width='0%';
 }else{
   renderTop();
@@ -501,7 +511,7 @@ window.addEventListener('pageshow',function(){state=readState();renderTop()});
 document.addEventListener('visibilitychange',function(){
   if(document.visibilityState!=='visible')return;
   var s2=readState();
-  var nowLocked=N>1?s2.completed.indexOf(N-1)===-1:!s2.name;
+  var nowLocked=N>1?s2.completed.indexOf(N-1)===-1:false;
   if(nowLocked!==locked)location.reload();
 });
 })();
