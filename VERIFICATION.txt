@@ -1,0 +1,10 @@
+GEI Dam Academy — Audio Wiring Verification
+
+level1.html: audio_script, click_sound, correct_sound, wrong_sound, save_sound, level_complete_sound
+level2.html: audio_script, click_sound, correct_sound, wrong_sound, save_sound, level_complete_sound
+level3.html: audio_script, click_sound, correct_sound, wrong_sound, save_sound, level_complete_sound
+level4.html: audio_script, click_sound, correct_sound, wrong_sound, save_sound, level_complete_sound
+level5.html: audio_script, click_sound, correct_sound, wrong_sound, save_sound, level_complete_sound
+level6.html: audio_script, click_sound, correct_sound, wrong_sound, save_sound, level_complete_sound
+
+Shared engine: shared_sound_api, reverb, compression, pitch_jitter, wrong_womp, level_fanfare, certificate_fanfare
