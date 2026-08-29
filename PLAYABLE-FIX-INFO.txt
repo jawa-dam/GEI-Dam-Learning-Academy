@@ -1,0 +1,23 @@
+GEI Dam Academy — PLAYABLE FIX PACKAGE
+
+IMPORTANT:
+The current GitHub main/level1.html was corrupted to an incomplete placeholder.
+This ZIP contains the complete playable level pages from the verified manual package,
+so use this package to restore the six level files.
+
+Upload:
+  level1.html
+  level2.html
+  level3.html
+  level4.html
+  level5.html
+  level6.html
+  js/gei-game-audio.js
+
+The package preserves:
+• One-frame / no-scroll gameplay
+• Larger kid-friendly reading text
+• Mission count capped at 6/6
+• Completed-level state without the old lock card
+• Username gate
+• Shared Web Audio engine
