@@ -77,16 +77,31 @@ button{font:inherit}a{color:inherit;text-decoration:none}.dispf{font-family:"Raj
   .answerBtn{font-size:.73rem}
 }
 </style>
+
+<style id="gei-polish-v2">
+.audioBtn{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-size:1rem;display:grid;place-items:center}
+.topActions{display:flex;gap:5px;align-items:center}
+.celebrateBurst{position:fixed;inset:0;pointer-events:none;z-index:30;display:none;overflow:hidden}
+.celebrateBurst.show{display:block}
+.spark{position:absolute;left:50%;top:46%;font-size:1.1rem;animation:geiSpark 850ms ease-out forwards}
+@keyframes geiSpark{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}12%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.2) rotate(180deg)}}
+.badgeReward{display:inline-flex;align-items:center;gap:6px;margin:3px 0;padding:6px 9px;border-radius:999px;background:var(--panel2);border:1px solid var(--brass);color:var(--brass);font-family:"Rajdhani";font-weight:800;font-size:.72rem}
+.completeCard{box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.resetPanel{position:fixed;left:50%;bottom:58px;transform:translateX(-50%);width:min(92vw,390px);z-index:40;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 14px 36px rgba(0,0,0,.28);display:none}
+.resetPanel.show{display:block}
+.resetPanel h4{margin:0 0 4px;font-family:"Rajdhani";font-size:.9rem}.resetPanel p{margin:0 0 7px;font-size:.66rem;color:var(--muted);font-weight:700;line-height:1.25}
+.resetActions{display:flex;gap:6px}.resetActions button{flex:1;border-radius:9px;padding:7px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-family:"Rajdhani";font-weight:800}.resetActions .danger{border-color:var(--bad);color:var(--bad)}
+</style>
 </head>
 <body>
 <div class="phoneOuter"><div class="appFrame">
-<header class="topbar"><a class="brandRow" href="index.html"><img src="https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-logo-vq2GKHxbTzr7g8b8b-O.png" alt="YallToo"><span class="brandText"><b class="dispf">GEI Dam Academy</b><span class="monof">DAY 3 · RESERVOIR</span></span></a><button class="themeBtn" id="themeBtn" type="button">🌙</button></header>
+<header class="topbar"><a class="brandRow" href="index.html"><img src="https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-logo-vq2GKHxbTzr7g8b8b-O.png" alt="YallToo"><span class="brandText"><b class="dispf">GEI Dam Academy</b><span class="monof">DAY 3 · RESERVOIR</span></span></a><div class="topActions"><button class="audioBtn" id="soundBtn" type="button" aria-label="Sound on">🔊</button><button class="themeBtn" id="themeBtn" type="button">🌙</button></div></header><div class="celebrateBurst" id="celebrateBurst" aria-hidden="true"></div>
 <main class="levelScroll" id="scroll">
 <section class="screenHead"><span class="eyebrow monof">LEVEL 3 · RESERVOIR</span><h2 class="dispf">Hold the Reservoir</h2><p>Day three: water finds its basin — store it before you release it.</p></section>
 <section class="card" id="progressCard"><div class="progTop"><span class="avatarChip" id="profAvatar">💧</span><div class="progText"><b id="hello">Explorer</b><small class="monof" id="meta">DAY 3 · 0 XP</small></div><span class="chipDone" id="doneChip" hidden>✓ COMPLETE</span></div><div class="dayTrack" id="dayTrack"></div><div class="track"><div class="fill" id="fill"></div></div><div class="readouts"><div class="readout"><span class="tag">XP</span><b id="xpVal">0</b></div><div class="readout"><span class="tag">MISSIONS</span><b id="mVal">0/6</b></div></div></section>
 <div id="missions"></div>
-<section class="card completeCard" id="completeCard"><div class="monof tagLine">DAY 3 COMPLETE · RESERVOIR</div><h3 class="dispf">Level 3 Complete!</h3><p>Level 3 complete — the reservoir holds.</p><div class="completeStats"><span>⭐ <b id="xpTotal">0</b> XP</span><span>🗓 <b id="daysTotal">0</b>/6 DAYS</span></div><div class="btnRow"><a class="btnGhost" href="index.html">🏠 Dashboard</a><a class="btnPrimary" href="level4.html">Next: Level 4 →</a></div></section>
-</main>
+<section class="card completeCard" id="completeCard"><div class="monof tagLine">DAY 3 COMPLETE · RESERVOIR</div><h3 class="dispf">Level 3 Complete!</h3><p>Level 3 complete — the reservoir holds.</p><div class="badgeReward">🏅 GEI Builder Badge Unlocked</div><div class="completeStats"><span>⭐ <b id="xpTotal">0</b> XP</span><span>🗓 <b id="daysTotal">0</b>/6 DAYS</span></div><div class="btnRow"><a class="btnGhost" href="index.html">🏠 Dashboard</a><a class="btnPrimary" href="level4.html">Next: Level 4 →</a></div></section>
+<div class="resetPanel" id="resetPanel" aria-hidden="true"><h4>🛠️ Developer Test Tools</h4><p>Reset Academy progress to replay Level 1 → Level 6 from the beginning.</p><div class="resetActions"><button type="button" id="resetCancel">Cancel</button><button type="button" class="danger" id="resetConfirm">Reset Progress</button></div></div></main>
 <nav class="tabbar"><a class="tabBtn" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h5v-5h2v5h5v-9"/></svg><span>HOME</span></a><a class="tabBtn" href="__PREV__"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg><span>PREV</span></a><a class="tabBtn" href="level4.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span>NEXT</span></a></nav>
 </div></div>
 <script>
@@ -141,4 +156,57 @@ start();
   bindGEI();
   new MutationObserver(bindGEI).observe(document.documentElement,{subtree:true,childList:true});
 })();
-</script></body></html>
+</script>
+<script id="gei-polish-engine">
+(function(){
+  'use strict';
+  var SOUND_KEY='gei-academy-sound-enabled-v1', enabled=true;
+  try{var v=localStorage.getItem(SOUND_KEY); if(v!==null) enabled=v!=='0';}catch(e){}
+  var rawSound=window.sound;
+  function play(k){if(enabled&&typeof rawSound==='function'){try{rawSound(k)}catch(e){}}}
+  var sb=document.getElementById('soundBtn');
+  function paint(){if(sb){sb.textContent=enabled?'🔊':'🔇';sb.setAttribute('aria-label',enabled?'Sound on':'Sound off');}}
+  paint();
+  if(sb)sb.onclick=function(){enabled=!enabled;try{localStorage.setItem(SOUND_KEY,enabled?'1':'0')}catch(e){}paint();if(enabled)play('click');};
+
+  function burst(finale){
+    var host=document.getElementById('celebrateBurst'); if(!host)return;
+    host.innerHTML='';
+    var icons=finale?['✨','⭐','💧','🏆','🎉']:['💧','✨','⭐'];
+    for(var i=0;i<(finale?20:8);i++){
+      var x=document.createElement('span'); x.className='spark'; x.textContent=icons[i%icons.length];
+      x.style.setProperty('--x',(Math.random()*280-140)+'px');
+      x.style.setProperty('--y',(Math.random()*220-120)+'px');
+      x.style.animationDelay=(Math.random()*80)+'ms'; host.appendChild(x);
+    }
+    host.classList.add('show'); setTimeout(function(){host.classList.remove('show');host.innerHTML=''},950);
+  }
+
+  // Long-press the level eyebrow to expose the developer reset tool.
+  var trig=document.querySelector('.screenHead .eyebrow'), hold=null;
+  if(trig){
+    trig.addEventListener('touchstart',function(){hold=setTimeout(function(){
+      var panel=document.getElementById('resetPanel');
+      if(panel){panel.classList.add('show');panel.setAttribute('aria-hidden','false');play('click');}
+    },900)},{passive:true});
+    ['touchend','touchcancel','mouseleave'].forEach(function(ev){trig.addEventListener(ev,function(){clearTimeout(hold)})});
+  }
+  var rc=document.getElementById('resetCancel'),rr=document.getElementById('resetConfirm');
+  if(rc)rc.onclick=function(){var p=document.getElementById('resetPanel');p.classList.remove('show');p.setAttribute('aria-hidden','true')};
+  if(rr)rr.onclick=function(){try{localStorage.removeItem('gei-academy-state-v1');localStorage.removeItem(SOUND_KEY)}catch(e){}location.href='index.html'};
+
+  document.addEventListener('click',function(e){
+    var t=e.target;if(!t)return;
+    if(t.classList && t.classList.contains('answerBtn')){
+      setTimeout(function(){
+        if(t.classList.contains('ok')){play('correct');burst(false);}
+        else if(t.classList.contains('bad')){play('wrong');burst(false);}
+      },25);
+    }
+    if(t.classList && t.classList.contains('nextBtn') && /Complete Level/i.test(t.textContent||'')){
+      setTimeout(function(){play('level-complete');burst(true);},40);
+    }
+  },true);
+})();
+</script>
+</body></html>

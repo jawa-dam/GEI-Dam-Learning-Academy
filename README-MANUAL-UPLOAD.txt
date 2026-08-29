@@ -1,17 +1,25 @@
-GEI Dam Academy — Readable / Kid-Friendly One-Frame Update
+GEI Dam Academy — NEXT POLISH BUILD
 
-Files:
-level1.html through level6.html
-js/gei-game-audio.js
+Upload/replace:
+  level1.html
+  level2.html
+  level3.html
+  level4.html
+  level5.html
+  level6.html
+  js/gei-game-audio.js
 
-This revision keeps the game fixed to one frame with no page scrolling,
-while increasing the size and readability of:
-• mission titles
-• lesson / reading text
-• questions
-• answer choices
-• feedback
-• Next Mission buttons
+New in this build:
+• Sound On/Off toggle with remembered preference.
+• Correct/wrong answer sparkle feedback.
+• Level-complete sparkle/confetti effect.
+• GEI Builder Badge on completion cards.
+• Level 6 certificate/vault fanfare.
+• Hidden developer reset tool: long-press the small LEVEL label for ~1 second.
 
-Short metadata/navigation remains compact so the core learning content
-has more visual priority.
+Preserved:
+• One-frame/no-scroll gameplay.
+• Comfortable-reading typography.
+• Username gate.
+• Mission count capped at 6/6.
+• Existing shared Web Audio engine.
