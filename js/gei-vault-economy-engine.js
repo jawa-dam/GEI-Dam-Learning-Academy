@@ -1,5 +1,5 @@
 /* ==========================================
-GEI VAULT / ECONOMY ENGINE v1
+GEI VAULT / ECONOMY ENGINE v2
 Genesis Engineered Interpretations Academy
 
 Owns:
@@ -8,6 +8,7 @@ Owns:
 - one-item-per-900-XP vault purchases
 - skins, certificate, A'Dam Video Vault unlock state
 - future XP purchase hooks
+- premium skin metadata + animation presets
 
 Storage:
   gei-academy-state-v1  -> existing player/progression state
@@ -18,14 +19,28 @@ Storage:
   var VAULT_KEY='gei-vault-state-v1';
   var ACADEMY_KEY='gei-academy-state-v1';
   var PRICE=900;
+
+  /* Every vault item remains an individual 900-XP purchase. */
   var ITEMS={
     certificate:{id:'certificate',name:'Official Certificate',type:'certificate',level:6,cost:900},
     adamVideoVault:{id:'adamVideoVault',name:"A'Dam Video Vault",type:'video-vault',level:6,cost:900},
-    waterSkin:{id:'waterSkin',name:'Water Skin',type:'skin',level:6,cost:900},
-    damSkin:{id:'damSkin',name:'Dam Skin',type:'skin',level:6,cost:900},
-    millSkin:{id:'millSkin',name:'Mill Skin',type:'skin',level:6,cost:900},
-    mountainSkin:{id:'mountainSkin',name:'Mountain Skin',type:'skin',level:6,cost:900}
+
+    waterSkin:{id:'waterSkin',name:'Water Skin',type:'skin',level:6,cost:900,animation:'water-flow',tier:'premium'},
+    damSkin:{id:'damSkin',name:'Dam Skin',type:'skin',level:6,cost:900,animation:'stone-pulse',tier:'premium'},
+    millSkin:{id:'millSkin',name:'Mill Skin',type:'skin',level:6,cost:900,animation:'gear-spin',tier:'premium'},
+    mountainSkin:{id:'mountainSkin',name:'Mountain Skin',type:'skin',level:6,cost:900,animation:'summit-glow',tier:'premium'},
+
+    hotPinkSkin:{id:'hotPinkSkin',name:'Hot Pink Skin',type:'skin',level:6,cost:900,animation:'neon-pulse',tier:'premium'},
+    babyBlueSkin:{id:'babyBlueSkin',name:'Baby Blue Skin',type:'skin',level:6,cost:900,animation:'sky-shimmer',tier:'premium'},
+    academicSkin:{id:'academicSkin',name:'Academic Skin',type:'skin',level:6,cost:900,animation:'gold-ink',tier:'premium'},
+    blueprintSkin:{id:'blueprintSkin',name:'Blueprint Skin',type:'skin',level:6,cost:900,animation:'blueprint-scan',tier:'premium'},
+    rubySkin:{id:'rubySkin',name:'Ruby Skin',type:'skin',level:6,cost:900,animation:'ruby-glint',tier:'premium'},
+    emeraldSkin:{id:'emeraldSkin',name:'Emerald Skin',type:'skin',level:6,cost:900,animation:'emerald-pulse',tier:'premium'},
+    obsidianSkin:{id:'obsidianSkin',name:'Obsidian Skin',type:'skin',level:6,cost:900,animation:'shadow-sheen',tier:'premium'},
+    goldSkin:{id:'goldSkin',name:'Gold Skin',type:'skin',level:6,cost:900,animation:'gold-shimmer',tier:'premium'}
   };
+
+  /* Future XP purchase catalog. These are data only until a trusted payment callback exists. */
   var XP_PACKS={
     starter:{id:'starter',name:'Starter XP',xp:900},
     builder:{id:'builder',name:'Builder XP',xp:2500},
@@ -65,7 +80,9 @@ Storage:
   function isUnlocked(id){return getVault().unlockedIds.indexOf(id)!==-1}
   function getItem(id){return ITEMS[id]||null}
   function listItems(){return Object.keys(ITEMS).map(function(k){return ITEMS[k]})}
-  function balance(){return {earnedXP:xp(),spentXP:getVault().spentXP,balance:xp()-getVault().spentXP}}
+  function listSkins(){return listItems().filter(function(item){return item.type==='skin'})}
+  function getSkinAnimation(id){var item=getItem(id);return item&&item.type==='skin'?item.animation:null}
+  function balance(){var v=getVault();return {earnedXP:xp(),spentXP:v.spentXP,balance:Math.max(0,xp()-v.spentXP)}}
   function availableXP(){return Math.max(0,balance().balance)}
   function purchase(id){
     var item=getItem(id),v=getVault();
@@ -83,28 +100,26 @@ Storage:
   function setActiveSkin(id){
     var v=getVault();
     if(id!==null&&v.unlockedIds.indexOf(id)===-1)return false;
+    if(id!==null&&getItem(id)&&getItem(id).type!=='skin')return false;
     v.activeSkin=id;return saveVault(v);
   }
   function activeSkin(){return getVault().activeSkin}
-  function reset(){
-    try{localStorage.removeItem(VAULT_KEY);return true}catch(e){return false}
-  }
+  function reset(){try{localStorage.removeItem(VAULT_KEY);return true}catch(e){return false}}
   function addXPFromPayment(xpAmount,reference){
-    // Payment gateway integration point. This function does not charge money.
-    // A trusted payment callback should call this after payment verification.
+    /* Trusted payment callback only. This function never charges money. */
     var amount=Math.max(0,Math.floor(Number(xpAmount)||0));
     if(!amount)return {ok:false,reason:'invalid-xp'};
     var a=getAcademy();if(!a)return {ok:false,reason:'no-academy-state'};
     a.xp=Number(a.xp||0)+amount;
     try{
       localStorage.setItem(ACADEMY_KEY,JSON.stringify(a));
-      return {ok:true,xpAdded:amount,reference:reference||null,balance:availableXP()+amount};
+      return {ok:true,xpAdded:amount,reference:reference||null,balance:Math.max(0,Number(a.xp||0)-getVault().spentXP)};
     }catch(e){return {ok:false,reason:'storage-error'}}
   }
   window.GEI_VAULT={
     PRICE:PRICE,ITEMS:ITEMS,XP_PACKS:XP_PACKS,
     getLevel:getLevel,isLevel6Complete:isLevel6Complete,canAccessVault:canAccessVault,
-    getItem:getItem,listItems:listItems,isUnlocked:isUnlocked,
+    getItem:getItem,listItems:listItems,listSkins:listSkins,getSkinAnimation:getSkinAnimation,isUnlocked:isUnlocked,
     balance:balance,availableXP:availableXP,purchase:purchase,
     setActiveSkin:setActiveSkin,activeSkin:activeSkin,addXPFromPayment:addXPFromPayment,
     reset:reset
