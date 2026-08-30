@@ -1,0 +1,18 @@
+GEI VAULT — HERO PREVIEW BUILD
+
+Includes the current Academy level pages plus:
+- GEI Vault / Economy Engine
+- GEI Skin Renderer
+- GEI Vault Preview Engine
+- GEI Vault Preview CSS
+- Vault storefront
+
+Vault experience:
+- Persistent featured-preview concept
+- Live animated skin previews before purchase
+- 900 XP per item
+- Previewing does not spend XP
+- Individual skin equip state
+- Level 6 access gate remains enforced
+
+Upload with the existing folder structure preserved.
