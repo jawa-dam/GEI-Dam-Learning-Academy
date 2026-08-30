@@ -1,0 +1,9 @@
+Tree-based integration target for the next release:
+
+1. Preserve every existing file from current main unchanged.
+2. Add the shared audio-state/controller helpers already present in main.
+3. When updating index.html, add only the two script references and one data-gei-audio-toggle button near the existing theme control.
+4. When updating level1.html through level6.html and vault.html, add only the two shared audio-control script references and one matching toggle where a page-level control is desired.
+5. Verify compare against main shows no unexpected deletions.
+
+This marker intentionally contains no executable changes.
