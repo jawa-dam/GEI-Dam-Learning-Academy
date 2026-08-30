@@ -1,0 +1,1 @@
+(function(w){'use strict';var S=['academic','journal','museum','blueprint','obsidian'];w.GEI_SKIN_RENDERER={apply:function(n){n=S.indexOf(n)>=0?n:'academic';document.documentElement.setAttribute('data-skin',n);return n},skins:S.slice()};})(window);

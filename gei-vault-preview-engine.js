@@ -1,0 +1,1 @@
+(function(w){'use strict';w.GEI_VAULT_PREVIEW={ready:function(){try{return (JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}').completed||[]).length>=6}catch(e){return false}}};})(window);

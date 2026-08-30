@@ -1,0 +1,1 @@
+(function(w){'use strict';w.GEI_ECONOMY={xp:function(){try{return Number(JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}').xp||0)}catch(e){return 0}},unlocked:function(){try{return (JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}').completed||[]).length>=6}catch(e){return false}}};})(window);

@@ -1,0 +1,11 @@
+GEI DAM LEARNING ACADEMY — VAULT BRIDGE FINAL
+
+PASS: Level 1–6 included.
+PASS: Shared gameplay audio engine included.
+PASS: Dashboard Level 6 destination added and guarded by Level 5 completion.
+PASS: Dashboard-level experimental audio-control scripts removed.
+PASS: A'Dam Vault included.
+PASS: Vault uses gei-academy-state-v1 and unlocks after six completed levels.
+PASS: Certificate and exclusive video entry points included.
+
+This is a deployment-ready release candidate for manual upload to GitHub Pages / Hostinger.

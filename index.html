@@ -61,7 +61,6 @@ button{font-family:inherit}
 .brandText span{display:block;font-size:.53rem;letter-spacing:.14em;color:var(--aqua);font-weight:700}
 #themeBtn{flex:0 0 auto;width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);display:grid;place-items:center;cursor:pointer;font-size:.95rem}
 #themeBtn:active{transform:scale(.94)}
-.topActions{display:flex;gap:6px;align-items:center}.geiAudioToggle,#geiAudioToggle{flex:0 0 auto;width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);display:grid;place-items:center;cursor:pointer;font-size:.95rem}.geiAudioToggle:active,#geiAudioToggle:active{transform:scale(.94)}
 
 /* ---------- screens ---------- */
 .screens{flex:1 1 auto;min-height:0;position:relative}
@@ -184,8 +183,6 @@ button{font-family:inherit}
 
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
-  <script src="js/gei-game-audio.js"></script>
-  <script src="js/gei-academy-audio-control.js"></script>
 </head>
 <body>
 <div class="phoneOuter">
@@ -196,7 +193,7 @@ button{font-family:inherit}
       <img src="https://assets.zyrosite.com/YZ9jg46Bljs5wOZR/yall-too-logo-vq2GKHxbTzr7g8bO.png" alt="YallToo — GEI Academy" onerror="this.onerror=null;this.src=window.__YALL_LOGO__">
       <div class="brandText"><b class="dispf">GEI Dam Academy</b><span class="monof">CONTROL ROOM</span></div>
     </div>
-    <div class="topActions"><button id="geiAudioToggle" type="button" data-gei-audio-toggle aria-label="Sound on" aria-pressed="true">🔊</button><button id="themeBtn" type="button" aria-label="Toggle light and dark mode">🌙</button></div>
+    <button id="themeBtn" type="button" aria-label="Toggle light and dark mode">🌙</button>
   </header>
 
   <main class="screens">
@@ -279,7 +276,15 @@ button{font-family:inherit}
       </div>
     </section>
 
-  </main>
+  
+<section class="card" id="level6BridgeCard">
+  <div class="eyebrow">🏆 LEVEL 6 · THE SYSTEM</div>
+  <h2>Connect the Complete System</h2>
+  <p class="note">Day 6 connects source → reservoir → gate → moving water → mill → useful power.</p>
+  <a class="btn primary" id="level6BridgeBtn" href="level6.html">🚀 Continue to Level 6</a>
+</section>
+
+</main>
 
   <nav class="tabbar" id="tabbar">
     <button class="tabBtn active" data-tab="home" type="button" aria-label="Home">
@@ -515,5 +520,42 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 render();
 })();
 </script>
+
+<script>
+(function(){
+  function readState(){
+    try{return JSON.parse(localStorage.getItem('gei-academy-state-v1')||'{}')||{}}
+    catch(e){return {}}
+  }
+  function syncLevel6(){
+    var s=readState(), c=Array.isArray(s.completed)?s.completed:[];
+    var unlocked=c.indexOf(5)!==-1 || c.indexOf(6)!==-1;
+    var btn=document.getElementById('level6BridgeBtn');
+    if(!btn)return;
+    btn.setAttribute('aria-disabled',String(!unlocked));
+    btn.classList.toggle('disabled',!unlocked);
+    if(!unlocked){btn.textContent='🔒 Finish Level 5 to Unlock';}
+    else{btn.textContent='🚀 Continue to Level 6';}
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var btn=document.getElementById('level6BridgeBtn');
+    if(btn){
+      btn.addEventListener('click',function(e){
+        var s=readState(), c=Array.isArray(s.completed)?s.completed:[];
+        if(c.indexOf(5)===-1 && c.indexOf(6)===-1){
+          e.preventDefault();
+          try{if(window.sound)window.sound('wrong')}catch(_){}
+        }else{
+          try{if(window.sound)window.sound('level')}catch(_){}
+        }
+      });
+    }
+    syncLevel6();
+  });
+  window.addEventListener('storage',syncLevel6);
+  window.addEventListener('pageshow',syncLevel6);
+})();
+</script>
+
 </body>
 </html>
