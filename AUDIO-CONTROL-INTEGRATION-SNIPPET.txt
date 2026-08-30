@@ -1,0 +1,13 @@
+SURGICAL DASHBOARD INTEGRATION
+
+Add to <head>:
+<script src="js/gei-game-audio.js"></script>
+<script src="js/gei-academy-audio-control.js"></script>
+
+Add ONE button near the existing theme control:
+<button type="button" data-gei-audio-toggle aria-label="Sound on" aria-pressed="true">🔊</button>
+
+The external controller owns the saved Academy-wide setting:
+localStorage key: gei-academy-sound-enabled-v1
+
+The controller does not alter dashboard navigation, progress, missions, or layout.
