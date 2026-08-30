@@ -1,0 +1,2 @@
+/* GEI Academy audio state */
+(function(){'use strict';var K='gei-academy-sound-enabled-v1';function get(){try{return localStorage.getItem(K)!=='0'}catch(e){return true}}function set(v){try{localStorage.setItem(K,v?'1':'0')}catch(e){};window.dispatchEvent(new CustomEvent('gei:sound-state',{detail:{enabled:!!v}}));return !!v}window.GEI_AUDIO_STATE={enabled:get,set:set,toggle:function(){return set(!get())}}})();
