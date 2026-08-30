@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>GEI Vault — Premium Skins & Rewards</title>
+<script src="js/gei-vault-economy-engine.js"></script>
+<script src="js/gei-skin-renderer.js"></script>
+<style>
+:root{--bg:#071b2c;--panel:#0f2f47;--panel2:#123a57;--ink:#eaf6ff;--muted:#7fa7c7;--aqua:#22c7e8;--brass:#e8a33d;--good:#46d19c;--bad:#ff6b6b;--line:rgba(255,255,255,.10)}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif}body{overflow-x:hidden}.wrap{max-width:900px;margin:auto;padding:18px}.hero,.balance,.item{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}.hero h1{margin:0;font:700 2rem Rajdhani,sans-serif}.hero p,.item p{color:var(--muted);margin:.35rem 0;line-height:1.35}.gate{font-weight:800;color:var(--brass)}.balance{display:flex;justify-content:space-between;align-items:center;gap:12px}.xp{font:800 1.7rem Rajdhani,sans-serif;color:var(--aqua)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.item h3{margin:0 0 4px;font:700 1.15rem Rajdhani,sans-serif}.pill{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid var(--line);font-size:.72rem}.price{color:var(--brass);font-weight:900}.actions{display:flex;gap:7px;margin-top:10px}.actions button{flex:1;border:0;border-radius:10px;padding:9px;font:800 .9rem Rajdhani,sans-serif;cursor:pointer}.buy{background:linear-gradient(90deg,var(--aqua),var(--brass));color:#08202f}.equip{background:var(--panel2);color:var(--ink);border:1px solid var(--line)!important}.locked{opacity:.6}.notice{padding:12px;border-radius:12px;background:var(--panel2);margin-bottom:12px;font-weight:800}.skinDemo{height:70px;border-radius:14px;margin:8px 0;background:linear-gradient(135deg,var(--panel2),var(--panel));position:relative;overflow:hidden}.skinDemo:after{content:'✦';position:absolute;inset:0;display:grid;place-items:center;font-size:2rem;color:var(--aqua);animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{transform:scale(1.15);opacity:.6}}@media(prefers-reduced-motion:reduce){.skinDemo:after{animation:none}}
+</style>
+</head>
+<body><main class="wrap">
+<section class="hero"><div class="pill">🔐 GEI VAULT</div><h1>Choose Your Reward</h1><p>Level 6 completion grants access. <strong>Each item costs 900 XP separately.</strong></p><p class="gate" id="gate">Checking Academy progress…</p></section>
+<section class="balance"><div><div class="pill">VAULT XP AVAILABLE</div><div class="xp" id="xp">0 XP</div></div><div><div class="pill">UNLOCKED</div><strong id="count">0</strong></div></section>
+<div class="notice" id="notice">Your progress is loading…</div>
+<section class="grid" id="grid"></section>
+</main>
+<script>
+(function(){
+'use strict';
+var V=window.GEI_VAULT;
+var items=V.listItems();
+var skins=items.filter(function(i){return i.type==='skin'});
+var order=['certificate','adamVideoVault'].concat(skins.map(function(i){return i.id}));
+var names={waterSkin:'💧 Water Skin',damSkin:'🧱 Dam Skin',millSkin:'⚙️ Mill Skin',mountainSkin:'🏔️ Mountain Skin',hotPinkSkin:'💗 Hot Pink Skin',babyBlueSkin:'🩵 Baby Blue Skin',academicSkin:'🎓 Academic Skin',blueprintSkin:'📐 Blueprint Skin',rubySkin:'♦️ Ruby Skin',emeraldSkin:'💚 Emerald Skin',obsidianSkin:'🖤 Obsidian Skin',goldSkin:'🥇 Gold Skin'};
+var subtitle={certificate:'Official GEI Academy Certificate',adamVideoVault:"A'Dam Video Vault",waterSkin:'Flowing-water premium animation',damSkin:'Stone pulse premium animation',millSkin:'Gear-spin premium animation',mountainSkin:'Summit glow premium animation',hotPinkSkin:'Neon pulse premium animation',babyBlueSkin:'Sky shimmer premium animation',academicSkin:'Gold-ink scan premium animation',blueprintSkin:'Blueprint grid scan premium animation',rubySkin:'Ruby glint premium animation',emeraldSkin:'Emerald pulse premium animation',obsidianSkin:'Shadow sheen premium animation',goldSkin:'Gold shimmer premium animation'};
+function render(){
+ var access=V.canAccessVault(),b=V.balance(),g=document.getElementById('grid');
+ document.getElementById('xp').textContent=(access?b.balance:0)+' XP';
+ var unlocked=0;items.forEach(function(i){if(V.isUnlocked(i.id))unlocked++});document.getElementById('count').textContent=unlocked;
+ document.getElementById('gate').textContent=access?'✅ LEVEL 6 COMPLETE — VAULT ACCESS GRANTED':'🔒 COMPLETE LEVEL 6 TO OPEN THE VAULT';
+ document.getElementById('notice').textContent=access?'Choose one item for 900 XP. Need more XP? Keep playing or use the future XP Store.':'The Vault stays locked until Level 6 is complete with 900 XP earned.';
+ g.innerHTML=order.map(function(id){var it=V.getItem(id);if(!it)return '';var yes=V.isUnlocked(id);var skin=it.type==='skin';return '<article class="item '+(!access?'locked':'')+'"><div class="pill">'+(skin?'SKIN':it.type==='certificate'?'CERTIFICATE':'VIDEO VAULT')+'</div><h3>'+ (names[id]||it.name)+'</h3><p>'+subtitle[id]+'</p><div class="skinDemo" aria-hidden="true"></div><span class="price">'+(yes?'✅ UNLOCKED':'900 XP')+'</span><div class="actions">'+(yes?(skin?'<button class="equip" data-equip="'+id+'">'+(V.activeSkin()===id?'⭐ EQUIPPED':'Equip Skin')+'</button>':'<button class="equip" disabled>Unlocked</button>'):'<button class="buy" data-buy="'+id+'" '+(!access?'disabled':'')+'>🔓 Unlock with 900 XP</button>')+'</div></article>'}).join('');
+ g.querySelectorAll('[data-buy]').forEach(function(btn){btn.onclick=function(){var r=V.purchase(btn.dataset.buy);document.getElementById('notice').textContent=r.ok?'🎉 Unlocked: '+r.item.name+' — '+r.balance+' XP remaining':(r.reason==='not-enough-xp'?'Need '+r.needed+' more XP. Keep playing or use the future XP Store.':r.reason==='level-6-required'?'Complete Level 6 first.':'Unable to unlock this item.');render()}});
+ g.querySelectorAll('[data-equip]').forEach(function(btn){btn.onclick=function(){V.setActiveSkin(btn.dataset.equip);if(window.GEI_SKIN_RENDERER)GEI_SKIN_RENDERER.apply();render()}});
+}
+render();
+window.addEventListener('storage',render);
+})();
+</script>
+</body></html>
